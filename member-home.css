@@ -117,7 +117,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .playlist-copy strong { color: #f1f5fb; font-size: .82rem; font-weight: 800; }
 .playlist-copy small { margin-top: 4px; color: var(--member-muted); font-size: .68rem; }
 .playlist-song-release { display: flex; align-items: center; gap: 7px; margin-top: 5px; color: #71839c; font-size: .57rem; }
-.playlist-song-release strong { color: var(--member-gold); font-size: .59rem; font-variant-numeric: tabular-nums; }
+.playlist-song-release strong { color: var(--member-gold); font-size: .72rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .01em; white-space: nowrap; }
 .playlist-duration { color: #7d8ca2; font-size: .68rem; }
 .playlist-action { flex: 0 0 auto; margin-right: 18px; border: 1px solid rgba(245, 197, 24, .42); border-radius: 7px; color: var(--member-gold); padding: 7px 10px; font-size: .65rem; font-weight: 800; text-decoration: none; transition: background .2s ease, color .2s ease; }
 .playlist-action:hover { background: var(--member-gold); color: #241c06; }

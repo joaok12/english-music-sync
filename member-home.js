@@ -102,8 +102,28 @@
   const client = window.supabase.createClient(config.url, config.anonKey);
 
   function normalizeLegacySong(song) {
-    if (Object.prototype.hasOwnProperty.call(song || {}, 'release_at')) return song;
+    // A release date is the source of truth. Older rows may contain an
+    // `is_available` flag without a release date; those are existing songs
+    // and must remain playable.
+    if (song?.release_at) return song;
     return {...song, release_at: null, is_available: true};
+  }
+
+  function isComingSoon(song) {
+    const releaseAt = new Date(song?.release_at || '').getTime();
+    return Number.isFinite(releaseAt) && releaseAt > Date.now();
+  }
+
+  function orderAvailableFirst(rows) {
+    return uniqueSongs(rows)
+      .map(normalizeLegacySong)
+      .map((song, index) => ({song, index}))
+      .sort((left, right) => {
+        const leftUpcoming = isComingSoon(left.song) ? 1 : 0;
+        const rightUpcoming = isComingSoon(right.song) ? 1 : 0;
+        return leftUpcoming - rightUpcoming || left.index - right.index;
+      })
+      .map(({song}) => song);
   }
 
   function legacyUpcomingSongs() {
@@ -235,7 +255,7 @@
 
   function renderLibrary(rows) {
     playlist.replaceChildren();
-    const unique = uniqueSongs(rows).map(normalizeLegacySong);
+    const unique = orderAvailableFirst(rows);
     playlistCount.textContent = unique.length;
     if (!unique.length) {
       emptyRail(playlist, 'Esta playlist ainda não tem músicas liberadas.');
@@ -243,8 +263,8 @@
     }
     unique.forEach((song, index) => {
       const row = document.createElement('article');
-      const future = song.release_at && new Date(song.release_at).getTime() > Date.now();
-      const available = song.is_available !== false && !future;
+      const future = isComingSoon(song);
+      const available = !future;
       row.className = `playlist-row${available ? '' : ' is-locked'}`;
       const releaseMeta = future ? `<span class="playlist-song-release"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(song.release_at)}">--d --h --m --s</strong></span>` : '';
       const cover = song.__cover || '';
@@ -255,7 +275,7 @@
   }
 
   async function renderLibraryWithCovers(rows) {
-    const songs = uniqueSongs(rows).map(normalizeLegacySong);
+    const songs = orderAvailableFirst(rows);
     for (const song of songs) song.__cover = await coverUrl(song);
     renderLibrary(songs);
   }
