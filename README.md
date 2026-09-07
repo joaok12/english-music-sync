@@ -2,7 +2,17 @@
 
 ## Publicação
 
-Este projeto é um site estático pronto para publicar na Vercel. As músicas e sincronizações criadas pelo usuário ainda ficam no navegador (IndexedDB e LocalStorage), portanto cada navegador possui sua própria biblioteca. A próxima etapa será integrar o Supabase para salvar a biblioteca e as sincronizações na nuvem.
+Este projeto é um site estático publicado na Vercel. A integração Supabase já
+está preparada para a área de membros: o webhook da Hubla registra comprador,
+CPF protegido por HMAC, produtos e status de acesso; o login confere e-mail +
+CPF e abre uma biblioteca protegida. Consulte
+[`SUPABASE_HUBLA_SETUP.md`](SUPABASE_HUBLA_SETUP.md) para cadastrar o token da
+Hubla e associar os produtos às músicas.
+
+As músicas públicas e o estúdio local continuam funcionando como antes. O
+catálogo protegido usa as tabelas `songs`, `products` e `product_songs` do
+Supabase; capas e áudios ficam no bucket privado `song-media` e só são
+entregues para quem tem um produto ativo.
 
 Após o deploy, abra a URL da Vercel normalmente; não use os links `localhost` para compartilhar o app.
 

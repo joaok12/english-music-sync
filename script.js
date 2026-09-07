@@ -1,6 +1,7 @@
 // Motor Oficial de Karaokê com Sincronia Real, Bandeiras e Setinha Fluida (Multimúsica)
 document.addEventListener("DOMContentLoaded", async () => {
   await window.CustomSongs.ready;
+  if (window.RemoteSongReady) await window.RemoteSongReady;
   const audio = document.getElementById("audioTrack");
   const lyricsViewport = document.getElementById("lyricsViewport");
   const lyricsStream = document.getElementById("lyricsStream");

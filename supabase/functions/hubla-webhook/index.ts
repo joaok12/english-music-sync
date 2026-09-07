@@ -1,0 +1,239 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Headers": "content-type, x-hubla-token, x-hubla-sandbox, x-hubla-idempotency",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json",
+};
+
+type JsonObject = Record<string, unknown>;
+
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const webhookToken = Deno.env.get("HUBLA_WEBHOOK_TOKEN") ?? "";
+const cpfHashSecret = Deno.env.get("CPF_HASH_SECRET") ?? "";
+const admin = createClient(supabaseUrl, serviceRoleKey, {
+  auth: { autoRefreshToken: false, persistSession: false },
+});
+
+function object(value: unknown): JsonObject {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value as JsonObject
+    : {};
+}
+
+function string(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function sanitizedPayload(payload: JsonObject): JsonObject {
+  const copy = JSON.parse(JSON.stringify(payload)) as JsonObject;
+  const event = object(copy.event);
+  const user = object(event.user);
+  if ("document" in user) user.document = "[redacted]";
+  const subscription = object(event.subscription);
+  const paymentSession = object(subscription.firstPaymentSession);
+  if ("ip" in paymentSession) paymentSession.ip = "[redacted]";
+  if ("billingAddress" in subscription) delete subscription.billingAddress;
+  return copy;
+}
+
+function digits(value: unknown): string {
+  return string(value).replace(/\D/g, "");
+}
+
+function constantTimeEqual(left: string, right: string): boolean {
+  const a = new TextEncoder().encode(left);
+  const b = new TextEncoder().encode(right);
+  let difference = a.length ^ b.length;
+  const length = Math.max(a.length, b.length);
+  for (let index = 0; index < length; index += 1) {
+    difference |= (a[index] ?? 0) ^ (b[index] ?? 0);
+  }
+  return difference === 0;
+}
+
+async function hmacCpf(cpf: string): Promise<string> {
+  if (!cpfHashSecret) throw new Error("CPF_HASH_SECRET não configurado");
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(cpfHashSecret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(cpf));
+  return [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function nestedProduct(value: JsonObject): JsonObject {
+  const direct = object(value.product);
+  if (string(direct.id)) return direct;
+  const products = Array.isArray(value.products) ? value.products : [];
+  return object(products[0]);
+}
+
+function allProducts(value: JsonObject): JsonObject[] {
+  const products = Array.isArray(value.products) ? value.products.map(object) : [];
+  const direct = object(value.product);
+  if (string(direct.id) && !products.some((product) => product.id === direct.id)) products.unshift(direct);
+  return products.filter((product) => string(product.id));
+}
+
+function slugify(value: string, fallback: string): string {
+  const slug = value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return (slug || "produto") + "-" + fallback.slice(0, 8).toLowerCase();
+}
+
+function eventDecision(type: string): "active" | "inactive" | "ignored" {
+  if ([
+    "customer.member_added",
+    "subscription.activated",
+    "invoice.payment_succeeded",
+    "invoice.paid",
+    "invoice.payment_success",
+  ].includes(type)) return "active";
+  if ([
+    "customer.member_removed",
+    "subscription.deactivated",
+    "subscription.expired",
+    "invoice.refunded",
+    "invoice.expired",
+  ].includes(type)) return "inactive";
+  return "ignored";
+}
+
+async function upsertProduct(product: JsonObject) {
+  const hublaId = string(product.id);
+  const name = string(product.name) || `Produto ${hublaId}`;
+  const { data, error } = await admin.from("products").upsert({
+    hubla_product_id: hublaId,
+    name,
+    slug: slugify(name, hublaId),
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "hubla_product_id" }).select("id, hubla_product_id, name").single();
+  if (error) throw error;
+  return data;
+}
+
+async function findOrCreateMember(user: JsonObject, subscription: JsonObject) {
+  const hublaUserId = string(user.id) || string(subscription.payerId);
+  const email = string(user.email).toLowerCase();
+  const cpf = digits(user.document);
+  if (!hublaUserId && !email) throw new Error("Evento sem identificador do comprador");
+
+  let query = admin.from("members").select("id, auth_user_id, email, cpf_hash").limit(1);
+  query = hublaUserId ? query.eq("hubla_user_id", hublaUserId) : query.eq("email", email);
+  const { data: existing, error: findError } = await query.maybeSingle();
+  if (findError) throw findError;
+
+  const payload: JsonObject = {
+    hubla_user_id: hublaUserId || null,
+    email: email || existing?.email,
+    full_name: [string(user.firstName), string(user.lastName)].filter(Boolean).join(" ") || null,
+    phone: string(user.phone) || null,
+    updated_at: new Date().toISOString(),
+  };
+  if (cpf && cpfHashSecret) {
+    payload.cpf_hash = await hmacCpf(cpf);
+    payload.cpf_last4 = cpf.slice(-4);
+  }
+  if (!payload.email) throw new Error("Evento sem email do comprador");
+
+  if (existing) {
+    const { data, error } = await admin.from("members").update(payload).eq("id", existing.id)
+      .select("id, auth_user_id, email").single();
+    if (error) throw error;
+    return data;
+  }
+  const { data, error } = await admin.from("members").insert(payload)
+    .select("id, auth_user_id, email").single();
+  if (error) throw error;
+  return data;
+}
+
+async function processEvent(payload: JsonObject, type: string) {
+  const event = object(payload.event);
+  const user = object(event.user);
+  const subscription = object(event.subscription);
+  const decision = eventDecision(type);
+  if (decision === "ignored") return;
+
+  const member = await findOrCreateMember(user, subscription);
+  const products = allProducts(event);
+  if (!products.length) throw new Error("Evento sem produto");
+  const subscriptionId = string(subscription.id);
+  const subscriptionVersion = Number.isInteger(subscription.version) ? Number(subscription.version) : null;
+  const modifiedAt = string(subscription.modifiedAt) || string(subscription.activatedAt);
+
+  for (const product of products) {
+    const savedProduct = await upsertProduct(product);
+    const { data: current, error: currentError } = await admin.from("member_entitlements")
+      .select("id, subscription_version")
+      .eq("member_id", member.id)
+      .eq("hubla_product_id", savedProduct.hubla_product_id)
+      .eq("subscription_id", subscriptionId)
+      .maybeSingle();
+    if (currentError) throw currentError;
+    if (current?.subscription_version != null && subscriptionVersion != null && current.subscription_version > subscriptionVersion) continue;
+
+    const entitlement = {
+      member_id: member.id,
+      hubla_product_id: savedProduct.hubla_product_id,
+      product_name: savedProduct.name,
+      subscription_id: subscriptionId,
+      subscription_status: decision,
+      subscription_version: subscriptionVersion,
+      source_event_type: type,
+      granted_at: decision === "active" ? (modifiedAt || new Date().toISOString()) : undefined,
+      revoked_at: decision === "inactive" ? (modifiedAt || new Date().toISOString()) : null,
+      access_until: string(subscription.inactivatedAt) || null,
+      updated_at: new Date().toISOString(),
+    };
+    const { error } = await admin.from("member_entitlements").upsert(entitlement, {
+      onConflict: "member_id,hubla_product_id,subscription_id",
+    });
+    if (error) throw error;
+  }
+}
+
+Deno.serve(async (request) => {
+  if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (request.method !== "POST") return new Response(JSON.stringify({ error: "Método não permitido" }), { status: 405, headers: corsHeaders });
+
+  const receivedToken = request.headers.get("x-hubla-token") ?? "";
+  if (!webhookToken || !constantTimeEqual(receivedToken, webhookToken)) {
+    return new Response(JSON.stringify({ error: "Webhook não autenticado" }), { status: 401, headers: corsHeaders });
+  }
+  const idempotency = request.headers.get("x-hubla-idempotency") ?? crypto.randomUUID();
+  const sandbox = (request.headers.get("x-hubla-sandbox") ?? "false").toLowerCase() === "true";
+  let payload: JsonObject;
+  try { payload = object(await request.json()); } catch { return new Response(JSON.stringify({ error: "JSON inválido" }), { status: 400, headers: corsHeaders }); }
+  const type = string(payload.type) || "unknown";
+  const version = string(payload.version) || null;
+
+  const { data: duplicate } = await admin.from("hubla_webhook_events").select("id, processing_status")
+    .eq("idempotency_key", idempotency).maybeSingle();
+  if (duplicate) return new Response(JSON.stringify({ ok: true, duplicate: true }), { status: 200, headers: corsHeaders });
+
+  const { error: eventError } = await admin.from("hubla_webhook_events").insert({
+    idempotency_key: idempotency,
+    event_type: type,
+    contract_version: version,
+    is_sandbox: sandbox,
+    payload: sanitizedPayload(payload),
+  });
+  if (eventError) return new Response(JSON.stringify({ error: "Não foi possível registrar o evento" }), { status: 500, headers: corsHeaders });
+
+  try {
+    await processEvent(payload, type);
+    await admin.from("hubla_webhook_events").update({ processing_status: eventDecision(type) === "ignored" ? "ignored" : "processed", processed_at: new Date().toISOString() }).eq("idempotency_key", idempotency);
+    return new Response(JSON.stringify({ ok: true }), { status: 200, headers: corsHeaders });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Erro desconhecido";
+    await admin.from("hubla_webhook_events").update({ processing_status: "failed", processing_error: message }).eq("idempotency_key", idempotency);
+    return new Response(JSON.stringify({ error: "Evento recebido, mas não processado" }), { status: 500, headers: corsHeaders });
+  }
+});

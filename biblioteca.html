@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minha biblioteca • Inglês Cantando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="member.css">
+</head>
+<body class="member-page">
+  <main class="member-shell">
+    <header class="library-header">
+      <div><p class="member-eyebrow">Inglês Cantando</p><h1>Minha biblioteca</h1></div>
+      <button id="logoutButton" class="member-secondary" type="button">Sair</button>
+    </header>
+    <p id="libraryStatus" class="member-status" role="status" aria-live="polite">Carregando seus produtos…</p>
+    <section id="libraryGrid" class="library-grid" aria-label="Músicas liberadas"></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=1"></script>
+  <script src="member-library.js?v=1"></script>
+</body>
+</html>

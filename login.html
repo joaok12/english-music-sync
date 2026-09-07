@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar • Inglês Cantando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="member.css">
+</head>
+<body class="member-page">
+  <main class="member-shell">
+    <a class="member-back" href="index.html">← Voltar para a página inicial</a>
+    <section class="member-card" aria-labelledby="loginTitle">
+      <div class="member-logo">🇺🇸</div>
+      <p class="member-eyebrow">Área de membros</p>
+      <h1 id="loginTitle">Entre para cantar</h1>
+      <p class="member-lead">Use o e-mail e o CPF informados na compra. O acesso é conferido com a Hubla.</p>
+      <form id="memberLoginForm" novalidate>
+        <label for="memberEmail">E-mail</label>
+        <input id="memberEmail" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+        <label for="memberCpf">CPF</label>
+        <input id="memberCpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
+        <button class="member-primary" type="submit">Entrar na minha biblioteca</button>
+      </form>
+      <p id="loginStatus" class="member-status" role="status" aria-live="polite"></p>
+      <p class="member-privacy">Seus dados são usados somente para confirmar o acesso comprado. O CPF é protegido por hash no servidor.</p>
+    </section>
+  </main>
+  <script src="supabase-config.js?v=1"></script>
+  <script src="member-auth.js?v=1"></script>
+</body>
+</html>
