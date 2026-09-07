@@ -111,6 +111,11 @@
 
   function recordData(data) { return Array.isArray(data) ? data[0] : data; }
 
+  function isMissingRpc(error) {
+    const text = String(error?.message || error || '');
+    return error?.code === 'PGRST202' || /could not find the function|function .* does not exist|schema cache/i.test(text);
+  }
+
   function toIso(value) {
     if (!value) return null;
     const date = new Date(value);
@@ -470,13 +475,16 @@
         if (second.error) throw second.error;
       }
       const releaseResult = await client.rpc('admin_update_song_release', {p_song_id: saved.id, p_release_at: toIso(songReleaseAt.value)});
-      if (releaseResult.error) throw releaseResult.error;
+      if (releaseResult.error && !isMissingRpc(releaseResult.error)) throw releaseResult.error;
       const playlistResult = await client.rpc('admin_set_song_playlists', {p_song_id: saved.id, p_playlist_ids: selectedValues(songPlaylistChoices)});
-      if (playlistResult.error) throw playlistResult.error;
+      if (playlistResult.error && !isMissingRpc(playlistResult.error)) throw playlistResult.error;
       songId.value = saved.id;
       songForm.dataset.coverPath = coverPath || '';
       songForm.dataset.audioPath = audioPath || '';
-      setStatus(songStatus, `“${songTitle.value.trim()}” salva. Agora você pode abrir Sincronizar.`);
+      const featureWarning = releaseResult.error || playlistResult.error;
+      setStatus(songStatus, featureWarning
+        ? `“${songTitle.value.trim()}” salva. A organização de playlists e o timer ficam disponíveis depois de aplicar a migração do Supabase.`
+        : `“${songTitle.value.trim()}” salva. Agora você pode abrir Sincronizar.`);
       await refresh();
     } catch (error) { setStatus(songStatus, error.message || 'Não foi possível salvar a música.', true); }
     finally { saveSong.disabled = false; saveSong.textContent = songId.value ? 'Salvar alterações' : 'Salvar música'; }
