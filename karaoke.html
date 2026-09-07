@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Inglês Cantando • Karaokê Oficial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=5.1">
+  <link rel="stylesheet" href="themes.css?v=2">
+  <script src="port-redirect.js"></script>
+</head>
+<body>
+  <div class="mobile-app">
+    <!-- Topo Criativo de Anúncio / Oferta & Navegação -->
+    <header class="app-header">
+      <div class="notch-pill"></div>
+
+      <div class="header-content" id="promoHeader">
+        <!-- Título com Bandeira dos EUA (clicável para voltar se desejar) -->
+        <a href="index.html" class="header-brand" style="text-decoration:none; color:inherit;" title="Voltar para a escolha de músicas">
+          <div class="brand-flag-wrap">
+            <svg class="header-flag" viewBox="0 0 32 22" width="24" height="16">
+              <defs>
+                <clipPath id="header-usa-clip"><rect width="32" height="22" rx="3"/></clipPath>
+              </defs>
+              <g clip-path="url(#header-usa-clip)">
+                <rect width="32" height="22" fill="#ffffff"/>
+                <rect y="0" width="32" height="1.69" fill="#b22234"/>
+                <rect y="3.38" width="32" height="1.69" fill="#b22234"/>
+                <rect y="6.77" width="32" height="1.69" fill="#b22234"/>
+                <rect y="10.15" width="32" height="1.69" fill="#b22234"/>
+                <rect y="13.54" width="32" height="1.69" fill="#b22234"/>
+                <rect y="16.92" width="32" height="1.69" fill="#b22234"/>
+                <rect y="20.31" width="32" height="1.69" fill="#b22234"/>
+                <rect width="13.5" height="11.85" fill="#3c3b6e"/>
+                <g fill="#ffffff" opacity="0.9">
+                  <circle cx="3" cy="2.5" r="0.7"/>
+                  <circle cx="7" cy="2.5" r="0.7"/>
+                  <circle cx="11" cy="2.5" r="0.7"/>
+                  <circle cx="5" cy="5.5" r="0.7"/>
+                  <circle cx="9" cy="5.5" r="0.7"/>
+                  <circle cx="3" cy="8.5" r="0.7"/>
+                  <circle cx="7" cy="8.5" r="0.7"/>
+                  <circle cx="11" cy="8.5" r="0.7"/>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <h1 class="header-main-title">Aprenda Inglês Cantando</h1>
+        </a>
+
+        <!-- Ancoragem de Preço e Oferta de Venda -->
+        <div class="header-offer-badge">
+          <span class="price-old">De R$ 97</span>
+          <span class="price-divider"></span>
+          <span class="price-new">Por apenas <strong>R$ 27,90</strong></span>
+        </div>
+      </div>
+      <a href="index.html" id="songOnlyHeader" class="song-only-header" hidden><h1 id="songHeaderTitle">Música</h1></a>
+    </header>
+
+    <!-- Setinha Superior Aumentada e Posicionada Próxima à Palavra -->
+    <div class="karaoke-pointer" id="karaokePointer">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 18l-7-7h14l-7 7z"/>
+      </svg>
+    </div>
+
+    <!-- Área de Rolagem das Letras -->
+    <main class="lyrics-viewport" id="lyricsViewport">
+      <div class="scroll-pad-top"></div>
+      <div class="lyrics-stream" id="lyricsStream"></div>
+      <div class="scroll-pad-bottom"></div>
+    </main>
+
+    <!-- Player Fixo Inferior Mobile -->
+    <footer class="player-bar">
+      <button type="button" class="settings-trigger" id="openSettings" aria-label="Configurações de temas e visualização" title="Configurações" aria-haspopup="dialog">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m9 3-1 3-3 1-2 3 2 2-1 3 3 2 3-1 2 2 3-1 1-3 3-1 1-3-2-2 1-3-3-2-3 1-2-2Z"/><circle cx="11" cy="11" r="3"/></svg>
+      </button>
+      <!-- Barra de Progresso Fina -->
+      <div class="timeline-hitbox" id="timelineHitbox">
+        <div class="timeline-rail">
+          <div class="timeline-fill" id="timelineFill"></div>
+        </div>
+      </div>
+
+      <div class="time-display">
+        <span id="labelCurrent">0:00</span>
+        <span id="labelRemaining">-3:00</span>
+      </div>
+
+      <!-- Controles Minimalistas -->
+      <div class="player-buttons">
+        <button class="btn-action" id="btnBack" aria-label="Voltar 5 segundos">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.5 8.5V4L4 12l8.5 8v-4.5c6 0 9.5 3 10.5 7.5-.5-6-3-14-10.5-14.5z"/>
+          </svg>
+        </button>
+
+        <button class="btn-play-main" id="btnPlay" aria-label="Tocar ou Pausar">
+          <svg class="svg-play" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l11-6.86a1 1 0 0 0 0-1.68l-11-6.86A1 1 0 0 0 8 5.14z"/>
+          </svg>
+          <svg class="svg-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+
+        <button class="btn-action" id="btnFwd" aria-label="Avançar 5 segundos">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.5 8.5V4L20 12l-8.5 8v-4.5C5.5 15.5 2 18.5 1 23c.5-6 3-14 10.5-14.5z"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <dialog id="appearanceSettings" class="appearance-settings" aria-labelledby="settingsTitle">
+    <div class="settings-heading"><h2 id="settingsTitle">Configurações</h2><button id="closeSettings" type="button" aria-label="Fechar configurações">✕</button></div>
+    <fieldset class="theme-picker"><legend>Tema do karaokê</legend>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-claro"><span class="theme-swatch" style="--swatch-bg:#ffffff;--swatch-highlight:#c1121f">Aa</span><span>USA Claro<small>Branco, preto e vermelho</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-blur"><span class="theme-swatch" style="--swatch-bg:#0b1220;--swatch-highlight:#ffffff">Aa</span><span>USA Blur<small>Branco com cantos escuros</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="original" checked><span class="theme-swatch" style="--swatch-bg:#0c1224;--swatch-highlight:#ef4444">Aa</span><span>Original<small>Azul-marinho e vermelho</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="aurora"><span class="theme-swatch" style="--swatch-bg:#15102b;--swatch-highlight:#e5a1ff">Aa</span><span>Aurora<small>Roxo e lilás</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="oceano"><span class="theme-swatch" style="--swatch-bg:#062532;--swatch-highlight:#67e8f9">Aa</span><span>Oceano<small>Azul-petróleo e ciano</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="floresta"><span class="theme-swatch" style="--swatch-bg:#10251b;--swatch-highlight:#bef264">Aa</span><span>Floresta<small>Verde-escuro e lima</small></span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="ambar"><span class="theme-swatch" style="--swatch-bg:#2d1913;--swatch-highlight:#fcd58d">Aa</span><span>Âmbar<small>Marrom e dourado</small></span></label>
+    </fieldset>
+    <fieldset class="header-picker"><legend>Visualização do topo</legend><label><input type="checkbox" id="showPromo" checked> Mostrar Inglês Cantando e preço</label><p>Desative para mostrar apenas o título da música.</p></fieldset>
+    <p class="settings-note">As escolhas voltam ao padrão ao recarregar a página. Feche este painel para gravar a tela. Atalho: C abre ou fecha as configurações.</p>
+    <button id="doneSettings" type="button" class="settings-done">Pronto</button>
+  </dialog>
+
+  <audio id="audioTrack" preload="auto">
+    <source id="audioSource" src="audio.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="songs-data.js?v=5.0"></script>
+  <script src="sync-store.js"></script>
+  <script src="custom-songs.js"></script>
+  <script src="script.js?v=5.2"></script>
+  <script src="appearance.js?v=1"></script>
+</body>
+</html>

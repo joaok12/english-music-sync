@@ -1,0 +1,335 @@
+/* Estilos da Página Inicial (Hub de Músicas) */
+:root {
+  --bg-deep: #060812;
+  --bg-surface: #0c1122;
+  --bg-card: rgba(18, 26, 48, 0.75);
+  --bg-card-hover: rgba(28, 40, 75, 0.85);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --border-card-hover: rgba(96, 165, 250, 0.4);
+  --accent-blue: #3b82f6;
+  --accent-emerald: #10b981;
+  --accent-gold: #f59e0b;
+  --text-white: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-dim: rgba(255, 255, 255, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-white);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.home-container {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -5%, #18264e 0%, var(--bg-surface) 48%, var(--bg-deep) 100%);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+  position: relative;
+  padding: 30px 20px 40px 20px;
+}
+
+/* Header de Vendas */
+.home-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.notch-pill {
+  width: 38px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  margin: 0 auto 12px auto;
+}
+
+.home-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.brand-flag-wrap {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.home-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+/* Badge de Oferta */
+.header-offer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 5px 14px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 99px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  margin-bottom: 16px;
+}
+
+.price-old {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 1.5px;
+}
+
+.price-divider {
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+.price-new {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #a7f3d0;
+}
+
+.price-new strong {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #34d399;
+  margin-left: 2px;
+}
+
+.home-intro {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* Lista de Cards de Músicas */
+.songs-section-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.song-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card Individual */
+.song-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 18px 16px;
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.song-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.song-card.card-featured {
+  border-color: rgba(96, 165, 250, 0.35);
+  background: linear-gradient(180deg, rgba(29, 78, 216, 0.12) 0%, var(--bg-card) 100%);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.card-icon {
+  font-size: 1.9rem;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.badge-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.badge-new {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.card-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.card-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  padding: 0 4px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.btn-card-sing {
+  flex: 1.3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1px solid #60a5fa;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-card-sing:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transform: scale(1.02);
+}
+
+.btn-card-sync {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 11px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-card-sync:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Rodapé Rápido */
+.home-footer {
+  margin-top: 28px;
+  text-align: center;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-studio-global {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-studio-global:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-card-edit {
+  display: block;
+  text-align: center;
+  color: #93c5fd;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 3px;
+}
+
+.btn-card-edit:hover { text-decoration: underline; }
+.custom-card-warning { display:block; color:#f59e0b; font-size:.68rem; margin-top:5px; }

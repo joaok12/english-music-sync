@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sincronizar Karaokê • Gravador de Precisão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sincronizar.css?v=3.1">
+  <script src="port-redirect.js"></script>
+</head>
+<body>
+  <div class="sync-app">
+    <!-- Topo Fixo -->
+    <header class="sync-header">
+      <div class="top-row">
+        <div class="header-left-tools">
+          <a href="index.html" class="btn-back-hub" title="Voltar para a Página Inicial">
+            ‹ Início
+          </a>
+          <div class="rec-badge" id="recBadge">
+            <span class="rec-dot"></span>
+            <span>GRAVADOR</span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="adicionar.html" class="btn-action btn-download" style="text-decoration:none">＋ Adicionar música</a>
+          <a id="editCurrent" href="editar.html" class="btn-action btn-download" style="text-decoration:none">✎ Editar letra</a>
+          <button class="btn-action btn-reset" id="btnReset" title="Recomeçar do zero">
+            🔄 Recomeçar
+          </button>
+          <button class="btn-action btn-download" id="btnDownload" title="Baixar arquivo JSON">
+            💾 Baixar JSON
+          </button>
+          <button class="btn-action btn-download" id="btnImportJson" title="Importar arquivo JSON já sincronizado">
+            📥 Importar JSON
+          </button>
+          <button class="btn-action btn-apply" id="btnApply" title="Salvar e abrir no karaokê agora mesmo">
+            🚀 Salvar no Karaokê
+          </button>
+        </div>
+      </div>
+
+      <!-- Seletor da Música a Sincronizar -->
+      <div class="song-switcher-bar">
+        <span class="switcher-label">Música:</span>
+        <div class="song-tabs" id="syncSongTabs">
+          <button type="button" class="song-tab-btn" data-song="viagens">
+            ✈️ Viagem (17)
+          </button>
+          <button type="button" class="song-tab-btn" data-song="dia_a_dia">
+            ☀️ Dia a Dia (21)
+          </button>
+          <button type="button" class="song-tab-btn" data-song="anos_80">
+            🎸 Anos 80 (19)
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Instruções -->
+      <div class="instructions-box">
+        <div class="instructions-text">
+          Ao ouvir cada palavra começar, aperte <kbd>ESPAÇO</kbd> ou toque no botão vermelho. O tempo que você ficar na palavra será a duração exata dela!
+        </div>
+        <div class="progress-info">
+          Palavra <strong id="lblWordIndex">0</strong> de <span id="lblWordTotal">0</span>
+          <div id="syncSaveStatus" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Barra do Áudio -->
+      <div class="audio-track-bar" id="audioTrackBar">
+        <div class="track-rail">
+          <div class="track-fill" id="trackFill"></div>
+        </div>
+        <div class="time-meta">
+          <span id="lblTimeCurrent">00:00.0</span>
+          <span id="lblPlaybackSpeed">Velocidade: 1.0x</span>
+          <span id="lblTimeTotal">03:00.8</span>
+        </div>
+      </div>
+
+      <!-- Controles de Gravação -->
+      <div class="toolbar-row">
+        <button class="btn-tool" id="btnPlayPause">
+          <span id="playIcon">▶ Tocar Música</span>
+        </button>
+        <button class="btn-tool btn-tap" id="btnTap">
+          👇 Marcar Palavra (<kbd>Espaço</kbd>)
+        </button>
+        <button class="btn-tool btn-undo" id="btnUndo" title="Voltar para a palavra anterior">
+          ↩ Desfazer (<kbd>Backspace</kbd>)
+        </button>
+        <button class="btn-tool" id="btnSpeedToggle" title="Diminuir velocidade para marcar com calma">
+          🐢 <span id="lblSpeedText">1.0x</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Área com as Palavras em Cascata -->
+    <main class="sync-viewport" id="syncViewport">
+      <div class="view-pad-top"></div>
+      <div class="blocks-container" id="blocksContainer">
+        <!-- Renderizado via sincronizar.js -->
+      </div>
+      <div class="view-pad-bottom"></div>
+    </main>
+
+    <!-- Doca Fixa da Palavra Atual -->
+    <footer class="current-dock" id="currentDock">
+      <div class="dock-left">
+        <span class="dock-tag">PALAVRA ATIVA:</span>
+        <span class="dock-word" id="dockWord">—</span>
+      </div>
+      <div class="dock-right" id="dockContext">—</div>
+    </footer>
+  </div>
+
+  <audio id="audioElement" preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
+  </audio>
+  <input id="syncJsonFile" type="file" accept=".json,application/json" hidden>
+
+  <script src="songs-data.js?v=5.0"></script>
+  <script src="sync-store.js"></script>
+  <script src="custom-songs.js"></script>
+  <script src="sincronizar.js?v=5.2"></script>
+</body>
+</html>

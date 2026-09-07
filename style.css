@@ -1,0 +1,510 @@
+:root {
+  /* Paleta Cinematográfica Premium para Criativos de Anúncio */
+  --bg-deep: #060812;
+  --bg-surface: #0c1224;
+  --bg-card: rgba(255, 255, 255, 0.035);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  
+  --text-pure: #ffffff;
+  --text-gray-dim: rgba(255, 255, 255, 0.35);
+  --text-red-active: #ef4444;
+  
+  --pt-color: #38bdf8;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--bg-deep);
+  color: var(--text-pure);
+  font-family: var(--font-family);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Container Mobile (Formato Ideal para Criativo 9:16 / Reels / Stories) */
+.mobile-app {
+  width: 100%;
+  max-width: 480px;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: radial-gradient(circle at 50% -5%, #18264e 0%, var(--bg-surface) 48%, var(--bg-deep) 100%);
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
+}
+
+/* Topo do Anúncio / Header de Vendas */
+.app-header {
+  flex-shrink: 0;
+  padding: 32px 20px 12px 20px; /* Bem afastado do topo para não ficar topado na borda superior */
+  text-align: center;
+  position: relative;
+  z-index: 20;
+  background: linear-gradient(180deg, rgba(6, 8, 18, 0.98) 0%, rgba(6, 8, 18, 0.75) 85%, rgba(6, 8, 18, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notch-pill {
+  width: 38px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  margin-bottom: 8px;
+}
+
+/* Barra de Navegação Superior do Player */
+.player-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+  gap: 6px;
+}
+
+.nav-back-btn, .nav-sync-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-back-btn:hover, .nav-sync-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.song-pills {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 3px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pill-btn {
+  padding: 4px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 99px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.pill-btn:hover {
+  color: #ffffff;
+}
+
+.pill-btn.active {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.brand-flag-wrap {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.header-flag {
+  border-radius: 3px;
+  display: block;
+}
+
+.header-main-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1;
+  margin: 0;
+}
+
+/* Badge de Oferta de Vendas: De R$ 97 por R$ 27,90 */
+.header-offer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 5px 14px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 99px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.price-old {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 1.5px;
+  letter-spacing: 0.01em;
+}
+
+.price-divider {
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+.price-new {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #a7f3d0;
+  letter-spacing: 0.01em;
+}
+
+.price-new strong {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #34d399;
+  margin-left: 2px;
+}
+
+/* Setinha Superior Flutuante Aumentada que aponta para baixo no meio da palavra */
+.karaoke-pointer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 40;
+  color: var(--text-red-active);
+  filter: drop-shadow(0 2px 6px rgba(239, 68, 68, 0.75));
+  opacity: 0;
+  transform: translate(-50%, -100%);
+  /* Transição fluida e suave */
+  transition: top 0.22s cubic-bezier(0.25, 1, 0.5, 1),
+              left 0.22s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.18s ease;
+}
+
+.karaoke-pointer.pointer-visible {
+  opacity: 1;
+}
+
+/* Área de Rolagem das Letras */
+.lyrics-viewport {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: relative;
+}
+
+.lyrics-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-pad-top {
+  height: 20vh;
+}
+
+.scroll-pad-bottom {
+  height: 38vh;
+}
+
+/* Área das Letras em Canto - Tudo em Maiúsculo e Tamanho Expandido */
+.lyrics-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  text-transform: uppercase; /* Todo o texto de cantar em MAIÚSCULO */
+}
+
+/* Bloco da Frase (Visual Card Leve para Foco de Câmera) */
+.karaoke-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  opacity: 0.35;
+  transform: scale(0.98);
+  transform-origin: left center;
+  transition: opacity 0.7s ease, transform 0.7s ease, background 0.7s ease, border-color 0.7s ease;
+  text-transform: uppercase;
+}
+
+.karaoke-block:hover {
+  opacity: 0.65;
+}
+
+/* Bloco Ativo em Canto */
+.karaoke-block.active-block {
+  opacity: 1;
+  transform: scale(1);
+  background: var(--bg-card);
+  border-color: var(--bg-card-border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Linhas do Karaokê */
+.karaoke-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  line-height: 1.32;
+  text-transform: uppercase;
+}
+
+/* Bandeiras Oficiais em Alta Resolução */
+.line-flag, .flag-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 6px; /* Alinhada com o topo do texto maiúsculo */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  opacity: 0.85;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.flag-icon {
+  display: block;
+  width: 28px;
+  height: 20px;
+  border-radius: 3.5px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.karaoke-line.line-singing .line-flag,
+.karaoke-line.line-singing .flag-container {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.line-text {
+  flex: 1;
+  text-transform: uppercase;
+}
+
+/* Linha de Português - Ajustado para diminuir só um pouco */
+.line-pt-wrapper .line-text,
+.line-pt-text,
+.line-pt {
+  font-size: clamp(1.18rem, 3.9vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.34;
+}
+
+/* Linhas em Inglês (Repetições 1 e 2) - Ajustado para diminuir só um pouco */
+.line-en-wrapper .line-text,
+.line-en-text,
+.line-en {
+  font-size: clamp(1.55rem, 5.2vw, 1.95rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.28;
+}
+
+/* ============================================================
+   ESTILOS DE CADA PALAVRA:
+   - Inativa / Futura: Cinza translúcido
+   - Cantada: Branco puro sólido
+   - Cantando no momento: VERMELHO VIBRANTE DE ALTO IMPACTO & AUMENTO DE TAMANHO
+   ============================================================ */
+.word, .k-word {
+  display: inline-block;
+  margin-right: 0.26em;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.12s ease, transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), text-shadow 0.16s ease;
+  position: relative;
+  transform-origin: center bottom;
+  text-transform: uppercase;
+}
+
+/* Palavra já cantada: Branco Puro Sólido */
+.word.word-sung, .k-word.word-sung, .word-sung {
+  color: #ffffff !important;
+  transform: scale(1);
+}
+
+/* Palavra sendo cantada agora: VERMELHO VIBRANTE + AUMENTA O TAMANHO */
+.word.word-current, .k-word.word-current, .word-current {
+  color: #ef4444 !important;
+  font-weight: 900 !important;
+  transform: scale(1.18) !important;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.75);
+  display: inline-block !important;
+  z-index: 10;
+}
+
+/* Player Fixo Inferior */
+.player-bar {
+  flex-shrink: 0;
+  padding: 12px 24px 28px 24px;
+  background: linear-gradient(0deg, rgba(6, 8, 18, 0.98) 0%, rgba(6, 8, 18, 0.88) 75%, rgba(6, 8, 18, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  z-index: 20;
+}
+
+
+/* Barra de Progresso Fina */
+.timeline-hitbox {
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.timeline-rail {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.timeline-fill {
+  width: 0%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 99px;
+  transition: width 0.08s linear;
+}
+
+.timeline-hitbox:hover .timeline-fill {
+  background: var(--text-red-active);
+}
+
+/* Tempos */
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: -4px;
+}
+
+/* Botões do Player */
+.player-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 4px;
+}
+
+.btn-action {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: color 0.2s, transform 0.15s;
+}
+
+.btn-action:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.btn-action:active {
+  transform: scale(0.92);
+}
+
+/* Botão Play Principal Circular */
+.btn-play-main {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background 0.2s;
+}
+
+.btn-play-main:hover {
+  transform: scale(1.06);
+  background: #f8fafc;
+}
+
+.btn-play-main:active {
+  transform: scale(0.95);
+}
+
+/* Telas Pequenas */
+@media (max-width: 380px) {
+  .lyrics-viewport {
+    padding: 0 14px;
+  }
+  .line-pt {
+    font-size: 1.2rem;
+  }
+  .line-en {
+    font-size: 1.45rem;
+  }
+  .lyrics-stream {
+    gap: 24px;
+  }
+}

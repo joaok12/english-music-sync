@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar Música • Inglês Cantando</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css"><link rel="stylesheet" href="adicionar.css?v=2">
+  <script src="port-redirect.js"></script>
+</head>
+<body><div class="home-container">
+  <header class="home-header"><a href="index.html" class="btn-studio-global">‹ Voltar ao início</a><h1 class="home-title">✎ Editar música</h1><p class="home-intro">Corrija a letra e salve novamente. O áudio atual será mantido se você não escolher outro.</p></header>
+  <main><form id="addSongForm" class="song-card">
+    <label for="songName">Nome da música</label><input id="songName" required maxlength="120">
+    <label for="songAudio">Trocar arquivo de áudio <span class="card-subtitle">(opcional)</span></label><input id="songAudio" type="file" accept="audio/*">
+    <p class="card-subtitle" id="audioHelp">Carregando a música…</p>
+    <label for="songLyrics">Corrija a letra</label>
+    <p class="card-subtitle" id="pasteHelp">Cada bloco separado por uma linha em branco vira uma parte. Dentro dele, a divisão tenta reconhecer português e inglês; uma linha sozinha vira inglês. Confira, altere o idioma e junte partes na prévia.</p>
+    <textarea id="songLyrics" rows="14" required aria-describedby="pasteHelp"></textarea>
+    <p id="parseStatus" role="status" aria-live="polite">Carregando letra…</p>
+    <details id="previewDetails" open><summary>Conferir e editar divisão em partes</summary><div id="lyricsPreview"></div></details>
+    <button type="submit" class="btn-card-sing" id="createSong" disabled>💾 Salvar alterações</button>
+    <p id="saveError" role="alert"></p>
+    <p class="card-subtitle">A sincronização atual será substituída pela letra corrigida. Se a quantidade ou ordem das palavras mudar, sincronize a música novamente.</p>
+  </form></main>
+</div><script src="songs-data.js"></script><script src="sync-store.js"></script><script src="song-import.js?v=2"></script><script src="custom-songs.js"></script><script src="editar.js?v=2"></script></body>
+</html>

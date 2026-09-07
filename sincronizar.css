@@ -1,0 +1,478 @@
+:root {
+  --bg-dark: #080c18;
+  --panel-bg: #0f172a;
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --text-white: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.35);
+  --pt-color: #38bdf8;
+  --red-accent: #ef4444;
+  --yellow-accent: #facc15;
+  --green-accent: #22c55e;
+  --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-dark);
+  color: var(--text-white);
+  font-family: var(--font-main);
+  overflow: hidden;
+  user-select: none;
+}
+
+.sync-app {
+  width: 100%;
+  max-width: 680px;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-dark);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
+  position: relative;
+}
+
+/* Topo Fixo */
+.sync-header {
+  flex-shrink: 0;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 14px 18px 12px 18px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.header-left-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-back-hub {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-back-hub:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.rec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--red-accent);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red-accent);
+  box-shadow: 0 0 8px var(--red-accent);
+  animation: pulse-dot 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Barra Seletora de Música */
+.song-switcher-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.switcher-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.song-tabs {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  gap: 6px;
+  flex: 1;
+}
+
+.song-tab-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.song-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.song-tab-btn.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border-color: #60a5fa;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-reset {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.btn-download {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.btn-apply {
+  background: var(--green-accent);
+  color: #000000;
+  font-weight: 800;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* Instruções */
+.instructions-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  gap: 8px;
+}
+
+.instructions-text {
+  color: #e2e8f0;
+  line-height: 1.35;
+}
+
+kbd {
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  color: var(--yellow-accent);
+  font-size: 0.78rem;
+}
+
+.progress-info {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.progress-info strong {
+  color: var(--yellow-accent);
+}
+
+/* Barra de Progresso */
+.audio-track-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-rail {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.track-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #ef4444);
+  border-radius: 99px;
+  transition: width 0.08s linear;
+}
+
+.time-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Toolbar */
+.toolbar-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-tool {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.btn-tool:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.btn-tap {
+  flex: 1;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  justify-content: center;
+}
+
+.btn-tap:hover {
+  background: #f87171;
+}
+
+/* Viewport */
+.sync-viewport {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.sync-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.view-pad-top {
+  height: 16px;
+}
+
+.view-pad-bottom {
+  height: 110px;
+}
+
+.blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Bloco */
+.sync-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sync-block.block-focused {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.block-header {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+/* Linha */
+.sync-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+.sync-line.line-pt {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pt-color);
+}
+
+.sync-line.line-en {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* Palavras */
+.sync-word {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  opacity: 0.35;
+}
+
+.sync-word:hover {
+  opacity: 0.7;
+}
+
+.sync-word.recorded {
+  opacity: 1;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sync-word.pt-word.recorded {
+  color: #bae6fd;
+  background: rgba(56, 189, 248, 0.12);
+}
+
+/* Palavra atual sendo cantada */
+.sync-word.active-target {
+  opacity: 1;
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.35);
+  border: 1px solid var(--red-accent);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+  transform: scale(1.08);
+}
+
+.word-duration-badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--yellow-accent);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Doca Fixa */
+.current-dock {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  background: rgba(15, 23, 42, 0.97);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--red-accent);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  z-index: 40;
+}
+
+.dock-left {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dock-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dock-word {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--yellow-accent);
+}
+
+.dock-right {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
+}

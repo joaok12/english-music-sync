@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gravador de Sincronia Karaokê • Estúdio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sync-studio.css">
+</head>
+<body>
+  <div class="studio-app">
+    <!-- Topo Fixo com Painel de Controle -->
+    <header class="studio-header">
+      <div class="header-top">
+        <div class="badge-rec" id="badgeRec">
+          <span class="dot-rec"></span>
+          <span id="badgeRecText">MODO GRAVAÇÃO</span>
+        </div>
+        <div class="header-actions">
+          <button class="btn-tool" id="btnResetSync" title="Zerar todas as marcações e começar do zero">
+            🔄 Recomeçar
+          </button>
+          <button class="btn-tool btn-save-json" id="btnExportJson" title="Baixar arquivo JSON com as marcações">
+            💾 Baixar JSON
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Instruções & Tecla de Marcação -->
+      <div class="key-banner" id="keyBanner">
+        <div class="key-prompt">
+          Aperte <kbd>ESPAÇO</kbd> ou <kbd>→</kbd> no ritmo exato de cada palavra!
+        </div>
+        <div class="stats-counter" id="statsCounter">
+          Palavra <strong id="currentWordNum">0</strong> de <span id="totalWordsNum">0</strong>
+        </div>
+      </div>
+
+      <!-- Barra de Progresso do Áudio -->
+      <div class="audio-progress-bar" id="audioProgressBar">
+        <div class="audio-progress-rail">
+          <div class="audio-progress-fill" id="audioProgressFill"></div>
+        </div>
+        <div class="audio-time-row">
+          <span id="lblCurTime">00:00.0</span>
+          <span id="lblSpeed">1.0x</span>
+          <span id="lblDuration">03:00.8</span>
+        </div>
+      </div>
+
+      <!-- Player Controls -->
+      <div class="controls-toolbar">
+        <button class="btn-ctrl" id="btnPlayPause">
+          <span id="btnPlayIcon">▶ Tocar Música</span>
+        </button>
+        <button class="btn-ctrl btn-tap-word" id="btnTapWord">
+          👇 Marcar Palavra Agora (<kbd>Espaço</kbd>)
+        </button>
+        <button class="btn-ctrl btn-undo" id="btnUndo" title="Desfazer a última palavra marcada">
+          ↩ Desfazer (<kbd>Ctrl+Z</kbd>)
+        </button>
+        <button class="btn-ctrl btn-speed" id="btnSlowSpeed" title="Diminuir velocidade para marcar com mais calma">
+          🐢 <span id="lblSpeedBtn">Vel: 1.0x</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Visualizador Central de Palavras -->
+    <main class="studio-viewport" id="studioViewport">
+      <div class="viewport-pad-top"></div>
+      
+      <div class="stream-container" id="streamContainer">
+        <!-- Renderizado dinamicamente -->
+      </div>
+
+      <div class="viewport-pad-bottom"></div>
+    </main>
+
+    <!-- Painel Flutuante com a Próxima Palavra a Marcar -->
+    <div class="next-word-dock" id="nextWordDock">
+      <span class="dock-label">PRÓXIMA PALAVRA:</span>
+      <span class="dock-target" id="dockTargetText">—</span>
+      <span class="dock-context" id="dockContextText">—</span>
+    </div>
+  </div>
+
+  <audio id="syncAudio" preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="lyrics-data.js"></script>
+  <script src="sync-studio.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Inglês Cantando • Escolha sua Música</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
+  <script src="port-redirect.js"></script>
+  <script>
+    // Se houver parâmetro de música na URL, redireciona direto ao player
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('song')) {
+      window.location.replace('karaoke.html' + window.location.search);
+    }
+  </script>
+</head>
+<body>
+  <div class="home-container">
+    <!-- Topo Criativo de Anúncio / Oferta -->
+    <header class="home-header">
+      <div class="notch-pill"></div>
+
+      <div class="home-brand">
+        <div class="brand-flag-wrap">
+          <svg class="header-flag" viewBox="0 0 32 22" width="24" height="16">
+            <defs>
+              <clipPath id="header-usa-clip"><rect width="32" height="22" rx="3"/></clipPath>
+            </defs>
+            <g clip-path="url(#header-usa-clip)">
+              <rect width="32" height="22" fill="#ffffff"/>
+              <rect y="0" width="32" height="1.69" fill="#b22234"/>
+              <rect y="3.38" width="32" height="1.69" fill="#b22234"/>
+              <rect y="6.77" width="32" height="1.69" fill="#b22234"/>
+              <rect y="10.15" width="32" height="1.69" fill="#b22234"/>
+              <rect y="13.54" width="32" height="1.69" fill="#b22234"/>
+              <rect y="16.92" width="32" height="1.69" fill="#b22234"/>
+              <rect y="20.31" width="32" height="1.69" fill="#b22234"/>
+              <rect width="13.5" height="11.85" fill="#3c3b6e"/>
+              <g fill="#ffffff" opacity="0.9">
+                <circle cx="3" cy="2.5" r="0.7"/>
+                <circle cx="7" cy="2.5" r="0.7"/>
+                <circle cx="11" cy="2.5" r="0.7"/>
+                <circle cx="5" cy="5.5" r="0.7"/>
+                <circle cx="9" cy="5.5" r="0.7"/>
+                <circle cx="3" cy="8.5" r="0.7"/>
+                <circle cx="7" cy="8.5" r="0.7"/>
+                <circle cx="11" cy="8.5" r="0.7"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <h1 class="home-title">Aprenda Inglês Cantando</h1>
+      </div>
+
+      <!-- Ancoragem de Preço e Oferta de Venda -->
+      <div class="header-offer-badge">
+        <span class="price-old">De R$ 97</span>
+        <span class="price-divider"></span>
+        <span class="price-new">Por apenas <strong>R$ 27,90</strong></span>
+      </div>
+
+      <p class="home-intro">
+        Escolha uma música abaixo para treinar no karaokê com sincronização palavra por palavra ou sincronizar no seu ritmo:
+      </p>
+    </header>
+
+    <!-- Lista de Músicas -->
+    <main>
+      <div class="songs-section-title">Músicas Disponíveis</div>
+      <a href="adicionar.html" class="btn-card-sing" style="margin-bottom:16px">＋ Adicionar minha música</a>
+
+      <div class="song-cards-list">
+        <!-- Música 3: Inglês Anos 80 (Nova) -->
+        <article class="song-card card-featured">
+          <div class="card-top">
+            <div class="card-icon">🎸</div>
+            <div class="card-info">
+              <div class="card-badges-row">
+                <span class="badge-tag badge-new">✨ Nova Música</span>
+                <span class="badge-tag">Anos 80 & Ação</span>
+              </div>
+              <h2 class="card-title">Inglês Anos 80</h2>
+              <p class="card-subtitle">Frases Curtas e Essenciais de Ação</p>
+            </div>
+          </div>
+
+          <div class="card-meta">
+            <span>📝 19 Frases</span>
+            <span>⏱️ 1:57 min</span>
+            <span>🎯 Pronta p/ Sincronizar</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="karaoke.html?song=anos_80" class="btn-card-sing">
+              🎤 Cantar Karaokê
+            </a>
+            <a href="sincronizar.html?song=anos_80" class="btn-card-sync">
+              ⚙️ Sincronizar
+            </a>
+            <a href="editar.html?song=anos_80" class="btn-card-edit">✎ Editar letra</a>
+          </div>
+        </article>
+
+        <!-- Música 2: Frases do Dia a Dia -->
+        <article class="song-card">
+          <div class="card-top">
+            <div class="card-icon">☀️</div>
+            <div class="card-info">
+              <div class="card-badges-row">
+                <span class="badge-tag badge-new">✨ Nova Música</span>
+                <span class="badge-tag">Iniciante</span>
+              </div>
+              <h2 class="card-title">Frases do Dia a Dia</h2>
+              <p class="card-subtitle">Cumprimentos, Vontades e Expressões Básicas</p>
+            </div>
+          </div>
+
+          <div class="card-meta">
+            <span>📝 21 Frases</span>
+            <span>⏱️ 2:13 min</span>
+            <span>🎯 Pronta p/ Sincronizar</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="karaoke.html?song=dia_a_dia" class="btn-card-sing">
+              🎤 Cantar Karaokê
+            </a>
+            <a href="sincronizar.html?song=dia_a_dia" class="btn-card-sync">
+              ⚙️ Sincronizar
+            </a>
+            <a href="editar.html?song=dia_a_dia" class="btn-card-edit">✎ Editar letra</a>
+          </div>
+        </article>
+
+        <!-- Música 1: Frases de Viagem -->
+        <article class="song-card">
+          <div class="card-top">
+            <div class="card-icon">✈️</div>
+            <div class="card-info">
+              <div class="card-badges-row">
+                <span class="badge-tag">Turismo</span>
+                <span class="badge-tag">Aeroporto</span>
+              </div>
+              <h2 class="card-title">Frases de Viagem</h2>
+              <p class="card-subtitle">Alfândega, Hotel, Táxi e Restaurante</p>
+            </div>
+          </div>
+
+          <div class="card-meta">
+            <span>📝 17 Frases</span>
+            <span>⏱️ 3:00 min</span>
+            <span>✅ Sincronizado</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="karaoke.html?song=viagens" class="btn-card-sing">
+              🎤 Cantar Karaokê
+            </a>
+            <a href="sincronizar.html?song=viagens" class="btn-card-sync">
+              ⚙️ Sincronizar
+            </a>
+            <a href="editar.html?song=viagens" class="btn-card-edit">✎ Editar letra</a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="home-footer">
+      <a href="sincronizar.html" class="btn-studio-global">
+        🎛️ Abrir Estúdio Geral de Sincronização ➔
+      </a>
+    </footer>
+  </div>
+
+  <script src="songs-data.js"></script>
+  <script src="custom-songs.js"></script>
+</body>
+</html>
