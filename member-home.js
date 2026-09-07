@@ -16,6 +16,7 @@
   const heroFallback = document.getElementById('memberHeroFallback');
   const playlist = document.getElementById('memberPlaylist');
   const playlistCount = document.getElementById('playlistCount');
+  const playlistCollectionsRail = document.getElementById('playlistCollectionsRail');
   const catalogRail = document.getElementById('memberCatalogRail');
   const catalogSection = catalogRail.closest('.catalog-section');
   const offersSection = document.getElementById('memberOffersSection');
@@ -23,6 +24,7 @@
   const greeting = document.getElementById('memberGreeting');
   const logout = document.getElementById('memberLogout');
   let viewRequest = 0;
+  let releaseTimer = null;
 
   const fallbackCatalog = [
     {id: 'viagens', title: 'Frases de Viagem', subtitle: 'Aeroporto, hotel, táxi e restaurante', icon: '✈️', cover: 'assets/covers/viagens.webp'},
@@ -34,32 +36,46 @@
     {id: 'custom_fcf0288e-073e-4af4-a05d-6f7fa396f9fa', title: 'Let’s Start', subtitle: 'Comece, pratique e avance', icon: '🚀', cover: 'assets/covers/lets-start.webp'}
   ];
 
-  function initPlaylistCountdown() {
-    const countdowns = [...document.querySelectorAll('[data-release-countdown]')];
-    if (!countdowns.length) return;
-    const releaseAt = new Date('2026-09-11T00:00:00-03:00').getTime();
-    let timer = null;
-    const update = () => {
-      const remaining = releaseAt - Date.now();
-      if (remaining <= 0) {
-        countdowns.forEach(element => { element.textContent = 'Disponível'; });
-        if (timer) clearInterval(timer);
-        return;
-      }
-      const totalSeconds = Math.floor(remaining / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      const value = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
-      countdowns.forEach(element => { element.textContent = value; });
-    };
-    update();
-    timer = setInterval(update, 1000);
-    window.addEventListener('pagehide', () => clearInterval(timer), {once: true});
+  const fallbackPlaylists = [
+    {playlist_id: 'fallback-ingles-cantando', title: 'Inglês Cantando', slug: 'ingles-cantando', subtitle: 'Pratique cantando, uma música por vez.', cover_path: '', song_count: 20, release_at: null, is_available: true},
+    {playlist_id: 'fallback-50-girias', title: '50 Gírias', slug: '50-girias', subtitle: 'Expressões naturais para conversar melhor.', cover_path: '', song_count: 1, release_at: null, is_available: true}
+  ];
+
+  function formatCountdown(milliseconds) {
+    const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
   }
 
-  initPlaylistCountdown();
+  function updateReleaseCountdowns() {
+    const countdowns = [...document.querySelectorAll('[data-release-countdown]')];
+    let hasActiveCountdown = false;
+    countdowns.forEach(element => {
+      const releaseAt = new Date(element.dataset.releaseAt || '').getTime();
+      if (!Number.isFinite(releaseAt)) return;
+      const remaining = releaseAt - Date.now();
+      if (remaining <= 0) {
+        element.textContent = 'Disponível';
+        element.closest('.playlist-tile, .playlist-release')?.classList.remove('is-locked');
+      } else {
+        hasActiveCountdown = true;
+        element.textContent = formatCountdown(remaining);
+      }
+    });
+    if (!hasActiveCountdown && releaseTimer) {
+      clearInterval(releaseTimer);
+      releaseTimer = null;
+    }
+  }
+
+  function startReleaseCountdowns() {
+    if (releaseTimer) clearInterval(releaseTimer);
+    updateReleaseCountdowns();
+    if (document.querySelector('[data-release-countdown][data-release-at]')) releaseTimer = setInterval(updateReleaseCountdowns, 1000);
+  }
 
   if (!config.anonKey || config.anonKey.startsWith('COLE_AQUI') || !window.supabase?.createClient) {
     loginStatus.className = 'member-status error';
@@ -110,6 +126,38 @@
       if (data?.signedUrl) return data.signedUrl;
     }
     return fallbackFor(song)?.cover || '';
+  }
+
+  function fallbackPlaylistCover(playlistItem) {
+    return String(playlistItem?.slug || '').toLowerCase() === '50-girias'
+      ? 'assets/covers/50-girias.webp'
+      : 'assets/branding/logo.png';
+  }
+
+  async function playlistCoverUrl(playlistItem) {
+    if (playlistItem.cover_path) {
+      const {data} = await client.storage.from('song-media').createSignedUrl(playlistItem.cover_path, 3600);
+      if (data?.signedUrl) return data.signedUrl;
+    }
+    return fallbackPlaylistCover(playlistItem);
+  }
+
+  async function renderPlaylistCollections(rows) {
+    playlistCollectionsRail.replaceChildren();
+    const source = Array.isArray(rows) && rows.length ? rows : fallbackPlaylists;
+    for (const playlistItem of source) {
+      const cover = await playlistCoverUrl(playlistItem);
+      const future = playlistItem.is_available === false || (playlistItem.release_at && new Date(playlistItem.release_at).getTime() > Date.now());
+      const count = Number(playlistItem.song_count || 0);
+      const release = future && playlistItem.release_at
+        ? `<div class="playlist-release is-locked"><span>Próximas faixas liberam em</span><strong data-release-countdown data-release-at="${escapeHtml(playlistItem.release_at)}">--d --h --m --s</strong><small>${escapeHtml(new Intl.DateTimeFormat('pt-BR', {day: 'numeric', month: 'long'}).format(new Date(playlistItem.release_at)))}</small></div>`
+        : `<div class="playlist-release"><span>${count || 'Sua'} ${count === 1 ? 'música' : 'músicas'} na coleção</span><strong class="playlist-available">Disponível</strong></div>`;
+      const card = document.createElement('article');
+      card.className = `playlist-tile${future ? ' is-coming-soon' : ''}`;
+      card.innerHTML = `<div class="playlist-tile-cover"><img src="${escapeHtml(cover)}" alt="Capa da playlist ${escapeHtml(playlistItem.title)}" loading="lazy">${future ? '<span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span>' : '<span class="playlist-tile-badge available">PLAYLIST</span>'}</div><div class="playlist-tile-info"><h3>${escapeHtml(playlistItem.title)}</h3><p>${escapeHtml(playlistItem.subtitle || 'Escolha uma música e comece a praticar.')}</p>${release}</div>`;
+      playlistCollectionsRail.append(card);
+    }
+    startReleaseCountdowns();
   }
 
   function emptyRail(container, message) {
@@ -165,13 +213,17 @@
     }
     for (const [index, song] of unique.entries()) {
       const cover = await coverUrl(song);
+      const available = song.is_available !== false;
+      const songRelease = song.release_at && new Date(song.release_at).getTime() > Date.now();
       const row = document.createElement('article');
-      row.className = 'playlist-row';
-      row.innerHTML = `<button class="playlist-select" type="button" aria-label="Selecionar ${escapeHtml(song.title)}"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</small></span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></button><a class="playlist-action" href="${songHref(song)}">Tocar</a>`;
-      row.querySelector('.playlist-select').addEventListener('click', () => selectFeaturedSong(song, cover, row));
+      row.className = `playlist-row${available ? '' : ' is-locked'}`;
+      const releaseMeta = songRelease ? `<span class="playlist-song-release"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(song.release_at)}">--d --h --m --s</strong></span>` : '';
+      row.innerHTML = `<button class="playlist-select" type="button" aria-label="Selecionar ${escapeHtml(song.title)}"${available ? '' : ' disabled'}><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || song.playlist_title || song.product_name || 'Sua música')}</small>${releaseMeta}</span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></button>${available ? `<a class="playlist-action" href="${songHref(song)}">Tocar</a>` : '<span class="playlist-action is-locked" aria-label="Música ainda não liberada">Em breve</span>'}`;
+      if (available) row.querySelector('.playlist-select').addEventListener('click', () => selectFeaturedSong(song, cover, row));
       playlist.append(row);
-      if (index === 0) selectFeaturedSong(song, cover, row);
+      if (available && !document.querySelector('.playlist-row.is-selected')) selectFeaturedSong(song, cover, row);
     }
+    startReleaseCountdowns();
   }
 
   async function renderCatalog(rows, ownedIds = new Set()) {
@@ -182,18 +234,23 @@
     if (!catalog.length) return;
     for (const song of catalog) {
       const cover = await coverUrl(song);
-      const accessible = Boolean(song.is_accessible);
+      const available = song.is_available !== false;
+      const accessible = Boolean(song.is_accessible) && available;
+      const comingSoon = !available && song.release_at;
       const checkout = typeof song.checkout_url === 'string' ? song.checkout_url.trim() : '';
       const action = accessible
         ? `<a class="catalog-play" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">Tocar agora</a>`
+        : comingSoon
+          ? `<p class="catalog-muted">Libera em <strong data-release-countdown data-release-at="${escapeHtml(song.release_at)}">--d --h --m --s</strong></p>`
         : checkout
           ? `<a class="catalog-buy" href="${escapeHtml(checkout)}" target="_blank" rel="noopener">Conhecer acesso ↗</a>`
           : '<p class="catalog-muted">Disponível em breve</p>';
       const card = document.createElement('article');
       card.className = 'catalog-card';
-      card.innerHTML = `<div class="catalog-cover">${cover ? `<img src="${escapeHtml(cover)}" alt="Capa de ${escapeHtml(song.title)}" loading="lazy">` : `<span class="catalog-fallback">${escapeHtml(song.icon || '🎵')}</span>`}${accessible ? '<span class="catalog-badge unlocked">Liberada</span>' : '<span class="catalog-badge locked">Bloqueada</span><span class="catalog-lock">🔒</span>'}</div><h3 class="catalog-card-title">${escapeHtml(song.title)}</h3><p class="catalog-card-subtitle">${escapeHtml(song.subtitle || song.product_name || 'Nova aula')}</p>${action}`;
+      card.innerHTML = `<div class="catalog-cover">${cover ? `<img src="${escapeHtml(cover)}" alt="Capa de ${escapeHtml(song.title)}" loading="lazy">` : `<span class="catalog-fallback">${escapeHtml(song.icon || '🎵')}</span>`}${accessible ? '<span class="catalog-badge unlocked">Liberada</span>' : comingSoon ? '<span class="catalog-badge locked">EM BREVE</span><span class="catalog-lock">🔒</span>' : '<span class="catalog-badge locked">Bloqueada</span><span class="catalog-lock">🔒</span>'}</div><h3 class="catalog-card-title">${escapeHtml(song.title)}</h3><p class="catalog-card-subtitle">${escapeHtml(song.subtitle || song.product_name || 'Nova aula')}</p>${action}`;
       catalogRail.append(card);
     }
+    startReleaseCountdowns();
   }
 
   function renderOffers(offers) {
@@ -220,20 +277,22 @@
     greeting.textContent = session.user?.email || '';
     setStatus(libraryStatus, 'Carregando sua biblioteca…');
     try {
-      const [libraryResult, catalogResult, offersResult] = await Promise.all([
+      const [libraryResult, catalogResult, offersResult, playlistsResult] = await Promise.all([
         client.rpc('get_my_library'),
         client.rpc('get_member_catalog'),
-        client.rpc('get_member_offers')
+        client.rpc('get_member_offers'),
+        client.rpc('get_member_playlists')
       ]);
       if (libraryResult.error) throw libraryResult.error;
       if (catalogResult.error) throw catalogResult.error;
       if (offersResult.error) throw offersResult.error;
       if (requestId !== viewRequest) return;
       const librarySongs = uniqueSongs(libraryResult.data || []);
+      await renderPlaylistCollections(playlistsResult.error ? fallbackPlaylists : (playlistsResult.data || []));
       await renderLibrary(librarySongs);
       await renderCatalog(catalogResult.data || [], new Set(librarySongs.map(song => song.song_id)));
       renderOffers(offersResult.data || []);
-      setStatus(libraryStatus, `${librarySongs.length} música(s) liberada(s)`);
+      setStatus(libraryStatus, `${librarySongs.length} música(s) na sua playlist`);
     } catch (error) {
       setStatus(libraryStatus, error.message || 'Não foi possível carregar sua biblioteca.', true);
     }

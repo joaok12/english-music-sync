@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="member-home.css?v=6">
+  <link rel="stylesheet" href="member-home.css?v=8">
   <script src="port-redirect.js"></script>
 </head>
 <body class="member-home">
@@ -61,16 +61,7 @@
           <div class="playlist-collections-heading">
             <div><p class="section-kicker">PLAYLISTS</p><h2 id="playlistCollectionsTitle">Escolha uma playlist</h2></div>
           </div>
-          <div class="playlist-collections-rail">
-            <article class="playlist-tile is-coming-soon">
-              <div class="playlist-tile-cover"><img src="assets/branding/logo.png" alt="Capa da playlist Inglês Cantando" loading="lazy"><span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span></div>
-              <div class="playlist-tile-info"><h3>Inglês Cantando</h3><p>20 músicas para praticar cantando.</p><div class="playlist-release"><span>Libera em</span><strong data-release-countdown>--d --h --m --s</strong><small>11 de setembro</small></div></div>
-            </article>
-            <article class="playlist-tile is-coming-soon">
-              <div class="playlist-tile-cover"><img src="assets/covers/50-girias.webp" alt="Capa da playlist 50 Gírias" loading="lazy"><span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span></div>
-              <div class="playlist-tile-info"><h3>50 Gírias</h3><p>As expressões que só quem mora fora usa.</p><div class="playlist-release"><span>Libera em</span><strong data-release-countdown>--d --h --m --s</strong><small>11 de setembro</small></div></div>
-            </article>
-          </div>
+          <div id="playlistCollectionsRail" class="playlist-collections-rail"></div>
         </section>
 
         <section id="playlist" class="member-content-grid" aria-label="Biblioteca e playlist">
@@ -84,7 +75,7 @@
           <aside class="playlist-aside" aria-label="Resumo da biblioteca">
             <span class="aside-label">MINHA BIBLIOTECA</span>
             <strong id="playlistCount">0</strong>
-            <span class="aside-caption">músicas liberadas</span>
+            <span class="aside-caption">músicas na playlist</span>
             <div class="aside-rule"></div>
             <p>Escolha uma faixa e pratique no seu ritmo.</p>
           </aside>
@@ -97,6 +88,6 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
-  <script src="member-home.js?v=6"></script>
+  <script src="member-home.js?v=8"></script>
 </body>
 </html>

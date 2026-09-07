@@ -3,82 +3,74 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Catálogo • Inglês Cantando</title>
+  <title>Painel administrativo • Inglês Cantando</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="member.css">
+  <link rel="stylesheet" href="admin.css?v=1">
 </head>
-<body class="member-page">
-  <main class="member-shell admin-shell">
-    <a class="member-back" href="index.html">← Voltar para a página inicial</a>
-
-    <section id="adminLoginCard" class="member-card" aria-labelledby="adminLoginTitle">
-      <div class="member-logo">🛠️</div>
-      <p class="member-eyebrow">Catálogo privado</p>
-      <h1 id="adminLoginTitle">Entrar no painel</h1>
-      <p class="member-lead">Entre com o e-mail e a senha da única conta autorizada a administrar o catálogo.</p>
+<body class="admin-page">
+  <main class="admin-shell">
+    <section id="adminLoginCard" class="admin-login-card" aria-labelledby="adminLoginTitle">
+      <a class="admin-login-brand" href="index.html" aria-label="Voltar para Inglês Cantando"><img src="assets/branding/logo.png" alt="Inglês Cantando"></a>
+      <p class="admin-eyebrow">ÁREA RESTRITA</p>
+      <h1 id="adminLoginTitle">Painel administrativo</h1>
+      <p class="admin-login-lead">Organize músicas, playlists, capas e liberações em um só lugar.</p>
       <form id="adminLoginForm" novalidate>
-        <label for="adminEmail">E-mail administrativo</label>
+        <label for="adminEmail">E-mail</label>
         <input id="adminEmail" type="email" autocomplete="username" placeholder="voce@email.com" required>
-        <label for="adminPassword">Senha do painel</label>
+        <label for="adminPassword">Senha</label>
         <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" minlength="6" required>
-        <button class="member-primary" type="submit">Entrar no painel</button>
+        <button class="admin-primary-button admin-login-button" type="submit"><span>Entrar no painel</span><b>→</b></button>
       </form>
-      <p id="adminLoginStatus" class="member-status" role="status" aria-live="polite"></p>
+      <p id="adminLoginStatus" class="admin-status" role="status" aria-live="polite"></p>
     </section>
 
-    <section id="adminApp" hidden>
-      <header class="admin-header">
-        <div><p class="member-eyebrow">Inglês Cantando</p><h1>Catálogo protegido</h1><p class="member-lead">Cadastre a capa, o áudio e a letra. Depois abra o estúdio para marcar os tempos.</p></div>
-        <button id="adminLogout" class="member-secondary" type="button">Sair</button>
-      </header>
-      <p id="adminStatus" class="member-status" role="status" aria-live="polite"></p>
+    <section id="adminApp" class="admin-app" hidden>
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-brand"><a href="index.html" aria-label="Inglês Cantando, página inicial"><img src="assets/branding/logo.png" alt="Inglês Cantando"></a><div><span>INGLÊS</span><strong>CANTANDO</strong></div></div>
+        <div class="admin-sidebar-title"><span>PAINEL</span><strong>Conteúdo</strong></div>
+        <nav id="adminNav" class="admin-nav" aria-label="Seções administrativas">
+          <button class="is-active" type="button" data-admin-view="dashboard"><span class="nav-icon">⌂</span><span>Visão geral</span></button>
+          <button type="button" data-admin-view="songs"><span class="nav-icon">♫</span><span>Músicas</span><em id="navSongCount">0</em></button>
+          <button type="button" data-admin-view="playlists"><span class="nav-icon">▦</span><span>Playlists</span><em id="navPlaylistCount">0</em></button>
+          <button type="button" data-admin-view="products"><span class="nav-icon">◈</span><span>Produtos</span><em id="navProductCount">0</em></button>
+        </nav>
+        <div class="admin-sidebar-footer"><span class="admin-role"><i></i> Administrador</span><button id="adminLogout" class="admin-logout" type="button"><span>↪</span> Sair</button></div>
+      </aside>
 
-      <div class="admin-layout">
-        <section class="member-card admin-panel" aria-labelledby="songFormTitle">
-          <h2 id="songFormTitle">Adicionar música</h2>
-          <p>Uma linha em branco separa as partes. A letra é limpa e agrupada automaticamente em PT / inglês.</p>
-          <form id="adminSongForm" novalidate>
-            <input id="adminSongId" type="hidden">
-            <label for="adminSongTitle">Nome da música</label>
-            <input id="adminSongTitle" required maxlength="120" placeholder="Ex.: Frases do restaurante">
-            <label for="adminSongSubtitle">Descrição curta</label>
-            <input id="adminSongSubtitle" maxlength="180" placeholder="Ex.: Inglês para pedir comida">
-            <label for="adminSongIcon">Emoji</label>
-            <input id="adminSongIcon" maxlength="8" value="🎵" placeholder="🎵">
-            <label for="adminSongCover">Capa (opcional)</label>
-            <input id="adminSongCover" class="admin-file" type="file" accept="image/*">
-            <label for="adminSongAudio">Áudio</label>
-            <input id="adminSongAudio" class="admin-file" type="file" accept="audio/*">
-            <label for="adminSongLyrics">Letra</label>
-            <textarea id="adminSongLyrics" required placeholder="Eu moro aqui.&#10;(I live here.)&#10;I live here.&#10;&#10;Eu trabalho aqui.&#10;(I work here.)&#10;I work here."></textarea>
-            <label class="admin-check"><input id="adminSongPublished" type="checkbox"> Publicar na biblioteca dos alunos</label>
-            <div class="admin-actions">
-              <button class="member-primary" type="submit" id="adminSaveSong">Salvar música</button>
-              <button class="admin-small-button" type="button" id="adminClearSong">Limpar formulário</button>
-            </div>
-          </form>
-          <p id="adminSongStatus" class="member-status" role="status" aria-live="polite"></p>
-        </section>
+      <div class="admin-main">
+        <header class="admin-topbar"><div class="admin-topbar-copy"><p id="adminPageEyebrow" class="admin-eyebrow">INGLÊS CANTANDO</p><h1 id="adminPageTitle">Visão geral</h1><p id="adminPageSubtitle">Uma visão rápida do seu catálogo e das próximas liberações.</p></div><div class="admin-topbar-actions"><a class="admin-view-site" href="index.html" target="_blank" rel="noopener">Abrir área de membros <span>↗</span></a><button class="admin-mobile-nav" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button></div></header>
+        <p id="adminStatus" class="admin-status admin-global-status" role="status" aria-live="polite"></p>
 
-        <section class="member-card admin-panel" aria-labelledby="songListTitle">
-          <h2 id="songListTitle">Músicas cadastradas</h2>
-          <p>Rascunhos também aparecem para você sincronizar antes de publicar.</p>
-          <ul id="adminSongList" class="admin-list"></ul>
-        </section>
+        <div class="admin-views">
+          <section id="adminViewDashboard" class="admin-view" data-view-panel="dashboard" aria-labelledby="dashboardTitle">
+            <div class="admin-stats-grid"><article class="admin-stat-card"><div class="admin-stat-icon red">♫</div><div><span>Músicas cadastradas</span><strong id="statSongs">0</strong></div><small id="statPublished">0 publicadas</small></article><article class="admin-stat-card"><div class="admin-stat-icon gold">▦</div><div><span>Playlists</span><strong id="statPlaylists">0</strong></div><small id="statPlaylistSongs">0 faixas organizadas</small></article><article class="admin-stat-card"><div class="admin-stat-icon blue">◈</div><div><span>Produtos Hubla</span><strong id="statProducts">0</strong></div><small>ofertas conectadas</small></article></div>
+            <div class="admin-dashboard-grid"><article class="admin-panel admin-quick-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">ATALHOS</p><h2>Comece por aqui</h2></div></div><div class="admin-quick-actions"><button type="button" data-admin-action="new-song"><span class="quick-action-icon">＋</span><span><strong>Adicionar música</strong><small>Letra, áudio e sincronização</small></span><b>→</b></button><button type="button" data-admin-action="new-playlist"><span class="quick-action-icon gold">▦</span><span><strong>Criar playlist</strong><small>Capa, ordem e liberação</small></span><b>→</b></button></div></article><article class="admin-panel admin-release-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">AGENDA</p><h2>Próximas liberações</h2></div><button type="button" class="admin-text-button" data-admin-action="go-songs">Ver músicas →</button></div><div id="adminUpcomingList" class="admin-upcoming-list"><p class="admin-empty">Nenhuma liberação agendada.</p></div></article></div>
+          </section>
 
-        <section class="member-card admin-panel admin-span" aria-labelledby="productListTitle">
-          <h2 id="productListTitle">Produtos e order bumps</h2>
-          <p>Quando a Hubla enviar o primeiro evento, o produto aparece aqui. Vincule cada produto às músicas que ele libera.</p>
-          <div id="adminProductList" class="admin-list"></div>
-        </section>
+          <section id="adminViewSongs" class="admin-view" data-view-panel="songs" hidden aria-labelledby="songFormTitle">
+            <div class="admin-section-toolbar"><div><p class="admin-kicker">CATÁLOGO</p><h2>Músicas</h2></div><button class="admin-primary-button" type="button" data-admin-action="new-song">＋ Adicionar música</button></div>
+            <div class="admin-two-column"><article class="admin-panel admin-form-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">EDITOR</p><h2 id="songFormTitle">Adicionar música</h2></div><span class="admin-form-step">01</span></div><p class="admin-panel-intro">Cole a letra, escolha as playlists e deixe a sincronização para depois.</p>
+              <form id="adminSongForm" novalidate><input id="adminSongId" type="hidden"><div class="admin-field-grid"><div class="admin-field admin-field-wide"><label for="adminSongTitle">Nome da música</label><input id="adminSongTitle" required maxlength="120" placeholder="Ex.: Frases do restaurante"></div><div class="admin-field"><label for="adminSongIcon">Emoji</label><input id="adminSongIcon" maxlength="8" value="🎵" placeholder="🎵"></div></div><div class="admin-field"><label for="adminSongSubtitle">Descrição curta <small>opcional</small></label><input id="adminSongSubtitle" maxlength="180" placeholder="Ex.: Inglês para pedir comida"></div><div class="admin-field"><label for="adminSongLyrics">Letra</label><textarea id="adminSongLyrics" required placeholder="Português&#10;(English)&#10;English&#10;&#10;Próxima parte&#10;(Next part)&#10;Next part"></textarea><small class="admin-field-hint">Uma linha em branco separa as partes. Os parênteses e pontos finais são removidos automaticamente.</small></div><div class="admin-field-grid admin-media-grid"><div class="admin-field"><label for="adminSongCover">Capa <small>opcional</small></label><input id="adminSongCover" class="admin-file" type="file" accept="image/*"></div><div class="admin-field"><label for="adminSongAudio">Áudio</label><input id="adminSongAudio" class="admin-file" type="file" accept="audio/*"></div></div><div class="admin-field"><label for="adminSongReleaseAt">Liberar música em <small>vazio = agora</small></label><input id="adminSongReleaseAt" type="datetime-local"></div><div class="admin-field"><span class="admin-field-label">Playlists</span><div id="adminSongPlaylistChoices" class="admin-choice-grid"><p class="admin-empty">Crie uma playlist para selecionar aqui.</p></div></div><label class="admin-switch"><input id="adminSongPublished" type="checkbox"><span></span><b>Publicar na área de membros</b></label><div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSaveSong">Salvar música</button><button class="admin-secondary-button" type="button" id="adminClearSong">Limpar</button></div></form><p id="adminSongStatus" class="admin-status" role="status" aria-live="polite"></p>
+            </article><article class="admin-panel admin-list-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">SEU CATÁLOGO</p><h2>Faixas cadastradas</h2></div><span id="adminSongListCount" class="admin-count-pill">0</span></div><div id="adminSongList" class="admin-card-list"></div></article></div>
+          </section>
+
+          <section id="adminViewPlaylists" class="admin-view" data-view-panel="playlists" hidden aria-labelledby="playlistFormTitle">
+            <div class="admin-section-toolbar"><div><p class="admin-kicker">ORGANIZAÇÃO</p><h2>Playlists</h2></div><button class="admin-primary-button" type="button" data-admin-action="new-playlist">＋ Nova playlist</button></div>
+            <div class="admin-two-column"><article class="admin-panel admin-form-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">EDITOR</p><h2 id="playlistFormTitle">Nova playlist</h2></div><span class="admin-form-step gold">02</span></div><p class="admin-panel-intro">Monte a coleção, escolha uma capa e organize as músicas na ordem que quiser.</p>
+              <form id="adminPlaylistForm" novalidate><input id="adminPlaylistId" type="hidden"><div class="admin-field-grid"><div class="admin-field admin-field-wide"><label for="adminPlaylistTitle">Nome da playlist</label><input id="adminPlaylistTitle" required maxlength="120" placeholder="Ex.: Inglês Cantando"></div><div class="admin-field"><label for="adminPlaylistSortOrder">Ordem</label><input id="adminPlaylistSortOrder" type="number" min="0" step="1" value="0"></div></div><div class="admin-field"><label for="adminPlaylistSubtitle">Descrição curta <small>opcional</small></label><input id="adminPlaylistSubtitle" maxlength="180" placeholder="Ex.: Pratique cantando, uma música por vez."></div><div class="admin-field"><label for="adminPlaylistCover">Capa da playlist <small>opcional</small></label><input id="adminPlaylistCover" class="admin-file" type="file" accept="image/*"></div><div class="admin-field"><label for="adminPlaylistReleaseAt">Liberar playlist em <small>vazio = disponível</small></label><input id="adminPlaylistReleaseAt" type="datetime-local"></div><div class="admin-field"><span class="admin-field-label">Músicas da playlist</span><div id="adminPlaylistSongChoices" class="admin-choice-grid admin-choice-grid-tall"><p class="admin-empty">Cadastre uma música para selecionar aqui.</p></div></div><label class="admin-switch"><input id="adminPlaylistPublished" type="checkbox" checked><span></span><b>Mostrar na área de membros</b></label><div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSavePlaylist">Salvar playlist</button><button class="admin-secondary-button" type="button" id="adminClearPlaylist">Limpar</button></div></form><p id="adminPlaylistStatus" class="admin-status" role="status" aria-live="polite"></p>
+            </article><article class="admin-panel admin-list-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">COLEÇÕES</p><h2>Playlists cadastradas</h2></div><span id="adminPlaylistListCount" class="admin-count-pill">0</span></div><div id="adminPlaylistList" class="admin-card-list"></div></article></div>
+          </section>
+
+          <section id="adminViewProducts" class="admin-view" data-view-panel="products" hidden aria-labelledby="productListTitle"><div class="admin-section-toolbar"><div><p class="admin-kicker">ACESSOS</p><h2>Produtos e order bumps</h2></div></div><article class="admin-panel admin-list-panel admin-products-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">HUBLA</p><h2>Ofertas conectadas</h2></div><span id="adminProductListCount" class="admin-count-pill">0</span></div><p class="admin-panel-intro">Vincule cada produto às músicas que ele libera e configure o checkout para aparecer em “Mais músicas”.</p><div id="adminProductList" class="admin-product-list"></div></article></section>
+        </div>
       </div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
   <script src="song-import.js?v=2"></script>
-  <script src="admin.js?v=2"></script>
+  <script src="admin.js?v=3"></script>
 </body>
 </html>

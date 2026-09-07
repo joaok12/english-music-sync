@@ -14,6 +14,7 @@ window.RemoteSongReady = (async () => {
   if (error) throw error;
   const song = (songs || []).find(item => item.song_id === songId);
   if (!song) throw new Error('Esta música não está liberada para sua conta.');
+  if (song.is_available === false) throw new Error('Esta música ainda está em breve. Volte na data de liberação para cantar.');
   let audioFile = '';
   if (song.audio_path) {
     const signed = await client.storage.from('song-media').createSignedUrl(song.audio_path, 3600);
