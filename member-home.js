@@ -122,6 +122,26 @@
     }));
   }
 
+  function isEnglishSingingPlaylist(playlistItem) {
+    return String(playlistItem?.slug || '').toLocaleLowerCase() === 'ingles-cantando';
+  }
+
+  function upcomingNumber(song) {
+    const slugMatch = String(song?.slug || '').match(/ingles-cantando-em-breve-(\d{1,2})$/i);
+    if (slugMatch) return Number(slugMatch[1]);
+    const idMatch = String(song?.song_id || '').match(/legacy-ingles-cantando-(\d{1,2})$/i);
+    if (idMatch) return Number(idMatch[1]);
+    const titleMatch = String(song?.title || '').match(/m[úu]sica\s*(\d{1,2})/i);
+    return titleMatch ? Number(titleMatch[1]) : null;
+  }
+
+  function mergeLegacyUpcomingSongs(rows, playlistItem) {
+    const current = Array.isArray(rows) ? [...rows] : [];
+    if (!isEnglishSingingPlaylist(playlistItem)) return current;
+    const present = new Set(current.map(upcomingNumber).filter(Number.isInteger));
+    return [...current, ...legacyUpcomingSongs().filter((song, index) => !present.has(index + 1))];
+  }
+
   function playlistKeyForSong(song) {
     if (song?.playlist_id) return song.playlist_id;
     const text = `${song?.id || ''} ${song?.song_id || ''} ${song?.title || ''} ${song?.slug || ''}`.toLocaleLowerCase();
@@ -250,13 +270,10 @@
 
   async function loadPlaylistSongs(playlistItem) {
     const result = await client.rpc('get_my_playlist_songs', {p_playlist_id: playlistItem.playlist_id});
-    if (!result.error) return result.data || [];
+    if (!result.error) return mergeLegacyUpcomingSongs(result.data || [], playlistItem);
     if (!isMissingRpc(result.error)) throw result.error;
     const fallback = memberSongsCache.filter(song => playlistKeyForSong(song) === playlistItem.playlist_id);
-    if (String(playlistItem.slug || '').toLowerCase() === 'ingles-cantando' && !fallback.some(song => String(song.song_id || '').startsWith('legacy-ingles-cantando-'))) {
-      return [...fallback, ...legacyUpcomingSongs()];
-    }
-    return fallback;
+    return mergeLegacyUpcomingSongs(fallback, playlistItem);
   }
 
   async function openPlaylist(playlistItem) {

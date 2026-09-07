@@ -204,10 +204,21 @@ begin
     join public.products p on p.hubla_product_id = e.hubla_product_id
       and p.is_active = true
     join public.songs s on s.is_published = true
-      and (p.grants_all_songs or exists (
-        select 1 from public.product_songs ps_access
-        where ps_access.product_id = p.id and ps_access.song_id = s.id
-      ))
+      and (
+        p.grants_all_songs
+        or exists (
+          select 1 from public.product_songs ps_access
+          where ps_access.product_id = p.id and ps_access.song_id = s.id
+        )
+        or exists (
+          select 1
+          from public.playlist_songs ps_owned
+          join public.playlist_songs ps_playlist on ps_playlist.playlist_id = ps_owned.playlist_id
+            and ps_playlist.song_id = s.id
+          join public.product_songs product_playlist on product_playlist.product_id = p.id
+            and product_playlist.song_id = ps_owned.song_id
+        )
+      )
     left join lateral (
       select pl_inner.id, pl_inner.title, pl_inner.cover_path
       from public.playlist_songs ps_inner
