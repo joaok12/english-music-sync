@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="member-home.css?v=5">
+  <link rel="stylesheet" href="member-home.css?v=6">
   <script src="port-redirect.js"></script>
 </head>
 <body class="member-home">
@@ -37,7 +37,7 @@
         <div class="member-nav-left">
           <a href="index.html" aria-label="Inglês Cantando, início"><img class="site-logo" src="assets/branding/logo.png" alt="Inglês Cantando"></a>
           <nav class="member-nav-links" aria-label="Navegação da biblioteca">
-            <a class="is-active" href="#playlist">Minha playlist</a>
+            <a class="is-active" href="#playlists">Playlists</a>
           </nav>
         </div>
         <div class="member-nav-actions"><span id="memberGreeting" class="member-greeting"></span><button id="memberLogout" class="member-logout" type="button">Sair</button></div>
@@ -54,6 +54,22 @@
           <div id="memberHeroArt" class="member-hero-art" aria-hidden="true">
             <img id="memberHeroCover" alt="">
             <span id="memberHeroFallback" class="hero-fallback">🎵</span>
+          </div>
+        </section>
+
+        <section id="playlists" class="playlist-collections" aria-labelledby="playlistCollectionsTitle">
+          <div class="playlist-collections-heading">
+            <div><p class="section-kicker">PLAYLISTS</p><h2 id="playlistCollectionsTitle">Escolha uma playlist</h2></div>
+          </div>
+          <div class="playlist-collections-rail">
+            <article class="playlist-tile is-coming-soon">
+              <div class="playlist-tile-cover"><img src="assets/branding/logo.png" alt="Capa da playlist Inglês Cantando" loading="lazy"><span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span></div>
+              <div class="playlist-tile-info"><h3>Inglês Cantando</h3><p>20 músicas para praticar cantando.</p><div class="playlist-release"><span>Libera em</span><strong data-release-countdown>--d --h --m --s</strong><small>11 de setembro</small></div></div>
+            </article>
+            <article class="playlist-tile is-coming-soon">
+              <div class="playlist-tile-cover"><img src="assets/covers/50-girias.webp" alt="Capa da playlist 50 Gírias" loading="lazy"><span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span></div>
+              <div class="playlist-tile-info"><h3>50 Gírias</h3><p>As expressões que só quem mora fora usa.</p><div class="playlist-release"><span>Libera em</span><strong data-release-countdown>--d --h --m --s</strong><small>11 de setembro</small></div></div>
+            </article>
           </div>
         </section>
 
@@ -81,6 +97,6 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
-  <script src="member-home.js?v=5"></script>
+  <script src="member-home.js?v=6"></script>
 </body>
 </html>

@@ -34,6 +34,33 @@
     {id: 'custom_fcf0288e-073e-4af4-a05d-6f7fa396f9fa', title: 'Let’s Start', subtitle: 'Comece, pratique e avance', icon: '🚀', cover: 'assets/covers/lets-start.webp'}
   ];
 
+  function initPlaylistCountdown() {
+    const countdowns = [...document.querySelectorAll('[data-release-countdown]')];
+    if (!countdowns.length) return;
+    const releaseAt = new Date('2026-09-11T00:00:00-03:00').getTime();
+    let timer = null;
+    const update = () => {
+      const remaining = releaseAt - Date.now();
+      if (remaining <= 0) {
+        countdowns.forEach(element => { element.textContent = 'Disponível'; });
+        if (timer) clearInterval(timer);
+        return;
+      }
+      const totalSeconds = Math.floor(remaining / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      const value = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+      countdowns.forEach(element => { element.textContent = value; });
+    };
+    update();
+    timer = setInterval(update, 1000);
+    window.addEventListener('pagehide', () => clearInterval(timer), {once: true});
+  }
+
+  initPlaylistCountdown();
+
   if (!config.anonKey || config.anonKey.startsWith('COLE_AQUI') || !window.supabase?.createClient) {
     loginStatus.className = 'member-status error';
     loginStatus.textContent = 'A integração ainda não foi configurada.';
