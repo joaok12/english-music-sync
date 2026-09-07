@@ -7,7 +7,15 @@
   const cpfInput = document.getElementById('memberCpf');
   const loginStatus = document.getElementById('loginStatus');
   const libraryStatus = document.getElementById('libraryStatus');
-  const libraryRail = document.getElementById('memberLibraryRail');
+  const hero = document.getElementById('memberHero');
+  const heroTitle = document.getElementById('memberHeroTitle');
+  const heroSubtitle = document.getElementById('memberHeroSubtitle');
+  const heroMeta = document.getElementById('memberHeroMeta');
+  const heroPlay = document.getElementById('memberHeroPlay');
+  const heroCover = document.getElementById('memberHeroCover');
+  const heroFallback = document.getElementById('memberHeroFallback');
+  const playlist = document.getElementById('memberPlaylist');
+  const playlistCount = document.getElementById('playlistCount');
   const catalogRail = document.getElementById('memberCatalogRail');
   const catalogSection = catalogRail.closest('.catalog-section');
   const offersSection = document.getElementById('memberOffersSection');
@@ -85,19 +93,57 @@
     container.append(empty);
   }
 
+  function formatDuration(seconds) {
+    const value = Number(seconds);
+    if (!Number.isFinite(value) || value <= 0) return '—';
+    const minutes = Math.floor(value / 60);
+    const remaining = Math.floor(value % 60).toString().padStart(2, '0');
+    return `${minutes}:${remaining}`;
+  }
+
+  function songHref(song) {
+    return `karaoke.html?song=remote_${encodeURIComponent(song.song_id)}`;
+  }
+
+  function selectFeaturedSong(song, cover, row) {
+    document.querySelectorAll('.playlist-row.is-selected').forEach(item => item.classList.remove('is-selected'));
+    row?.classList.add('is-selected');
+    hero.hidden = false;
+    heroTitle.textContent = song.title || 'Sua próxima música';
+    heroSubtitle.textContent = song.subtitle || song.product_name || 'Pratique inglês cantando.';
+    heroMeta.textContent = `${song.product_name || 'Sua biblioteca'} • ${formatDuration(song.duration_seconds)}`;
+    heroPlay.href = songHref(song);
+    if (cover) {
+      heroCover.src = cover;
+      heroCover.alt = `Capa de ${song.title || 'música'}`;
+      heroCover.hidden = false;
+      heroFallback.hidden = true;
+    } else {
+      heroCover.removeAttribute('src');
+      heroCover.alt = '';
+      heroCover.hidden = true;
+      heroFallback.textContent = song.icon || '🎵';
+      heroFallback.hidden = false;
+    }
+  }
+
   async function renderLibrary(songs) {
-    libraryRail.replaceChildren();
+    playlist.replaceChildren();
     const unique = uniqueSongs(songs);
+    playlistCount.textContent = unique.length;
     if (!unique.length) {
-      emptyRail(libraryRail, 'Sua compra foi reconhecida. As músicas liberadas aparecerão aqui assim que forem vinculadas ao produto.');
+      hero.hidden = true;
+      emptyRail(playlist, 'Sua compra foi reconhecida. As músicas liberadas aparecerão aqui assim que forem vinculadas ao produto.');
       return;
     }
-    for (const song of unique) {
+    for (const [index, song] of unique.entries()) {
       const cover = await coverUrl(song);
-      const card = document.createElement('article');
-      card.className = 'catalog-card';
-      card.innerHTML = `<a class="catalog-cover" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}" aria-label="Cantar ${escapeHtml(song.title)}">${cover ? `<img src="${escapeHtml(cover)}" alt="Capa de ${escapeHtml(song.title)}" loading="lazy">` : `<span class="catalog-fallback">${escapeHtml(song.icon || '🎵')}</span>`}<span class="catalog-badge unlocked">Liberada</span></a><h3 class="catalog-card-title">${escapeHtml(song.title)}</h3><p class="catalog-card-subtitle">${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</p><a class="catalog-play" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">🎤 Cantar agora</a>`;
-      libraryRail.append(card);
+      const row = document.createElement('article');
+      row.className = 'playlist-row';
+      row.innerHTML = `<button class="playlist-select" type="button" aria-label="Selecionar ${escapeHtml(song.title)}"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</small></span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></button><a class="playlist-action" href="${songHref(song)}">Cantar</a>`;
+      row.querySelector('.playlist-select').addEventListener('click', () => selectFeaturedSong(song, cover, row));
+      playlist.append(row);
+      if (index === 0) selectFeaturedSong(song, cover, row);
     }
   }
 
