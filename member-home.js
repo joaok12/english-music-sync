@@ -103,9 +103,23 @@
 
   function normalizeLegacySong(song) {
     if (Object.prototype.hasOwnProperty.call(song || {}, 'release_at')) return song;
-    const text = `${song?.id || ''} ${song?.song_id || ''} ${song?.title || ''} ${song?.slug || ''}`.toLocaleLowerCase();
-    const isGiria = text.includes('de boa') || text.includes('de-boa') || text.includes('facdb85a');
-    return {...song, release_at: isGiria ? null : legacyReleaseAt, is_available: isGiria};
+    return {...song, release_at: null, is_available: true};
+  }
+
+  function legacyUpcomingSongs() {
+    return Array.from({length: 20}, (_, index) => ({
+      song_id: `legacy-ingles-cantando-${String(index + 1).padStart(2, '0')}`,
+      title: `Inglês Cantando • Música ${String(index + 1).padStart(2, '0')}`,
+      subtitle: 'Nova aula em breve.',
+      icon: '🎤',
+      cover_path: '',
+      audio_path: '',
+      duration_seconds: null,
+      lyrics: [],
+      playlist_id: 'fallback-ingles-cantando',
+      release_at: legacyReleaseAt,
+      is_available: false
+    }));
   }
 
   function playlistKeyForSong(song) {
@@ -238,7 +252,11 @@
     const result = await client.rpc('get_my_playlist_songs', {p_playlist_id: playlistItem.playlist_id});
     if (!result.error) return result.data || [];
     if (!isMissingRpc(result.error)) throw result.error;
-    return memberSongsCache.filter(song => playlistKeyForSong(song) === playlistItem.playlist_id);
+    const fallback = memberSongsCache.filter(song => playlistKeyForSong(song) === playlistItem.playlist_id);
+    if (String(playlistItem.slug || '').toLowerCase() === 'ingles-cantando' && !fallback.some(song => String(song.song_id || '').startsWith('legacy-ingles-cantando-'))) {
+      return [...fallback, ...legacyUpcomingSongs()];
+    }
+    return fallback;
   }
 
   async function openPlaylist(playlistItem) {
@@ -294,6 +312,7 @@
       memberSongsCache = libraryResult.error ? [] : uniqueSongs(libraryResult.data || []);
       let playlistRows;
       if (playlistsResult.error) {
+        memberSongsCache = [...memberSongsCache, ...legacyUpcomingSongs()];
         const counts = new Map();
         memberSongsCache.forEach(song => counts.set(playlistKeyForSong(song), (counts.get(playlistKeyForSong(song)) || 0) + 1));
         playlistRows = fallbackPlaylists.map(item => ({...item, song_count: counts.get(item.playlist_id) || item.song_count}));

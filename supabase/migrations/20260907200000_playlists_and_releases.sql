@@ -60,14 +60,34 @@ where p.slug = 'ingles-cantando'
   and lower(s.title) not like 'de boa%'
 on conflict (playlist_id, song_id) do nothing;
 
--- The release timer is per song. The “De boa” lesson is immediately available;
--- other seeded songs can be released together and then adjusted individually.
-update public.songs
-set release_at = case
-  when lower(title) like 'de boa%' then null
-  when release_at is null then '2026-09-11T00:00:00-03:00'::timestamptz
-  else release_at
-end;
+-- The release timer is per song. Existing songs are available immediately;
+-- only the 20 new placeholder lessons below are scheduled for the launch.
+update public.songs set release_at = null;
+
+-- Reserve twenty upcoming lessons in Inglês Cantando. They are intentionally
+-- empty so the administrator can edit each one later with its real title,
+-- lyrics, cover and audio without changing the member experience.
+insert into public.songs (
+  title, slug, subtitle, icon, lyrics, is_published, sort_order, release_at
+)
+select
+  'Inglês Cantando • Música ' || lpad(number::text, 2, '0'),
+  'ingles-cantando-em-breve-' || lpad(number::text, 2, '0'),
+  'Nova aula em breve.',
+  '🎤',
+  '[]'::jsonb,
+  true,
+  100 + number,
+  '2026-09-11T00:00:00-03:00'::timestamptz
+from generate_series(1, 20) as upcoming(number)
+on conflict (slug) do nothing;
+
+insert into public.playlist_songs (playlist_id, song_id, sort_order)
+select p.id, s.id, 100 + split_part(s.slug, 'ingles-cantando-em-breve-', 2)::integer
+from public.playlists p
+join public.songs s on s.slug like 'ingles-cantando-em-breve-%'
+where p.slug = 'ingles-cantando'
+on conflict (playlist_id, song_id) do nothing;
 
 create or replace function public.admin_list_playlists()
 returns table (
@@ -318,23 +338,7 @@ as $$
       from public.playlist_songs ps_count
       join public.songs s_count on s_count.id = ps_count.song_id
       where ps_count.playlist_id = p.id
-        and (public.is_admin() or (
-          s_count.is_published
-          and exists (
-            select 1
-            from public.members m_count
-            join public.member_entitlements e_count on e_count.member_id = m_count.id
-              and e_count.subscription_status = 'active'
-            join public.products product_count on product_count.hubla_product_id = e_count.hubla_product_id
-              and product_count.is_active = true
-            where m_count.auth_user_id = auth.uid()
-              and (product_count.grants_all_songs or exists (
-                select 1 from public.product_songs access_count
-                where access_count.product_id = product_count.id
-                  and access_count.song_id = s_count.id
-              ))
-          )
-        ))
+        and (public.is_admin() or s_count.is_published)
     )
   from public.playlists p
   where p.is_published = true
@@ -350,9 +354,11 @@ as $$
       where ps_visible.playlist_id = p.id
         and s_visible.is_published
         and (product_visible.grants_all_songs or exists (
-          select 1 from public.product_songs access_visible
+          select 1
+          from public.product_songs access_visible
+          join public.playlist_songs playlist_visible on playlist_visible.playlist_id = p.id
+            and playlist_visible.song_id = access_visible.song_id
           where access_visible.product_id = product_visible.id
-            and access_visible.song_id = s_visible.id
         ))
     ))
   order by p.sort_order, p.created_at, p.title;
@@ -415,9 +421,11 @@ as $$
       and product.is_active = true
     where m.auth_user_id = auth.uid()
       and (product.grants_all_songs or exists (
-        select 1 from public.product_songs product_song
+        select 1
+        from public.product_songs product_song
+        join public.playlist_songs playlist_song on playlist_song.playlist_id = p_playlist_id
+          and playlist_song.song_id = product_song.song_id
         where product_song.product_id = product.id
-          and product_song.song_id = s.id
       ))
     order by product.name
     limit 1
