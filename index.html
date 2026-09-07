@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="member-home.css?v=8">
+  <link rel="stylesheet" href="member-home.css?v=9">
   <script src="port-redirect.js"></script>
 </head>
 <body class="member-home">
@@ -43,20 +43,6 @@
         <div class="member-nav-actions"><span id="memberGreeting" class="member-greeting"></span><button id="memberLogout" class="member-logout" type="button">Sair</button></div>
       </header>
       <main class="member-library-main">
-        <section id="memberHero" class="member-hero" aria-labelledby="memberHeroTitle">
-          <div class="member-hero-copy">
-            <p class="hero-kicker">INGLÊS CANTANDO</p>
-            <h1 id="memberHeroTitle">Sua próxima música</h1>
-            <p id="memberHeroSubtitle" class="hero-subtitle">Escolha uma música da sua playlist para começar.</p>
-            <div class="hero-meta"><span id="memberHeroMeta">Sua biblioteca</span></div>
-            <a id="memberHeroPlay" class="hero-play" href="#playlist">Tocar agora <span aria-hidden="true">→</span></a>
-          </div>
-          <div id="memberHeroArt" class="member-hero-art" aria-hidden="true">
-            <img id="memberHeroCover" alt="">
-            <span id="memberHeroFallback" class="hero-fallback">🎵</span>
-          </div>
-        </section>
-
         <section id="playlists" class="playlist-collections" aria-labelledby="playlistCollectionsTitle">
           <div class="playlist-collections-heading">
             <div><p class="section-kicker">PLAYLISTS</p><h2 id="playlistCollectionsTitle">Escolha uma playlist</h2></div>
@@ -64,30 +50,26 @@
           <div id="playlistCollectionsRail" class="playlist-collections-rail"></div>
         </section>
 
-        <section id="playlist" class="member-content-grid" aria-label="Biblioteca e playlist">
-          <div class="playlist-column">
-            <div class="library-title-row">
-              <div><p class="section-kicker">SPOTIFY MODE</p><h2>Sua playlist</h2></div>
-              <p id="libraryStatus" class="member-status" role="status" aria-live="polite">Carregando…</p>
+        <section id="playlistDetail" class="playlist-detail" hidden aria-labelledby="playlistDetailTitle">
+          <button id="playlistBack" class="playlist-back" type="button">← Voltar para playlists</button>
+          <div class="playlist-detail-header">
+            <div>
+              <p class="section-kicker">PLAYLIST</p>
+              <h2 id="playlistDetailTitle">Playlist</h2>
+              <p id="playlistDetailSubtitle" class="playlist-detail-subtitle"></p>
             </div>
-            <div id="memberPlaylist" class="playlist-list"></div>
+            <div class="playlist-detail-meta"><strong id="playlistCount">0</strong><span>músicas</span></div>
           </div>
-          <aside class="playlist-aside" aria-label="Resumo da biblioteca">
-            <span class="aside-label">MINHA BIBLIOTECA</span>
-            <strong id="playlistCount">0</strong>
-            <span class="aside-caption">músicas na playlist</span>
-            <div class="aside-rule"></div>
-            <p>Escolha uma faixa e pratique no seu ritmo.</p>
-          </aside>
+          <p id="playlistDetailStatus" class="member-status" role="status" aria-live="polite"></p>
+          <div id="memberPlaylist" class="playlist-list"></div>
         </section>
 
-        <section class="catalog-section" aria-labelledby="catalogTitle"><div class="catalog-heading"><h2 id="catalogTitle">Explorar</h2></div><div id="memberCatalogRail" class="catalog-rail"></div></section>
-        <section id="memberOffersSection" class="catalog-section offers-section" aria-labelledby="offersTitle"><div class="catalog-heading"><h2 id="offersTitle">Mais músicas</h2></div><div id="memberOffersRail" class="offers-rail"></div></section>
+        <section id="memberOffersSection" class="catalog-section offers-section" aria-labelledby="offersTitle"><div class="catalog-heading"><h2 id="offersTitle">Outras playlists</h2></div><div id="memberOffersRail" class="offers-rail"></div></section>
       </main>
     </section>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
-  <script src="member-home.js?v=8"></script>
+  <script src="member-home.js?v=9"></script>
 </body>
 </html>

@@ -313,17 +313,123 @@ set search_path = public
 as $$
   select p.id, p.title, p.slug, p.subtitle, p.cover_path, p.release_at,
     (p.release_at is null or p.release_at <= now()),
-    count(s.id)::integer
+    (
+      select count(*)::integer
+      from public.playlist_songs ps_count
+      join public.songs s_count on s_count.id = ps_count.song_id
+      where ps_count.playlist_id = p.id
+        and (public.is_admin() or (
+          s_count.is_published
+          and exists (
+            select 1
+            from public.members m_count
+            join public.member_entitlements e_count on e_count.member_id = m_count.id
+              and e_count.subscription_status = 'active'
+            join public.products product_count on product_count.hubla_product_id = e_count.hubla_product_id
+              and product_count.is_active = true
+            where m_count.auth_user_id = auth.uid()
+              and (product_count.grants_all_songs or exists (
+                select 1 from public.product_songs access_count
+                where access_count.product_id = product_count.id
+                  and access_count.song_id = s_count.id
+              ))
+          )
+        ))
+    )
   from public.playlists p
-  left join public.playlist_songs ps on ps.playlist_id = p.id
-  left join public.songs s on s.id = ps.song_id and (s.is_published or public.is_admin())
   where p.is_published = true
-  group by p.id
+    and (public.is_admin() or exists (
+      select 1
+      from public.playlist_songs ps_visible
+      join public.songs s_visible on s_visible.id = ps_visible.song_id
+      join public.members m_visible on m_visible.auth_user_id = auth.uid()
+      join public.member_entitlements e_visible on e_visible.member_id = m_visible.id
+        and e_visible.subscription_status = 'active'
+      join public.products product_visible on product_visible.hubla_product_id = e_visible.hubla_product_id
+        and product_visible.is_active = true
+      where ps_visible.playlist_id = p.id
+        and s_visible.is_published
+        and (product_visible.grants_all_songs or exists (
+          select 1 from public.product_songs access_visible
+          where access_visible.product_id = product_visible.id
+            and access_visible.song_id = s_visible.id
+        ))
+    ))
   order by p.sort_order, p.created_at, p.title;
 $$;
 
 revoke all on function public.get_member_playlists() from public, anon;
 grant execute on function public.get_member_playlists() to authenticated;
+
+drop function if exists public.get_my_playlist_songs(uuid);
+create function public.get_my_playlist_songs(p_playlist_id uuid)
+returns table (
+  song_id uuid,
+  title text,
+  slug text,
+  subtitle text,
+  icon text,
+  cover_path text,
+  audio_path text,
+  duration_seconds numeric,
+  lyrics jsonb,
+  product_id uuid,
+  product_name text,
+  release_at timestamptz,
+  is_available boolean,
+  playlist_id uuid,
+  playlist_title text,
+  playlist_cover_path text
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select distinct on (s.id)
+    s.id,
+    s.title,
+    s.slug,
+    s.subtitle,
+    s.icon,
+    s.cover_path,
+    s.audio_path,
+    s.duration_seconds,
+    case when public.is_admin() or (s.release_at is null or s.release_at <= now()) then s.lyrics else '[]'::jsonb end,
+    access_product.id,
+    access_product.name,
+    s.release_at,
+    (public.is_admin() or s.release_at is null or s.release_at <= now()),
+    p.id,
+    p.title,
+    p.cover_path
+  from public.playlist_songs playlist_link
+  join public.playlists p on p.id = playlist_link.playlist_id
+  join public.songs s on s.id = playlist_link.song_id
+  left join lateral (
+    select product.id, product.name
+    from public.members m
+    join public.member_entitlements e on e.member_id = m.id
+      and e.subscription_status = 'active'
+    join public.products product on product.hubla_product_id = e.hubla_product_id
+      and product.is_active = true
+    where m.auth_user_id = auth.uid()
+      and (product.grants_all_songs or exists (
+        select 1 from public.product_songs product_song
+        where product_song.product_id = product.id
+          and product_song.song_id = s.id
+      ))
+    order by product.name
+    limit 1
+  ) access_product on true
+  where playlist_link.playlist_id = p_playlist_id
+    and p.is_published = true
+    and (public.is_admin() or (s.is_published and access_product.id is not null))
+  order by s.id, playlist_link.sort_order, access_product.name;
+$$;
+
+revoke all on function public.get_my_playlist_songs(uuid) from public, anon;
+grant execute on function public.get_my_playlist_songs(uuid) to authenticated;
 
 drop function if exists public.get_my_library();
 create function public.get_my_library()
