@@ -8,6 +8,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="member.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=1"></script>
+  <script>
+    (async () => {
+      try {
+        const config = window.SUPABASE_CONFIG || {};
+        if (window.supabase?.createClient && config.url && config.anonKey) {
+          const client = window.supabase.createClient(config.url, config.anonKey);
+          await client.auth.getSession();
+        }
+      } finally {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
 </head>
 <body class="member-page">
   <main class="member-shell">

@@ -108,12 +108,16 @@ function eventDecision(type: string): "active" | "inactive" | "ignored" {
 async function upsertProduct(product: JsonObject) {
   const hublaId = string(product.id);
   const name = string(product.name) || `Produto ${hublaId}`;
-  const { data, error } = await admin.from("products").upsert({
+  const checkoutUrl = string(product.checkoutUrl) || string(product.checkout_url) || string(product.url);
+  const values: JsonObject = {
     hubla_product_id: hublaId,
     name,
     slug: slugify(name, hublaId),
     updated_at: new Date().toISOString(),
-  }, { onConflict: "hubla_product_id" }).select("id, hubla_product_id, name").single();
+  };
+  if (checkoutUrl) values.checkout_url = checkoutUrl;
+  const { data, error } = await admin.from("products").upsert(values, { onConflict: "hubla_product_id" })
+    .select("id, hubla_product_id, name").single();
   if (error) throw error;
   return data;
 }

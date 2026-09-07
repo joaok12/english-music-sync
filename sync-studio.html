@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="sync-studio.css">
 </head>
-<body>
+<body hidden>
   <div class="studio-app">
     <!-- Topo Fixo com Painel de Controle -->
     <header class="studio-header">
@@ -90,6 +90,9 @@
     <source src="audio.mp3" type="audio/mpeg">
   </audio>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=1"></script>
+  <script src="admin-guard.js?v=1"></script>
   <script src="lyrics-data.js"></script>
   <script src="sync-studio.js"></script>
 </body>

@@ -1,5 +1,6 @@
 // Lógica de Sincronização 100% WYSIWYG Multimúsica
 document.addEventListener("DOMContentLoaded", async () => {
+  if (window.AdminClientReady && !(await window.AdminClientReady)) return;
   await window.CustomSongs.ready;
   if (window.RemoteSongReady) await window.RemoteSongReady;
   const audio = document.getElementById("audioElement");

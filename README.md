@@ -9,12 +9,17 @@ CPF e abre uma biblioteca protegida. Consulte
 [`SUPABASE_HUBLA_SETUP.md`](SUPABASE_HUBLA_SETUP.md) para cadastrar o token da
 Hubla e associar os produtos às músicas.
 
-As músicas públicas e o estúdio local continuam funcionando como antes. O
- catálogo protegido usa as tabelas `songs`, `products` e `product_songs` do
- Supabase; capas e áudios ficam no bucket privado `song-media` e só são
- entregues para quem tem um produto ativo. O painel administrativo em
- [`admin.html`](admin.html) permite cadastrar capa, áudio e letra, vincular
- produtos/order bumps e salvar a sincronização diretamente na nuvem.
+As músicas ficam em um catálogo estilo streaming na página inicial: quem não
+está autenticado vê o login; quem está autenticado vê apenas as músicas
+liberadas e ofertas ainda não compradas. O karaokê não mostra controles de
+sincronização para alunos. O estúdio, edição e cadastro ficam no painel
+administrativo em [`admin.html`](admin.html).
+
+O catálogo protegido usa as tabelas `songs`, `products` e `product_songs` do
+Supabase; capas e áudios ficam no bucket privado `song-media` e só são
+entregues para quem tem um produto ativo. O painel permite cadastrar capa,
+áudio e letra, vincular produtos/order bumps e salvar a sincronização
+diretamente na nuvem.
 
 Após o deploy, abra a URL da Vercel normalmente; não use os links `localhost` para compartilhar o app.
 
@@ -23,15 +28,15 @@ Após o deploy, abra a URL da Vercel normalmente; não use os links `localhost` 
 No karaokê, a engrenagem ao lado do player (ou a tecla **C**) abre **Configurações**. Há temas de alto contraste, incluindo **USA Claro** (fundo branco e texto escuro) e **USA Blur** (fundo branco com cabeçalho e rodapé escuros), além de Aurora, Oceano, Floresta, Âmbar e Original. Desative **Mostrar Inglês Cantando e preço** para exibir o nome da música no topo. Feche o painel antes de gravar; as escolhas valem apenas nesta página e voltam ao padrão ao recarregar.
 
 
-Na página inicial ou no estúdio, clique em **Adicionar música**. Escolha um arquivo de áudio, dê um nome e cole a letra inteira. A cada três linhas não vazias, a página cria uma parte com português, inglês e repetição em inglês, nessa ordem. Linhas em branco são ignoradas; pontos finais e reticências são removidos; cada palavra fica pronta para marcar. Interrogações e apóstrofos são mantidos. Confira a prévia: se faltar uma linha para completar um grupo, o cadastro avisa antes de salvar.
+No painel administrativo, escolha um arquivo de áudio, uma capa, dê um nome e cole a letra inteira. Uma linha em branco separa cada parte; parênteses, pontos finais e reticências são removidos automaticamente. O painel permite revisar idioma, publicar ou deixar como rascunho e enviar a música para o estúdio.
 
-Se uma letra foi cadastrada errada, use **✎ Editar letra** no cartão da música ou no estúdio. A música já abre preenchida; corrija o texto e salve. Para músicas adicionadas, o áudio é mantido sem precisar escolhê-lo de novo. Nas músicas do catálogo, a correção da letra fica salva no navegador para aquele título.
+Se uma letra foi cadastrada errada, use **Editar** no painel administrativo. A música já abre preenchida; corrija o texto e salve. O áudio e a capa ficam no Storage privado do Supabase.
 
 No estúdio, **📥 Importar JSON** aceita o arquivo de uma sincronização antiga. Escolha a música correspondente, importe o arquivo exportado e os tempos são aplicados imediatamente; não é preciso marcar as palavras novamente. O JSON precisa ter sido exportado depois de a sincronização estar completa.
 
 Clique em **Salvar e começar a sincronizar**. No estúdio original, toque o áudio e pressione Espaço a cada palavra; depois da última, pressione novamente para marcar seu fim. O rascunho é salvo a cada marcação e a sincronização completa é aplicada automaticamente ao karaokê. O botão **Salvar no Karaokê** também continua disponível.
 
-O áudio e as músicas adicionadas ficam no IndexedDB deste navegador, no mesmo endereço do site. A versão atual usa `http://localhost:3334`; links antigos da porta `3333` são redirecionados automaticamente. Não é necessário selecionar o áudio novamente ao voltar. Limpar os dados do site apaga essa biblioteca: mantenha o arquivo de áudio e baixe o JSON como cópia. A preparação da letra é automática; os tempos são marcados por você ao ouvir a música.
+O estúdio salva um rascunho local a cada marcação e, ao clicar em **Salvar no Karaokê**, grava a sincronização da música protegida no Supabase. O JSON continua disponível para backup. O desenvolvimento local usa `http://localhost:3334`; links antigos da porta `3333` são redirecionados automaticamente.
 
 Site interativo de aprendizado de inglês com sincronização de letra em tempo real estilo Karaokê, especialmente desenvolvido com a identidade visual dos Estados Unidos (azul marinho profundo, vermelho vivo, branco cristalino e estrelas).
 

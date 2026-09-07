@@ -86,6 +86,7 @@ Deno.serve(async (request) => {
   const { data: link, error: linkError } = await admin.auth.admin.generateLink({
     type: "magiclink",
     email,
+    // A URL já permitida no Supabase. biblioteca.html encaminha para a nova tela inicial.
     options: { redirectTo: `${appUrl.replace(/\/$/, "")}/biblioteca.html` },
   });
   if (linkError || !link.properties?.action_link) return response({ error: "Não foi possível gerar o acesso." }, 500);

@@ -1,183 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Inglês Cantando • Escolha sua Música</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Área de membros • Inglês Cantando</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="member-home.css?v=1">
   <script src="port-redirect.js"></script>
-  <script>
-    // Se houver parâmetro de música na URL, redireciona direto ao player
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('song')) {
-      window.location.replace('karaoke.html' + window.location.search);
-    }
-  </script>
 </head>
-<body>
-  <div class="home-container">
-    <!-- Topo Criativo de Anúncio / Oferta -->
-    <header class="home-header">
-      <div class="notch-pill"></div>
-
-      <div class="home-brand">
-        <div class="brand-flag-wrap">
-          <svg class="header-flag" viewBox="0 0 32 22" width="24" height="16">
-            <defs>
-              <clipPath id="header-usa-clip"><rect width="32" height="22" rx="3"/></clipPath>
-            </defs>
-            <g clip-path="url(#header-usa-clip)">
-              <rect width="32" height="22" fill="#ffffff"/>
-              <rect y="0" width="32" height="1.69" fill="#b22234"/>
-              <rect y="3.38" width="32" height="1.69" fill="#b22234"/>
-              <rect y="6.77" width="32" height="1.69" fill="#b22234"/>
-              <rect y="10.15" width="32" height="1.69" fill="#b22234"/>
-              <rect y="13.54" width="32" height="1.69" fill="#b22234"/>
-              <rect y="16.92" width="32" height="1.69" fill="#b22234"/>
-              <rect y="20.31" width="32" height="1.69" fill="#b22234"/>
-              <rect width="13.5" height="11.85" fill="#3c3b6e"/>
-              <g fill="#ffffff" opacity="0.9">
-                <circle cx="3" cy="2.5" r="0.7"/>
-                <circle cx="7" cy="2.5" r="0.7"/>
-                <circle cx="11" cy="2.5" r="0.7"/>
-                <circle cx="5" cy="5.5" r="0.7"/>
-                <circle cx="9" cy="5.5" r="0.7"/>
-                <circle cx="3" cy="8.5" r="0.7"/>
-                <circle cx="7" cy="8.5" r="0.7"/>
-                <circle cx="11" cy="8.5" r="0.7"/>
-              </g>
-            </g>
-          </svg>
-        </div>
-        <h1 class="home-title">Aprenda Inglês Cantando</h1>
+<body class="member-home">
+  <div class="member-app">
+    <section id="memberLoginView" class="member-login-view" aria-labelledby="memberLoginTitle">
+      <div class="login-art" aria-hidden="true">
+        <div class="login-art-glow"></div>
+        <div class="login-art-card login-art-card-one">A</div>
+        <div class="login-art-card login-art-card-two">♪</div>
+        <div class="login-art-orbit"></div>
       </div>
-
-      <!-- Ancoragem de Preço e Oferta de Venda -->
-      <div class="header-offer-badge">
-        <span class="price-old">De R$ 97</span>
-        <span class="price-divider"></span>
-        <span class="price-new">Por apenas <strong>R$ 27,90</strong></span>
+      <div class="login-copy">
+        <div class="member-brand"><span class="brand-mark">♪</span><span>Inglês Cantando</span></div>
+        <p class="member-eyebrow">Área de membros</p>
+        <h1 id="memberLoginTitle">Seu inglês começa<br><span>quando você canta.</span></h1>
+        <p class="member-login-lead">Entre para acessar suas músicas, capas e aulas liberadas pela sua compra.</p>
+        <form id="memberLoginForm" class="member-login-form" novalidate>
+          <label for="memberEmail">E-mail da compra</label>
+          <input id="memberEmail" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+          <label for="memberCpf">CPF</label>
+          <input id="memberCpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
+          <button class="member-cta" type="submit">Entrar na minha biblioteca <span>→</span></button>
+        </form>
+        <p id="loginStatus" class="member-status" role="status" aria-live="polite"></p>
+        <p class="member-privacy">Acesso seguro. Usamos seus dados somente para confirmar sua compra.</p>
       </div>
+    </section>
 
-      <p class="home-intro">
-        Escolha uma música abaixo para treinar no karaokê com sincronização palavra por palavra ou sincronizar no seu ritmo:
-      </p>
-    </header>
+    <section id="memberLibraryView" class="member-library-view" hidden>
+      <header class="member-nav">
+        <a class="member-brand" href="index.html" aria-label="Inglês Cantando, início"><span class="brand-mark">♪</span><span>Inglês Cantando</span></a>
+        <div class="member-nav-actions"><span id="memberGreeting" class="member-greeting"></span><button id="memberLogout" class="member-logout" type="button">Sair</button></div>
+      </header>
+      <main>
+        <section class="member-hero" aria-labelledby="memberHeroTitle">
+          <div class="member-hero-copy"><p class="member-eyebrow">Sua área de membros</p><h1 id="memberHeroTitle">Escolha uma música.<br><span>Aprenda cantando.</span></h1><p>Treine no seu ritmo com aulas que transformam frases do dia a dia em inglês natural.</p></div>
+          <div class="member-hero-art" aria-hidden="true"><div class="hero-disc"></div><div class="hero-note">♪</div></div>
+        </section>
 
-    <!-- Lista de Músicas -->
-    <main>
-      <div class="songs-section-title">Músicas Disponíveis</div>
-      <a href="login.html" class="btn-card-sync" style="display:block;text-align:center;margin-bottom:12px">🔐 Entrar na área de membros</a>
-      <a href="adicionar.html" class="btn-card-sing" style="margin-bottom:16px">＋ Adicionar minha música</a>
-
-      <div class="song-cards-list">
-        <!-- Música 3: Inglês Anos 80 (Nova) -->
-        <article class="song-card card-featured">
-          <div class="card-top">
-            <div class="card-icon">🎸</div>
-            <div class="card-info">
-              <div class="card-badges-row">
-                <span class="badge-tag badge-new">✨ Nova Música</span>
-                <span class="badge-tag">Anos 80 & Ação</span>
-              </div>
-              <h2 class="card-title">Inglês Anos 80</h2>
-              <p class="card-subtitle">Frases Curtas e Essenciais de Ação</p>
-            </div>
-          </div>
-
-          <div class="card-meta">
-            <span>📝 19 Frases</span>
-            <span>⏱️ 1:57 min</span>
-            <span>🎯 Pronta p/ Sincronizar</span>
-          </div>
-
-          <div class="card-actions">
-            <a href="karaoke.html?song=anos_80" class="btn-card-sing">
-              🎤 Cantar Karaokê
-            </a>
-            <a href="sincronizar.html?song=anos_80" class="btn-card-sync">
-              ⚙️ Sincronizar
-            </a>
-            <a href="editar.html?song=anos_80" class="btn-card-edit">✎ Editar letra</a>
-          </div>
-        </article>
-
-        <!-- Música 2: Frases do Dia a Dia -->
-        <article class="song-card">
-          <div class="card-top">
-            <div class="card-icon">☀️</div>
-            <div class="card-info">
-              <div class="card-badges-row">
-                <span class="badge-tag badge-new">✨ Nova Música</span>
-                <span class="badge-tag">Iniciante</span>
-              </div>
-              <h2 class="card-title">Frases do Dia a Dia</h2>
-              <p class="card-subtitle">Cumprimentos, Vontades e Expressões Básicas</p>
-            </div>
-          </div>
-
-          <div class="card-meta">
-            <span>📝 21 Frases</span>
-            <span>⏱️ 2:13 min</span>
-            <span>🎯 Pronta p/ Sincronizar</span>
-          </div>
-
-          <div class="card-actions">
-            <a href="karaoke.html?song=dia_a_dia" class="btn-card-sing">
-              🎤 Cantar Karaokê
-            </a>
-            <a href="sincronizar.html?song=dia_a_dia" class="btn-card-sync">
-              ⚙️ Sincronizar
-            </a>
-            <a href="editar.html?song=dia_a_dia" class="btn-card-edit">✎ Editar letra</a>
-          </div>
-        </article>
-
-        <!-- Música 1: Frases de Viagem -->
-        <article class="song-card">
-          <div class="card-top">
-            <div class="card-icon">✈️</div>
-            <div class="card-info">
-              <div class="card-badges-row">
-                <span class="badge-tag">Turismo</span>
-                <span class="badge-tag">Aeroporto</span>
-              </div>
-              <h2 class="card-title">Frases de Viagem</h2>
-              <p class="card-subtitle">Alfândega, Hotel, Táxi e Restaurante</p>
-            </div>
-          </div>
-
-          <div class="card-meta">
-            <span>📝 17 Frases</span>
-            <span>⏱️ 3:00 min</span>
-            <span>✅ Sincronizado</span>
-          </div>
-
-          <div class="card-actions">
-            <a href="karaoke.html?song=viagens" class="btn-card-sing">
-              🎤 Cantar Karaokê
-            </a>
-            <a href="sincronizar.html?song=viagens" class="btn-card-sync">
-              ⚙️ Sincronizar
-            </a>
-            <a href="editar.html?song=viagens" class="btn-card-edit">✎ Editar letra</a>
-          </div>
-        </article>
-      </div>
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="home-footer">
-      <a href="sincronizar.html" class="btn-studio-global">
-        🎛️ Abrir Estúdio Geral de Sincronização ➔
-      </a>
-    </footer>
+        <p id="libraryStatus" class="member-status library-status" role="status" aria-live="polite">Carregando sua biblioteca…</p>
+        <section class="catalog-section" aria-labelledby="mySongsTitle"><div class="catalog-heading"><h2 id="mySongsTitle">Minha biblioteca</h2><span class="catalog-rule"></span></div><div id="memberLibraryRail" class="catalog-rail"></div></section>
+        <section class="catalog-section" aria-labelledby="catalogTitle"><div class="catalog-heading"><h2 id="catalogTitle">Explore as músicas</h2><span class="catalog-rule"></span></div><div id="memberCatalogRail" class="catalog-rail"></div></section>
+        <section id="memberOffersSection" class="catalog-section offers-section" aria-labelledby="offersTitle"><div class="catalog-heading"><h2 id="offersTitle">Continue aprendendo</h2><span class="catalog-rule"></span></div><div id="memberOffersRail" class="offers-rail"></div></section>
+      </main>
+      <footer class="member-footer"><span>Inglês Cantando</span><span>Suas músicas, seu ritmo.</span></footer>
+    </section>
   </div>
-
-  <script src="songs-data.js"></script>
-  <script src="custom-songs.js?v=6.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=1"></script>
+  <script src="member-home.js?v=1"></script>
 </body>
 </html>

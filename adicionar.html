@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="home.css"><link rel="stylesheet" href="adicionar.css?v=2">
   <script src="port-redirect.js"></script>
 </head>
-<body><div class="home-container">
+<body hidden><div class="home-container">
   <header class="home-header"><a href="index.html" class="btn-studio-global">‹ Voltar ao início</a><h1 class="home-title">🎵 Adicionar música</h1><p class="home-intro">Escolha o áudio, cole a letra e comece a sincronizar.</p></header>
   <main><form id="addSongForm" class="song-card">
     <label for="songName">Nome da música</label><input id="songName" required maxlength="120" placeholder="Ex.: Inglês no restaurante">
@@ -21,5 +21,5 @@
     <p id="saveError" role="alert"></p>
     <p class="card-subtitle">A música e o áudio ficam salvos neste navegador. Durante a sincronização, seu rascunho é salvo a cada marcação. Guarde o áudio original e baixe o JSON quando terminar.</p>
   </form></main>
-</div><script src="song-import.js?v=2"></script><script src="custom-songs.js?v=6.1"></script><script src="adicionar.js?v=2"></script></body>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js?v=1"></script><script src="admin-guard.js?v=1"></script><script src="song-import.js?v=2"></script><script src="custom-songs.js?v=6.1"></script><script src="adicionar.js?v=2"></script></body>
 </html>

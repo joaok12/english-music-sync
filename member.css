@@ -68,6 +68,7 @@ input:focus { border-color: var(--member-blue); box-shadow: 0 0 0 3px rgba(59, 1
 .admin-product-row { grid-template-columns: 1fr; }
 .admin-product-link { display: flex; align-items: center; gap: 8px; }
 .admin-product-link select { flex: 1; min-width: 0; border: 1px solid var(--member-border); border-radius: 9px; background: rgba(3, 7, 18, .58); color: var(--member-text); padding: 8px; font: inherit; }
+.admin-checkout-input { margin-top: 5px; padding: 9px 10px; font-size: .78rem; }
 .admin-empty { color: var(--member-muted); font-size: .84rem; }
 .admin-span { grid-column: 1 / -1; }
 @media (max-width: 760px) {

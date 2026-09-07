@@ -138,12 +138,19 @@
       const item = document.createElement('div');
       item.className = 'admin-product-row';
       const options = songs.map(song => `<option value="${escapeHtml(song.id)}"${(product.song_ids || []).includes(song.id) ? ' selected' : ''}>${escapeHtml(song.icon || '🎵')} ${escapeHtml(song.title)}</option>`).join('');
-      item.innerHTML = `<div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button class="admin-small-button primary" type="button">Salvar vínculos</button></div>`;
+      item.innerHTML = `<div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span><label class="admin-meta" for="checkout-${escapeHtml(product.id)}">Link de checkout (opcional)</label><input id="checkout-${escapeHtml(product.id)}" class="admin-checkout-input" type="url" placeholder="https://pay.hub.la/..." value="${escapeHtml(product.checkout_url || '')}"></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button class="admin-small-button primary" type="button">Salvar oferta e vínculos</button></div>`;
       const select = item.querySelector('select');
+      const checkoutInput = item.querySelector('.admin-checkout-input');
       item.querySelector('button').addEventListener('click', async () => {
         const selected = new Set([...select.selectedOptions].map(option => option.value));
         const previous = new Set(product.song_ids || []);
         try {
+          const checkout = checkoutInput.value.trim();
+          const checkoutResult = await client.rpc('admin_update_product_checkout', {
+            p_hubla_product_id: product.hubla_product_id,
+            p_checkout_url: checkout || null
+          });
+          if (checkoutResult.error) throw checkoutResult.error;
           for (const id of songs.map(song => song.id)) {
             if (selected.has(id) === previous.has(id)) continue;
             const {error} = await client.rpc('admin_link_product_song', {
@@ -154,7 +161,8 @@
             if (error) throw error;
           }
           product.song_ids = [...selected];
-          setStatus(status, `Vínculos de “${product.name}” salvos.`);
+          product.checkout_url = checkout || null;
+          setStatus(status, `Oferta e vínculos de “${product.name}” salvos.`);
         } catch (error) {
           setStatus(status, error.message || 'Não foi possível salvar os vínculos.', true);
         }

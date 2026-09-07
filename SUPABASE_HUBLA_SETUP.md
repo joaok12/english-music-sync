@@ -80,3 +80,13 @@ Supabase; ao clicar em **Salvar no Karaokê**, os tempos são gravados na nuvem.
 O webhook cria/atualiza os produtos da Hubla, mas não adivinha quais músicas pertencem a cada produto. Depois de receber o primeiro evento, o produto deve ser associado às músicas na tabela `product_songs`. Essa separação permite que um produto principal e um order bump liberem conjuntos diferentes de músicas.
 
 O login não grava o CPF puro. Ele calcula um HMAC no servidor e compara o resultado; o payload de webhook salvo para auditoria também redige documento, IP e endereço.
+
+Para o aluno, a página inicial (`index.html`) é a própria área de membros: sem
+sessão ela mostra o login; com sessão mostra somente as músicas em um catálogo
+estilo streaming. O karaokê é a única ação disponível para o aluno. Cadastro,
+edição e sincronização ficam protegidos pelo `admin-guard.js` e só abrem para o
+e-mail configurado em `ADMIN_EMAILS` no painel `/admin.html`.
+
+Produtos sem acesso podem ter um `checkout_url` configurado no painel. Nesse
+caso aparecem como ofertas para o aluno que ainda não os comprou; produtos já
+comprados não exibem preço nem botão de compra.

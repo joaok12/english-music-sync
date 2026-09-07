@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="home.css"><link rel="stylesheet" href="adicionar.css?v=2">
   <script src="port-redirect.js"></script>
 </head>
-<body><div class="home-container">
+<body hidden><div class="home-container">
   <header class="home-header"><a href="index.html" class="btn-studio-global">‹ Voltar ao início</a><h1 class="home-title">✎ Editar música</h1><p class="home-intro">Corrija a letra e salve novamente. O áudio atual será mantido se você não escolher outro.</p></header>
   <main><form id="addSongForm" class="song-card">
     <label for="songName">Nome da música</label><input id="songName" required maxlength="120">
@@ -22,5 +22,5 @@
     <p id="saveError" role="alert"></p>
     <p class="card-subtitle">A sincronização atual será substituída pela letra corrigida. Se a quantidade ou ordem das palavras mudar, sincronize a música novamente.</p>
   </form></main>
-</div><script src="songs-data.js"></script><script src="sync-store.js"></script><script src="song-import.js?v=2"></script><script src="custom-songs.js?v=6.1"></script><script src="editar.js?v=2"></script></body>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js?v=1"></script><script src="admin-guard.js?v=1"></script><script src="songs-data.js"></script><script src="sync-store.js"></script><script src="song-import.js?v=2"></script><script src="custom-songs.js?v=6.1"></script><script src="editar.js?v=2"></script></body>
 </html>
