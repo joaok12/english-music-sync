@@ -5,7 +5,7 @@ O código desta integração fica em `supabase/`:
 - `migrations/20260907170000_members_library.sql`: produtos, músicas, membros, acessos, idempotência e RLS.
 - `functions/hubla-webhook`: recebe eventos v2 da Hubla, valida `x-hubla-token`, remove CPF do log, grava o comprador e concede/remove produtos.
 - `functions/member-login`: confere e-mail + CPF e devolve um magic link de uso único para a biblioteca.
-- `functions/admin-login`: libera o painel privado somente para os e-mails administrativos configurados.
+- `functions/admin-login`: legado de magic link; o painel atual usa senha do Supabase e a tabela `admin_users`.
 
 ## Publicação inicial
 
@@ -70,7 +70,7 @@ No painel do Supabase, em **Authentication → URL Configuration**, adicione
 permissão o magic link pode validar, mas não voltar para a página correta.
 
 O painel de catálogo fica em
-`https://english-music-sync.vercel.app/admin.html`. Nele você cadastra a letra,
+`https://english-music-sync.vercel.app/admin.html`. Entre com a conta administrativa (e-mail + senha) cadastrada no Supabase. Nele você cadastra a letra,
 envia capa e áudio, publica ou deixa como rascunho e vincula cada produto (ou
 order bump) às músicas. O botão **Sincronizar** abre o estúdio já conectado ao
 Supabase; ao clicar em **Salvar no Karaokê**, os tempos são gravados na nuvem.
@@ -85,7 +85,7 @@ Para o aluno, a página inicial (`index.html`) é a própria área de membros: s
 sessão ela mostra o login; com sessão mostra somente as músicas em um catálogo
 estilo streaming. O karaokê é a única ação disponível para o aluno. Cadastro,
 edição e sincronização ficam protegidos pelo `admin-guard.js` e só abrem para o
-e-mail configurado em `ADMIN_EMAILS` no painel `/admin.html`.
+usuário autenticado que estiver ativo em `admin_users`. Mantenha apenas a conta administrativa necessária nessa tabela.
 
 Produtos sem acesso podem ter um `checkout_url` configurado no painel. Nesse
 caso aparecem como ofertas para o aluno que ainda não os comprou; produtos já

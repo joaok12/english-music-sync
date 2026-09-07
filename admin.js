@@ -4,6 +4,7 @@
   const loginCard = document.getElementById('adminLoginCard');
   const loginForm = document.getElementById('adminLoginForm');
   const loginEmail = document.getElementById('adminEmail');
+  const loginPassword = document.getElementById('adminPassword');
   const loginStatus = document.getElementById('adminLoginStatus');
   const app = document.getElementById('adminApp');
   const status = document.getElementById('adminStatus');
@@ -205,22 +206,28 @@
   loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = loginEmail.value.trim().toLowerCase();
-    if (!email) return setStatus(loginStatus, 'Informe um e-mail válido.', true);
+    const password = loginPassword.value;
+    if (!email || !loginEmail.validity.valid) return setStatus(loginStatus, 'Informe um e-mail válido.', true);
+    if (!password) return setStatus(loginStatus, 'Informe a senha do painel.', true);
     const button = loginForm.querySelector('button');
     button.disabled = true;
-    button.textContent = 'Enviando…';
+    button.textContent = 'Entrando…';
     try {
-      const response = await fetch(`${config.functionsBase}/admin-login`, {
-        method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email})
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.action_link) throw new Error(data.error || 'Não foi possível gerar o acesso.');
-      setStatus(loginStatus, 'Link enviado. Abra o e-mail para entrar no painel.');
+      const {data, error} = await client.auth.signInWithPassword({email, password});
+      if (error || !data?.session) throw error || new Error('Não foi possível entrar no painel.');
+      const {data: isAdmin, error: roleError} = await client.rpc('is_admin');
+      if (roleError || !isAdmin) {
+        await client.auth.signOut();
+        throw new Error('Esta conta não tem autorização administrativa.');
+      }
+      loginPassword.value = '';
+      setStatus(loginStatus, 'Acesso autorizado. Carregando o painel…');
+      await showApp(data.session);
     } catch (error) {
-      setStatus(loginStatus, error.message || 'Não foi possível entrar agora.', true);
+      setStatus(loginStatus, error.message || 'E-mail ou senha inválidos.', true);
     } finally {
       button.disabled = false;
-      button.textContent = 'Enviar link de acesso';
+      button.textContent = 'Entrar no painel';
     }
   });
 

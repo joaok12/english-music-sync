@@ -1,5 +1,6 @@
 -- Área administrativa do catálogo protegido.
--- O administrador entra por magic link; nenhum service_role chega ao navegador.
+-- O administrador entra por e-mail e senha do Supabase Auth; nenhum
+-- service_role chega ao navegador.
 
 create table if not exists public.admin_users (
   id uuid primary key default gen_random_uuid(),

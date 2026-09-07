@@ -17,11 +17,13 @@
       <div class="member-logo">🛠️</div>
       <p class="member-eyebrow">Catálogo privado</p>
       <h1 id="adminLoginTitle">Entrar no painel</h1>
-      <p class="member-lead">Use o e-mail administrativo configurado no Supabase para receber um link de acesso.</p>
+      <p class="member-lead">Entre com o e-mail e a senha da única conta autorizada a administrar o catálogo.</p>
       <form id="adminLoginForm" novalidate>
         <label for="adminEmail">E-mail administrativo</label>
-        <input id="adminEmail" type="email" autocomplete="email" placeholder="voce@email.com" required>
-        <button class="member-primary" type="submit">Enviar link de acesso</button>
+        <input id="adminEmail" type="email" autocomplete="username" placeholder="voce@email.com" required>
+        <label for="adminPassword">Senha do painel</label>
+        <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" minlength="6" required>
+        <button class="member-primary" type="submit">Entrar no painel</button>
       </form>
       <p id="adminLoginStatus" class="member-status" role="status" aria-live="polite"></p>
     </section>
@@ -77,6 +79,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
   <script src="song-import.js?v=2"></script>
-  <script src="admin.js?v=1"></script>
+  <script src="admin.js?v=2"></script>
 </body>
 </html>
