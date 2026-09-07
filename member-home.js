@@ -23,6 +23,7 @@
   let releaseTimer = null;
   let memberSongsCache = [];
   let activePlaylist = null;
+  const coverCache = new Map();
 
   const legacyReleaseAt = '2026-09-11T00:00:00-03:00';
   const fallbackPlaylists = [
@@ -34,6 +35,19 @@
     if (!element) return;
     element.className = `member-status${error ? ' error' : ''}`;
     element.textContent = text || '';
+  }
+
+  function animateElement(element, className = 'is-entering') {
+    if (!element) return;
+    element.classList.remove(className);
+    // Restart the short entrance animation when navigating back and forth.
+    void element.offsetWidth;
+    element.classList.add(className);
+    element.onanimationend = event => {
+      if (event.target !== element) return;
+      element.classList.remove(className);
+      element.onanimationend = null;
+    };
   }
 
   function escapeHtml(value) {
@@ -195,16 +209,32 @@
   }
 
   async function coverUrl(song) {
+    const cacheKey = String(song?.cover_path || song?.song_id || song?.id || song?.title || '');
+    const cached = coverCache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) return cached.url;
     if (song.cover_path) {
-      const {data} = await client.storage.from('song-media').createSignedUrl(song.cover_path, 3600);
-      if (data?.signedUrl) return data.signedUrl;
+      try {
+        const {data} = await client.storage.from('song-media').createSignedUrl(song.cover_path, 3600);
+        if (data?.signedUrl) {
+          coverCache.set(cacheKey, {url: data.signedUrl, expiresAt: Date.now() + 55 * 60 * 1000});
+          return data.signedUrl;
+        }
+      } catch (_error) {
+        // A missing cover should never block the playlist from opening.
+      }
     }
     const text = `${song?.id || ''} ${song?.song_id || ''} ${song?.title || ''}`.toLocaleLowerCase();
-    if (text.includes('de boa') || text.includes('de-boa') || text.includes('facdb85a')) return 'assets/covers/de-boa.webp';
-    if (text.includes('praia')) return 'assets/covers/praia.webp';
-    if (text.includes('moro aqui')) return 'assets/covers/eu-moro-aqui.webp';
-    if (text.includes('start')) return 'assets/covers/lets-start.webp';
-    return '';
+    const fallback = text.includes('de boa') || text.includes('de-boa') || text.includes('facdb85a')
+      ? 'assets/covers/de-boa.webp'
+      : text.includes('praia')
+        ? 'assets/covers/praia.webp'
+        : text.includes('moro aqui')
+          ? 'assets/covers/eu-moro-aqui.webp'
+          : text.includes('start')
+            ? 'assets/covers/lets-start.webp'
+            : '';
+    coverCache.set(cacheKey, {url: fallback, expiresAt: Date.now() + 10 * 60 * 1000});
+    return fallback;
   }
 
   function fallbackPlaylistCover(playlistItem) {
@@ -214,11 +244,23 @@
   }
 
   async function playlistCoverUrl(playlistItem) {
+    const cacheKey = `playlist:${playlistItem?.cover_path || playlistItem?.slug || playlistItem?.playlist_id || ''}`;
+    const cached = coverCache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) return cached.url;
     if (playlistItem.cover_path) {
-      const {data} = await client.storage.from('song-media').createSignedUrl(playlistItem.cover_path, 3600);
-      if (data?.signedUrl) return data.signedUrl;
+      try {
+        const {data} = await client.storage.from('song-media').createSignedUrl(playlistItem.cover_path, 3600);
+        if (data?.signedUrl) {
+          coverCache.set(cacheKey, {url: data.signedUrl, expiresAt: Date.now() + 55 * 60 * 1000});
+          return data.signedUrl;
+        }
+      } catch (_error) {
+        // Fall back to the local cover when storage is slow or unavailable.
+      }
     }
-    return fallbackPlaylistCover(playlistItem);
+    const fallback = fallbackPlaylistCover(playlistItem);
+    coverCache.set(cacheKey, {url: fallback, expiresAt: Date.now() + 10 * 60 * 1000});
+    return fallback;
   }
 
   function emptyRail(container, message) {
@@ -229,13 +271,37 @@
     container.append(empty);
   }
 
+  function renderPlaylistCollectionSkeleton() {
+    playlistCollectionsRail.replaceChildren();
+    for (let index = 0; index < 2; index += 1) {
+      const skeleton = document.createElement('div');
+      skeleton.className = 'playlist-tile-skeleton';
+      skeleton.style.setProperty('--tile-index', index);
+      skeleton.setAttribute('aria-hidden', 'true');
+      skeleton.innerHTML = '<span class="skeleton-cover"></span><span class="skeleton-copy"><i></i><i></i><i></i></span>';
+      playlistCollectionsRail.append(skeleton);
+    }
+  }
+
+  function renderPlaylistSkeleton() {
+    playlist.replaceChildren();
+    for (let index = 0; index < 5; index += 1) {
+      const skeleton = document.createElement('div');
+      skeleton.className = 'playlist-row-skeleton';
+      skeleton.style.setProperty('--row-index', index);
+      skeleton.setAttribute('aria-hidden', 'true');
+      skeleton.innerHTML = '<i></i><em></em><span></span><b></b>';
+      playlist.append(skeleton);
+    }
+  }
+
   async function renderPlaylistCollections(rows) {
     playlistCollectionsRail.replaceChildren();
     if (!Array.isArray(rows) || !rows.length) {
       emptyRail(playlistCollectionsRail, 'Nenhuma playlist disponível para esta conta.');
       return;
     }
-    for (const playlistItem of rows) {
+    const cards = await Promise.all(rows.map(async (playlistItem, index) => {
       const cover = await playlistCoverUrl(playlistItem);
       const future = playlistItem.is_available === false || (playlistItem.release_at && new Date(playlistItem.release_at).getTime() > Date.now());
       const count = Number(playlistItem.song_count || 0);
@@ -245,11 +311,16 @@
       const card = document.createElement('button');
       card.type = 'button';
       card.className = `playlist-tile${future ? ' is-coming-soon' : ''}`;
+      card.style.setProperty('--tile-index', index);
       card.disabled = future;
-      card.innerHTML = `<div class="playlist-tile-cover"><img src="${escapeHtml(cover)}" alt="Capa da playlist ${escapeHtml(playlistItem.title)}" loading="lazy">${future ? '<span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span>' : '<span class="playlist-tile-badge available">PLAYLIST</span>'}</div><div class="playlist-tile-info"><h3>${escapeHtml(playlistItem.title)}</h3><p>${escapeHtml(playlistItem.subtitle || 'Escolha uma playlist para ver suas músicas.')}</p>${release}</div>`;
+      const imageLoading = index < 2 ? 'eager' : 'lazy';
+      const imagePriority = index === 0 ? 'high' : 'auto';
+      card.innerHTML = `<div class="playlist-tile-cover"><img src="${escapeHtml(cover)}" alt="Capa da playlist ${escapeHtml(playlistItem.title)}" loading="${imageLoading}" fetchpriority="${imagePriority}" decoding="async">${future ? '<span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span>' : '<span class="playlist-tile-badge available">PLAYLIST</span>'}</div><div class="playlist-tile-info"><h3>${escapeHtml(playlistItem.title)}</h3><p>${escapeHtml(playlistItem.subtitle || 'Escolha uma playlist para ver suas músicas.')}</p>${release}</div>`;
       card.addEventListener('click', () => openPlaylist(playlistItem));
-      playlistCollectionsRail.append(card);
-    }
+      return card;
+    }));
+    playlistCollectionsRail.append(...cards);
+    animateElement(playlistCollections);
     startReleaseCountdowns();
   }
 
@@ -266,17 +337,19 @@
       const future = isComingSoon(song);
       const available = !future;
       row.className = `playlist-row${available ? '' : ' is-locked'}`;
+      row.style.setProperty('--row-index', index);
       const releaseMeta = future ? `<span class="playlist-song-release"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(song.release_at)}">--d --h --m --s</strong></span>` : '';
       const cover = song.__cover || '';
-      row.innerHTML = `<div class="playlist-select"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || 'Sua música')}</small>${releaseMeta}</span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></div>${available ? `<a class="playlist-action" href="${songHref(song)}">Tocar</a>` : '<span class="playlist-action is-locked" aria-label="Música ainda não liberada">Em breve</span>'}`;
+      row.innerHTML = `<div class="playlist-select"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy" decoding="async">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || 'Sua música')}</small>${releaseMeta}</span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></div>${available ? `<a class="playlist-action" href="${songHref(song)}">Tocar</a>` : '<span class="playlist-action is-locked" aria-label="Música ainda não liberada">Em breve</span>'}`;
       playlist.append(row);
     });
+    animateElement(playlist);
     startReleaseCountdowns();
   }
 
   async function renderLibraryWithCovers(rows) {
     const songs = orderAvailableFirst(rows);
-    for (const song of songs) song.__cover = await coverUrl(song);
+    await Promise.all(songs.map(async song => { song.__cover = await coverUrl(song); }));
     renderLibrary(songs);
   }
 
@@ -286,6 +359,8 @@
     playlistCollections.hidden = false;
     playlist.replaceChildren();
     setStatus(playlistDetailStatus, '');
+    animateElement(playlistCollections);
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   async function loadPlaylistSongs(playlistItem) {
@@ -303,7 +378,8 @@
     playlistDetailTitle.textContent = playlistItem.title || 'Playlist';
     playlistDetailSubtitle.textContent = playlistItem.subtitle || '';
     setStatus(playlistDetailStatus, 'Carregando músicas…');
-    playlist.replaceChildren();
+    renderPlaylistSkeleton();
+    animateElement(playlistDetail);
     window.scrollTo({top: 0, behavior: 'smooth'});
     try {
       const songs = await loadPlaylistSongs(playlistItem);
@@ -339,6 +415,7 @@
     libraryView.hidden = false;
     greeting.textContent = session.user?.email || '';
     closePlaylist();
+    renderPlaylistCollectionSkeleton();
     try {
       const [libraryResult, playlistsResult, offersResult] = await Promise.all([
         client.rpc('get_my_library'),
