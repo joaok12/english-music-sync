@@ -9,6 +9,7 @@
   const libraryStatus = document.getElementById('libraryStatus');
   const libraryRail = document.getElementById('memberLibraryRail');
   const catalogRail = document.getElementById('memberCatalogRail');
+  const catalogSection = catalogRail.closest('.catalog-section');
   const offersSection = document.getElementById('memberOffersSection');
   const offersRail = document.getElementById('memberOffersRail');
   const greeting = document.getElementById('memberGreeting');
@@ -56,6 +57,17 @@
     return fallbackCatalog.find(item => text.includes(item.id) || text.includes(item.title.toLocaleLowerCase())) || null;
   }
 
+  function uniqueSongs(rows) {
+    const byId = new Map();
+    for (const song of Array.isArray(rows) ? rows : []) {
+      const id = song?.song_id || song?.id || `${song?.title || ''}-${song?.slug || ''}`;
+      if (!id) continue;
+      const previous = byId.get(id);
+      if (!previous || (song.is_accessible && !previous.is_accessible)) byId.set(id, song);
+    }
+    return [...byId.values()];
+  }
+
   async function coverUrl(song) {
     if (song.cover_path) {
       const {data} = await client.storage.from('song-media').createSignedUrl(song.cover_path, 3600);
@@ -74,11 +86,12 @@
 
   async function renderLibrary(songs) {
     libraryRail.replaceChildren();
-    if (!songs?.length) {
+    const unique = uniqueSongs(songs);
+    if (!unique.length) {
       emptyRail(libraryRail, 'Sua compra foi reconhecida. As músicas liberadas aparecerão aqui assim que forem vinculadas ao produto.');
       return;
     }
-    for (const song of songs) {
+    for (const song of unique) {
       const cover = await coverUrl(song);
       const card = document.createElement('article');
       card.className = 'catalog-card';
@@ -87,10 +100,12 @@
     }
   }
 
-  async function renderCatalog(rows) {
+  async function renderCatalog(rows, ownedIds = new Set()) {
     catalogRail.replaceChildren();
-    const catalog = rows?.length ? rows : fallbackCatalog.map(song => ({...song, song_id: song.id, is_accessible: false, product_name: 'Catálogo'}));
-    if (!catalog.length) return emptyRail(catalogRail, 'O catálogo está sendo preparado.');
+    const source = rows?.length ? rows : fallbackCatalog.map(song => ({...song, song_id: song.id, is_accessible: false, product_name: 'Catálogo'}));
+    const catalog = uniqueSongs(source).filter(song => !ownedIds.has(song.song_id));
+    catalogSection.classList.toggle('is-empty', catalog.length === 0);
+    if (!catalog.length) return;
     for (const song of catalog) {
       const cover = await coverUrl(song);
       const accessible = Boolean(song.is_accessible);
@@ -138,10 +153,11 @@
       if (libraryResult.error) throw libraryResult.error;
       if (catalogResult.error) throw catalogResult.error;
       if (offersResult.error) throw offersResult.error;
-      await renderLibrary(libraryResult.data || []);
-      await renderCatalog(catalogResult.data || []);
+      const librarySongs = uniqueSongs(libraryResult.data || []);
+      await renderLibrary(librarySongs);
+      await renderCatalog(catalogResult.data || [], new Set(librarySongs.map(song => song.song_id)));
       renderOffers(offersResult.data || []);
-      setStatus(libraryStatus, `${(libraryResult.data || []).length} música(s) liberada(s)`);
+      setStatus(libraryStatus, `${librarySongs.length} música(s) liberada(s)`);
     } catch (error) {
       setStatus(libraryStatus, error.message || 'Não foi possível carregar sua biblioteca.', true);
     }
