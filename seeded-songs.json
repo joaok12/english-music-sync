@@ -1,0 +1,3638 @@
+[
+  {
+    "id": "custom_253e4b44-65eb-4d80-964c-b536b065350d",
+    "title": "Eu Moro Aqui",
+    "durationSec": 160,
+    "durationText": "2:40",
+    "lyrics": [
+      {
+        "id": 1,
+        "pt": "Eu moro aqui",
+        "en1": "I live here",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "moro",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aqui",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "live",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "pt": "Eu trabalho aqui",
+        "en1": "I work here",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "trabalho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aqui",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "work",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "pt": "Eu tenho tempo",
+        "en1": "I have time",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tenho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tempo",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "time",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "pt": "Eu tenho dinheiro",
+        "en1": "I have money",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tenho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "dinheiro",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "money",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "pt": "Eu quero entrar",
+        "en1": "I want to enter",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "entrar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "pt": "Eu quero sair",
+        "en1": "I want to leave",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sair",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "leave",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "pt": "Eu posso esperar",
+        "en1": "I can wait",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "posso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "esperar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "pt": "Eu posso pagar",
+        "en1": "I can pay",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "posso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pagar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "pt": "Você pode entrar",
+        "en1": "You can enter",
+        "en2": "",
+        "words": [
+          {
+            "text": "Você",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pode",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "entrar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "pt": "Você pode esperar",
+        "en1": "You can wait",
+        "en2": "",
+        "words": [
+          {
+            "text": "Você",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pode",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "esperar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "pt": "Isso é bom",
+        "en1": "This is good",
+        "en2": "This is good",
+        "words": [
+          {
+            "text": "Isso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "bom",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "good",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "good",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "pt": "Isso é fácil",
+        "en1": "This is easy",
+        "en2": "This is easy",
+        "words": [
+          {
+            "text": "Isso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "fácil",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "easy",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "easy",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "pt": "Eu estou pronto",
+        "en1": "I am ready",
+        "en2": "",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "estou",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pronto",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "ready",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "pt": "Vamos começar",
+        "en1": "Let’s start",
+        "en2": "",
+        "words": [
+          {
+            "text": "Vamos",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "começar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let’s",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "start",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      }
+    ],
+    "icon": "🎵",
+    "audioFile": "assets/custom-songs/01-253e4b44-65eb-4d80-964c-b536b065350d.m4a"
+  },
+  {
+    "id": "custom_9d0e92ae-1b1b-4317-b7ad-a9dab2b2cea6",
+    "title": "Onde é a Praia",
+    "durationSec": 129.96,
+    "durationText": "2:09",
+    "lyrics": [
+      {
+        "id": 1,
+        "pt": "Onde é a praia?",
+        "en1": "Where is the beach?",
+        "en2": "Where is the beach?",
+        "words": [
+          {
+            "text": "Onde",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "a",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "praia?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "beach?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "beach?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "pt": "Onde é o hotel?",
+        "en1": "Where is the hotel?",
+        "en2": "Where is the hotel?",
+        "words": [
+          {
+            "text": "Onde",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "o",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hotel?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hotel?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hotel?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "pt": "Onde é a loja?",
+        "en1": "Where is the store?",
+        "en2": "Where is the store?",
+        "words": [
+          {
+            "text": "Onde",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "a",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "loja?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "store?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Where",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "store?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "pt": "Eu quero água",
+        "en1": "I want water",
+        "en2": "I want water",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "água",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "water",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "water",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "pt": "Eu quero café",
+        "en1": "I want coffee",
+        "en2": "I want coffee",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "café",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "coffee",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "coffee",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "pt": "Eu quero comida",
+        "en1": "I want food",
+        "en2": "I want food",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "comida",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "food",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "food",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "pt": "Eu estou cansado",
+        "en1": "I am tired",
+        "en2": "I am tired",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "estou",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "cansado",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tired",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tired",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "pt": "Eu estou feliz",
+        "en1": "I am happy",
+        "en2": "I am happy",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "estou",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "feliz",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "happy",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "happy",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "pt": "Está muito quente",
+        "en1": "It is very hot",
+        "en2": "It is very hot",
+        "words": [
+          {
+            "text": "Está",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "muito",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quente",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "It",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "very",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hot",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "It",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "very",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hot",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "pt": "Está muito frio",
+        "en1": "It is very cold",
+        "en2": "It is very cold",
+        "words": [
+          {
+            "text": "Está",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "muito",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "frio",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "It",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "very",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "cold",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "It",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "very",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "cold",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "pt": "Que horas são?",
+        "en1": "What time is it?",
+        "en2": "What time is it?",
+        "words": [
+          {
+            "text": "Que",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "horas",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "são?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "What",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "time",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "it?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "What",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "time",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "it?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "pt": "Qual é o preço?",
+        "en1": "What is the price?",
+        "en2": "What is the price?",
+        "words": [
+          {
+            "text": "Qual",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "o",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "preço?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "What",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "price?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "What",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "the",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "price?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "pt": "Eu quero comprar",
+        "en1": "I want to buy",
+        "en2": "I want to buy",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "comprar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "buy",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "buy",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "pt": "Posso pagar aqui?",
+        "en1": "Can I pay here?",
+        "en2": "Can I pay here?",
+        "words": [
+          {
+            "text": "Posso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pagar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aqui?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Can",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "pt": "Você fala português?",
+        "en1": "Do you speak Portuguese?",
+        "en2": "Do you speak Portuguese?",
+        "words": [
+          {
+            "text": "Você",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "fala",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "português?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Do",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "you",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "speak",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Portuguese?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Do",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "you",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "speak",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Portuguese?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "pt": "Eu falo um pouco",
+        "en1": "I speak a little",
+        "en2": "I speak a little",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "falo",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "um",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pouco",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "speak",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "a",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "little",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "speak",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "a",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "little",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      }
+    ],
+    "icon": "🎵",
+    "audioFile": "assets/custom-songs/02-9d0e92ae-1b1b-4317-b7ad-a9dab2b2cea6.m4a"
+  },
+  {
+    "id": "custom_facdb85a-b843-441d-8b45-053a0218c0e1",
+    "title": "De boa - Gíria 01",
+    "durationSec": 89.92,
+    "durationText": "1:29",
+    "lyrics": [
+      {
+        "id": 1,
+        "pt": "De boa",
+        "en1": "No big deal",
+        "en2": "No big deal",
+        "words": [
+          {
+            "text": "De",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "boa",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "No",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "big",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "deal",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "No",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "big",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "deal",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "pt": "Tô dentro",
+        "en1": "",
+        "en2": "I’m in I’m in",
+        "words": [
+          {
+            "text": "Tô",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "dentro",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "in",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "in",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "pt": "Pode deixar",
+        "en1": "I got you",
+        "en2": "I got you",
+        "words": [
+          {
+            "text": "Pode",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "deixar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "got",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "you",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "got",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "you",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "pt": "Tô indo",
+        "en1": "",
+        "en2": "I’m on my way I’m on my way",
+        "words": [
+          {
+            "text": "Tô",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "indo",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "on",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "my",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "way",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "on",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "my",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "way",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "pt": "Espera aí",
+        "en1": "Hang on",
+        "en2": "Hang on",
+        "words": [
+          {
+            "text": "Espera",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aí",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Hang",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "on",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Hang",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "on",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "pt": "Calma aí",
+        "en1": "Chill out",
+        "en2": "Chill out",
+        "words": [
+          {
+            "text": "Calma",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aí",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Chill",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "out",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Chill",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "out",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "pt": "Nem pensar",
+        "en1": "No way",
+        "en2": "No way",
+        "words": [
+          {
+            "text": "Nem",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pensar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "No",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "way",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "No",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "way",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "pt": "Com certeza",
+        "en1": "For sure",
+        "en2": "For sure",
+        "words": [
+          {
+            "text": "Com",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "certeza",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "For",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sure",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "For",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sure",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "pt": "Faz sentido",
+        "en1": "Makes sense",
+        "en2": "Makes sense",
+        "words": [
+          {
+            "text": "Faz",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sentido",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Makes",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sense",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Makes",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sense",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "pt": "Minha culpa",
+        "en1": "My bad",
+        "en2": "My bad",
+        "words": [
+          {
+            "text": "Minha",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "culpa",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "My",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "bad",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "My",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "bad",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "pt": "Tanto faz",
+        "en1": "Whatever",
+        "en2": "",
+        "words": [
+          {
+            "text": "Tanto",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "faz",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Whatever",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "pt": "Bora sair",
+        "en1": "Let’s hang out",
+        "en2": "Let’s hang out",
+        "words": [
+          {
+            "text": "Bora",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sair",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let’s",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hang",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "out",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let’s",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "hang",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "out",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "pt": "Me avisa",
+        "en1": "",
+        "en2": "Let me know Let me know",
+        "words": [
+          {
+            "text": "Me",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "avisa",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "me",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "know",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "me",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "know",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "pt": "Tô quebrado",
+        "en1": "",
+        "en2": "I’m broke I’m broke",
+        "words": [
+          {
+            "text": "Tô",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quebrado",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "broke",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I’m",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "broke",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "pt": "É sério?",
+        "en1": "For real?",
+        "en2": "For real?",
+        "words": [
+          {
+            "text": "É",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sério?",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "For",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "real?",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "For",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "real?",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      }
+    ],
+    "icon": "🎵",
+    "audioFile": "assets/custom-songs/03-facdb85a-b843-441d-8b45-053a0218c0e1.m4a"
+  },
+  {
+    "id": "custom_fcf0288e-073e-4af4-a05d-6f7fa396f9fa",
+    "title": "Lets Start",
+    "durationSec": 174.96,
+    "durationText": "2:54",
+    "lyrics": [
+      {
+        "id": 1,
+        "pt": "Eu moro aqui",
+        "en1": "I live here",
+        "en2": "I live here",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "moro",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aqui",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "live",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "live",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "pt": "Eu trabalho aqui",
+        "en1": "I work here",
+        "en2": "I work here",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "trabalho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "aqui",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "work",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "work",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "pt": "Eu tenho tempo",
+        "en1": "I have time",
+        "en2": "I have time",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tenho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tempo",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "time",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "time",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "pt": "Eu tenho dinheiro",
+        "en1": "I have money",
+        "en2": "I have money",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "tenho",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "dinheiro",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "money",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "have",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "money",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "pt": "Eu quero entrar",
+        "en1": "I want to enter",
+        "en2": "I want to enter",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "entrar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "pt": "Eu quero sair",
+        "en1": "I want to leave",
+        "en2": "I want to leave",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "quero",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "sair",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "leave",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "want",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "to",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "leave",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "pt": "Eu posso esperar",
+        "en1": "I can wait",
+        "en2": "I can wait",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "posso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "esperar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "pt": "Eu posso pagar",
+        "en1": "I can pay",
+        "en2": "I can pay",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "posso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pagar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "pt": "Você pode entrar",
+        "en1": "You can enter",
+        "en2": "You can enter",
+        "words": [
+          {
+            "text": "Você",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pode",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "entrar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "enter",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "pt": "Você pode esperar",
+        "en1": "You can wait",
+        "en2": "You can wait",
+        "words": [
+          {
+            "text": "Você",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pode",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "esperar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "You",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "pt": "Isso é bom",
+        "en1": "This is good",
+        "en2": "This is good",
+        "words": [
+          {
+            "text": "Isso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "bom",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "good",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "good",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "pt": "Isso é fácil",
+        "en1": "This is easy",
+        "en2": "This is easy",
+        "words": [
+          {
+            "text": "Isso",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "é",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "fácil",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "easy",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "This",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "easy",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "pt": "Eu estou pronto",
+        "en1": "I am ready",
+        "en2": "I am ready",
+        "words": [
+          {
+            "text": "Eu",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "estou",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pronto",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "ready",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "I",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "ready",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "pt": "Vamos começar",
+        "en1": "Let’s start",
+        "en2": "Let’s start",
+        "words": [
+          {
+            "text": "Vamos",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "começar",
+            "line": "pt",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let’s",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "start",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "Let’s",
+            "line": "en2",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "start",
+            "line": "en2",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "pt": "",
+        "en1": "I live here",
+        "en2": "",
+        "words": [
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "live",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "pt": "",
+        "en1": "I work here",
+        "en2": "",
+        "words": [
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "work",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "here",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "pt": "",
+        "en1": "I can wait",
+        "en2": "",
+        "words": [
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "wait",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 18,
+        "pt": "",
+        "en1": "I can pay",
+        "en2": "",
+        "words": [
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "can",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "pay",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 19,
+        "pt": "",
+        "en1": "This is good",
+        "en2": "",
+        "words": [
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "good",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "pt": "",
+        "en1": "This is easy",
+        "en2": "",
+        "words": [
+          {
+            "text": "This",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "is",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "easy",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "pt": "",
+        "en1": "I am ready",
+        "en2": "",
+        "words": [
+          {
+            "text": "I",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "am",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "ready",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "pt": "",
+        "en1": "Let’s start",
+        "en2": "",
+        "words": [
+          {
+            "text": "Let’s",
+            "line": "en1",
+            "start": null,
+            "end": null
+          },
+          {
+            "text": "start",
+            "line": "en1",
+            "start": null,
+            "end": null
+          }
+        ]
+      }
+    ],
+    "icon": "🎵",
+    "audioFile": "assets/custom-songs/04-fcf0288e-073e-4af4-a05d-6f7fa396f9fa.m4a"
+  }
+]

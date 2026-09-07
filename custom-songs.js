@@ -1,6 +1,7 @@
 // Audio and metadata are committed together; object URLs are recreated on each visit.
 window.CustomSongs = (() => {
   let connection;
+  let seededRecords = [];
   const urls = [];
   const INDEX_KEY = 'KARAOKE_CUSTOM_SONG_INDEX';
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -42,6 +43,17 @@ window.CustomSongs = (() => {
       request.onerror = () => reject(request.error);
     });
   }
+  async function loadSeededSongs() {
+    try {
+      const response = await fetch('seeded-songs.json', {cache:'no-store'});
+      if (!response.ok) throw new Error(`arquivo não encontrado (${response.status})`);
+      const records = await response.json();
+      return Array.isArray(records) ? records : [];
+    } catch (error) {
+      console.warn('As músicas incluídas no projeto não puderam ser carregadas.', error);
+      return [];
+    }
+  }
   async function add(record) {
     const db = await database();
     await new Promise((resolve,reject) => {
@@ -54,11 +66,14 @@ window.CustomSongs = (() => {
   }
   async function get(id) {
     const db = await database();
-    return new Promise((resolve,reject) => {
+    const saved = await new Promise((resolve,reject) => {
       const request = db.transaction('songs').objectStore('songs').get(id);
       request.onsuccess = () => resolve(request.result || null);
       request.onerror = () => reject(request.error);
     });
+    const included = seededRecords.find(record => record.id === id);
+    if (!saved) return included || null;
+    return included ? {...included, ...saved, audioFile: saved.audio ? '' : included.audioFile} : saved;
   }
   async function update(record) {
     const db = await database();
@@ -70,19 +85,30 @@ window.CustomSongs = (() => {
     });
     remember(record);
   }
-  const ready = all().then(records => {
+  const ready = Promise.all([all(), loadSeededSongs()]).then(([localRecords, seeded]) => {
     const catalog = window.SONGS_CATALOG || (window.SONGS_CATALOG = {});
+    seededRecords = seeded;
+    const seedIds = new Set(seeded.map(record => record.id));
+    const seedsById = new Map(seeded.map(record => [record.id, record]));
+    const records = [
+      ...seeded.filter(record => !localRecords.some(local => local.id === record.id)),
+      ...localRecords.map(record => {
+        const included = seedsById.get(record.id);
+        return included ? {...included, ...record, audioFile: record.audio ? '' : included.audioFile} : record;
+      })
+    ];
     const byId = new Map(records.map(record => [record.id, record]));
     for (const entry of readIndex()) if (!byId.has(entry.id)) records.push({...entry, audio:null, recoveredFromIndex:true});
     for (const record of records) {
-      remember(record);
+      const includedWithProject = seedIds.has(record.id) && !record.audio;
+      if (!includedWithProject) remember(record);
       const lyrics = cleanLyrics(record.lyrics);
-      if (JSON.stringify(lyrics) !== JSON.stringify(record.lyrics)) {
+      if (!includedWithProject && JSON.stringify(lyrics) !== JSON.stringify(record.lyrics)) {
         update({...record, lyrics}).catch(error => console.warn('Letra antiga limpa na tela, mas não pôde ser atualizada no armazenamento.', error));
       }
-      let audioFile = '';
+      let audioFile = record.audioFile || '';
       try {
-        if (record.audio && typeof record.audio.size === 'number') {
+        if (!audioFile && record.audio && typeof record.audio.size === 'number') {
           audioFile = URL.createObjectURL(record.audio);
           urls.push(audioFile);
         }
