@@ -421,6 +421,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     catch (error) { alert(error.message); return null; }
   }
 
+  async function saveRemoteLyrics(lyrics) {
+    if (!currentSongId.startsWith('remote_')) return;
+    const config = window.SUPABASE_CONFIG || {};
+    if (!window.supabase?.createClient || !config.url || !config.anonKey) {
+      throw new Error('A integração do Supabase não está disponível nesta página.');
+    }
+    const client = window.supabase.createClient(config.url, config.anonKey);
+    const {data: {session}} = await client.auth.getSession();
+    if (!session) throw new Error('Entre no painel administrativo para salvar uma música protegida.');
+    const {error} = await client.rpc('admin_update_song_lyrics', {
+      p_song_id: currentSongId.slice('remote_'.length),
+      p_lyrics: lyrics
+    });
+    if (error) throw error;
+  }
+
   // Baixar JSON
   btnDownload.addEventListener("click", () => {
     const data = compileSyncData();
@@ -447,6 +463,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.setItem(`KARAOKE_SYNC_${currentSongId}`, JSON.stringify(imported));
       localStorage.setItem("KARAOKE_ACTIVE_SONG", currentSongId);
       localStorage.removeItem('KARAOKE_DRAFT_' + currentSongId);
+      await saveRemoteLyrics(imported);
       currentSong = {...currentSong, lyrics: imported};
       currentActiveWordIdx = -1;
       initWordList();
@@ -459,12 +476,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Salvar direto no Karaokê
-  btnApply.addEventListener("click", () => {
+  btnApply.addEventListener("click", async () => {
     const data = compileSyncData();
     if (!data) return;
     try {
       localStorage.setItem(`KARAOKE_SYNC_${currentSongId}`, JSON.stringify(data));
-    } catch (error) { alert('Não foi possível salvar. Baixe o JSON para guardar seu trabalho.'); return; }
+      await saveRemoteLyrics(data);
+    } catch (error) { alert(`Não foi possível salvar: ${error.message || 'tente novamente'}. Baixe o JSON para guardar seu trabalho.`); return; }
     localStorage.setItem("KARAOKE_ACTIVE_SONG", currentSongId);
     alert(`✅ Sincronização de "${currentSong.title}" salva com sucesso! Abrindo no Karaokê agora...`);
     window.location.href = `karaoke.html?song=${currentSongId}`;

@@ -10,9 +10,11 @@ CPF e abre uma biblioteca protegida. Consulte
 Hubla e associar os produtos às músicas.
 
 As músicas públicas e o estúdio local continuam funcionando como antes. O
-catálogo protegido usa as tabelas `songs`, `products` e `product_songs` do
-Supabase; capas e áudios ficam no bucket privado `song-media` e só são
-entregues para quem tem um produto ativo.
+ catálogo protegido usa as tabelas `songs`, `products` e `product_songs` do
+ Supabase; capas e áudios ficam no bucket privado `song-media` e só são
+ entregues para quem tem um produto ativo. O painel administrativo em
+ [`admin.html`](admin.html) permite cadastrar capa, áudio e letra, vincular
+ produtos/order bumps e salvar a sincronização diretamente na nuvem.
 
 Após o deploy, abra a URL da Vercel normalmente; não use os links `localhost` para compartilhar o app.
 

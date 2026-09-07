@@ -41,3 +41,37 @@ input:focus { border-color: var(--member-blue); box-shadow: 0 0 0 3px rgba(59, 1
 .library-action.primary { background: var(--member-blue); color: white; }
 .library-action.secondary { border: 1px solid var(--member-border); color: var(--member-text); }
 .library-empty { padding: 24px 0; color: var(--member-muted); }
+
+.admin-shell { width: min(100% - 32px, 1080px); }
+.admin-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.admin-header h1 { font-size: clamp(1.65rem, 5vw, 2.4rem); }
+.admin-layout { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr); gap: 18px; margin-top: 24px; }
+.admin-panel { margin-top: 0; padding: 24px; }
+.admin-panel h2 { margin: 0 0 6px; font-size: 1.12rem; }
+.admin-panel > p { margin: 0 0 18px; color: var(--member-muted); font-size: .86rem; }
+.admin-panel textarea { width: 100%; min-height: 190px; resize: vertical; border: 1px solid var(--member-border); border-radius: 14px; background: rgba(3, 7, 18, .58); color: var(--member-text); padding: 14px 15px; font: 500 .9rem/1.5 'Plus Jakarta Sans', system-ui, sans-serif; outline: none; }
+.admin-panel textarea:focus { border-color: var(--member-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, .2); }
+.admin-check { display: flex; align-items: center; gap: 9px; margin-top: 15px; color: var(--member-muted); font-size: .84rem; }
+.admin-check input { width: auto; accent-color: var(--member-blue); }
+.admin-file { padding: 10px; font-size: .82rem; }
+.admin-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.admin-actions .member-primary { flex: 1; min-width: 180px; margin-top: 0; }
+.admin-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.admin-song-row, .admin-product-row { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--member-border); border-radius: 15px; background: rgba(3, 7, 18, .32); }
+.admin-song-row { grid-template-columns: 1fr auto; align-items: center; }
+.admin-song-row strong, .admin-product-row strong { display: block; font-size: .9rem; }
+.admin-meta { color: var(--member-muted); font-size: .75rem; }
+.admin-row-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.admin-small-button { border: 1px solid var(--member-border); border-radius: 9px; background: transparent; color: var(--member-text); padding: 7px 9px; font: 700 .74rem inherit; cursor: pointer; text-decoration: none; }
+.admin-small-button.primary { border-color: rgba(59, 130, 246, .7); background: rgba(37, 99, 235, .18); }
+.admin-small-button.danger { color: #fca5a5; }
+.admin-product-row { grid-template-columns: 1fr; }
+.admin-product-link { display: flex; align-items: center; gap: 8px; }
+.admin-product-link select { flex: 1; min-width: 0; border: 1px solid var(--member-border); border-radius: 9px; background: rgba(3, 7, 18, .58); color: var(--member-text); padding: 8px; font: inherit; }
+.admin-empty { color: var(--member-muted); font-size: .84rem; }
+.admin-span { grid-column: 1 / -1; }
+@media (max-width: 760px) {
+  .admin-layout { grid-template-columns: 1fr; }
+  .admin-song-row { grid-template-columns: 1fr; }
+  .admin-row-actions { justify-content: flex-start; }
+}

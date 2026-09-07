@@ -5,6 +5,7 @@ O código desta integração fica em `supabase/`:
 - `migrations/20260907170000_members_library.sql`: produtos, músicas, membros, acessos, idempotência e RLS.
 - `functions/hubla-webhook`: recebe eventos v2 da Hubla, valida `x-hubla-token`, remove CPF do log, grava o comprador e concede/remove produtos.
 - `functions/member-login`: confere e-mail + CPF e devolve um magic link de uso único para a biblioteca.
+- `functions/admin-login`: libera o painel privado somente para os e-mails administrativos configurados.
 
 ## Publicação inicial
 
@@ -30,6 +31,11 @@ env -u SUPABASE_ACCESS_TOKEN supabase secrets set \
   --profile english-music-sync --project-ref rdlznkwpffzhjilzmvbp \
   HUBLA_WEBHOOK_TOKEN="$HUBLA_WEBHOOK_TOKEN"
 unset HUBLA_WEBHOOK_TOKEN
+
+# Troque pelo seu e-mail (ou informe vários separados por vírgula).
+env -u SUPABASE_ACCESS_TOKEN supabase secrets set \
+  --profile english-music-sync --project-ref rdlznkwpffzhjilzmvbp \
+  ADMIN_EMAILS=seu-email@exemplo.com
 ```
 
 Depois publique as funções sem a validação JWT padrão, pois o webhook da Hubla autentica pelo próprio `x-hubla-token`:
@@ -37,6 +43,7 @@ Depois publique as funções sem a validação JWT padrão, pois o webhook da Hu
 ```bash
 env -u SUPABASE_ACCESS_TOKEN supabase functions deploy hubla-webhook --no-verify-jwt --use-api --profile english-music-sync
 env -u SUPABASE_ACCESS_TOKEN supabase functions deploy member-login --no-verify-jwt --use-api --profile english-music-sync
+env -u SUPABASE_ACCESS_TOKEN supabase functions deploy admin-login --no-verify-jwt --use-api --profile english-music-sync
 ```
 
 O endpoint para colar na Hubla será:
@@ -58,8 +65,15 @@ env -u SUPABASE_ACCESS_TOKEN supabase projects api-keys --project-ref rdlznkwpff
 A chave anon pode aparecer no navegador; nunca coloque no navegador a chave `service_role`, o token da Hubla ou o segredo do CPF.
 
 No painel do Supabase, em **Authentication → URL Configuration**, adicione
-`https://english-music-sync.vercel.app/biblioteca.html` às Redirect URLs. Sem
-essa permissão o magic link pode validar, mas não voltar para a biblioteca.
+`https://english-music-sync.vercel.app/biblioteca.html` e
+`https://english-music-sync.vercel.app/admin.html` às Redirect URLs. Sem essa
+permissão o magic link pode validar, mas não voltar para a página correta.
+
+O painel de catálogo fica em
+`https://english-music-sync.vercel.app/admin.html`. Nele você cadastra a letra,
+envia capa e áudio, publica ou deixa como rascunho e vincula cada produto (ou
+order bump) às músicas. O botão **Sincronizar** abre o estúdio já conectado ao
+Supabase; ao clicar em **Salvar no Karaokê**, os tempos são gravados na nuvem.
 
 ## Mapeamento de produtos e músicas
 

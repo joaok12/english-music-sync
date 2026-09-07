@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo • Inglês Cantando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="member.css">
+</head>
+<body class="member-page">
+  <main class="member-shell admin-shell">
+    <a class="member-back" href="index.html">← Voltar para a página inicial</a>
+
+    <section id="adminLoginCard" class="member-card" aria-labelledby="adminLoginTitle">
+      <div class="member-logo">🛠️</div>
+      <p class="member-eyebrow">Catálogo privado</p>
+      <h1 id="adminLoginTitle">Entrar no painel</h1>
+      <p class="member-lead">Use o e-mail administrativo configurado no Supabase para receber um link de acesso.</p>
+      <form id="adminLoginForm" novalidate>
+        <label for="adminEmail">E-mail administrativo</label>
+        <input id="adminEmail" type="email" autocomplete="email" placeholder="voce@email.com" required>
+        <button class="member-primary" type="submit">Enviar link de acesso</button>
+      </form>
+      <p id="adminLoginStatus" class="member-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="adminApp" hidden>
+      <header class="admin-header">
+        <div><p class="member-eyebrow">Inglês Cantando</p><h1>Catálogo protegido</h1><p class="member-lead">Cadastre a capa, o áudio e a letra. Depois abra o estúdio para marcar os tempos.</p></div>
+        <button id="adminLogout" class="member-secondary" type="button">Sair</button>
+      </header>
+      <p id="adminStatus" class="member-status" role="status" aria-live="polite"></p>
+
+      <div class="admin-layout">
+        <section class="member-card admin-panel" aria-labelledby="songFormTitle">
+          <h2 id="songFormTitle">Adicionar música</h2>
+          <p>Uma linha em branco separa as partes. A letra é limpa e agrupada automaticamente em PT / inglês.</p>
+          <form id="adminSongForm" novalidate>
+            <input id="adminSongId" type="hidden">
+            <label for="adminSongTitle">Nome da música</label>
+            <input id="adminSongTitle" required maxlength="120" placeholder="Ex.: Frases do restaurante">
+            <label for="adminSongSubtitle">Descrição curta</label>
+            <input id="adminSongSubtitle" maxlength="180" placeholder="Ex.: Inglês para pedir comida">
+            <label for="adminSongIcon">Emoji</label>
+            <input id="adminSongIcon" maxlength="8" value="🎵" placeholder="🎵">
+            <label for="adminSongCover">Capa (opcional)</label>
+            <input id="adminSongCover" class="admin-file" type="file" accept="image/*">
+            <label for="adminSongAudio">Áudio</label>
+            <input id="adminSongAudio" class="admin-file" type="file" accept="audio/*">
+            <label for="adminSongLyrics">Letra</label>
+            <textarea id="adminSongLyrics" required placeholder="Eu moro aqui.&#10;(I live here.)&#10;I live here.&#10;&#10;Eu trabalho aqui.&#10;(I work here.)&#10;I work here."></textarea>
+            <label class="admin-check"><input id="adminSongPublished" type="checkbox"> Publicar na biblioteca dos alunos</label>
+            <div class="admin-actions">
+              <button class="member-primary" type="submit" id="adminSaveSong">Salvar música</button>
+              <button class="admin-small-button" type="button" id="adminClearSong">Limpar formulário</button>
+            </div>
+          </form>
+          <p id="adminSongStatus" class="member-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="member-card admin-panel" aria-labelledby="songListTitle">
+          <h2 id="songListTitle">Músicas cadastradas</h2>
+          <p>Rascunhos também aparecem para você sincronizar antes de publicar.</p>
+          <ul id="adminSongList" class="admin-list"></ul>
+        </section>
+
+        <section class="member-card admin-panel admin-span" aria-labelledby="productListTitle">
+          <h2 id="productListTitle">Produtos e order bumps</h2>
+          <p>Quando a Hubla enviar o primeiro evento, o produto aparece aqui. Vincule cada produto às músicas que ele libera.</p>
+          <div id="adminProductList" class="admin-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=1"></script>
+  <script src="song-import.js?v=2"></script>
+  <script src="admin.js?v=1"></script>
+</body>
+</html>

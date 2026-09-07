@@ -30,7 +30,7 @@
       const cover = song.cover_path ? (await client.storage.from('song-media').createSignedUrl(song.cover_path, 3600)).data?.signedUrl : '';
       const card = document.createElement('article');
       card.className = 'library-card';
-      card.innerHTML = `<div class="library-cover" ${cover ? `style="background-image:url('${escapeHtml(cover)}');background-size:cover;background-position:center"` : ''}>${cover ? '' : escapeHtml(song.icon || '🎵')}</div><div class="library-info"><h2>${escapeHtml(song.title)}</h2><p>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</p><div class="library-actions"><a class="library-action primary" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">🎤 Cantar</a><a class="library-action secondary" href="sincronizar.html?song=remote_${encodeURIComponent(song.song_id)}">⚙️ Sincronizar</a></div></div>`;
+      card.innerHTML = `<div class="library-cover" ${cover ? `style="background-image:url('${escapeHtml(cover)}');background-size:cover;background-position:center"` : ''}>${cover ? '' : escapeHtml(song.icon || '🎵')}</div><div class="library-info"><h2>${escapeHtml(song.title)}</h2><p>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</p><div class="library-actions"><a class="library-action primary" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">🎤 Cantar</a></div></div>`;
       grid.append(card);
     }
   }
