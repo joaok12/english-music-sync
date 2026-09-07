@@ -140,7 +140,7 @@
       const cover = await coverUrl(song);
       const row = document.createElement('article');
       row.className = 'playlist-row';
-      row.innerHTML = `<button class="playlist-select" type="button" aria-label="Selecionar ${escapeHtml(song.title)}"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</small></span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></button><a class="playlist-action" href="${songHref(song)}">Cantar</a>`;
+      row.innerHTML = `<button class="playlist-select" type="button" aria-label="Selecionar ${escapeHtml(song.title)}"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || song.product_name || 'Sua música')}</small></span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></button><a class="playlist-action" href="${songHref(song)}">Tocar</a>`;
       row.querySelector('.playlist-select').addEventListener('click', () => selectFeaturedSong(song, cover, row));
       playlist.append(row);
       if (index === 0) selectFeaturedSong(song, cover, row);
@@ -158,7 +158,7 @@
       const accessible = Boolean(song.is_accessible);
       const checkout = typeof song.checkout_url === 'string' ? song.checkout_url.trim() : '';
       const action = accessible
-        ? `<a class="catalog-play" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">🎤 Cantar agora</a>`
+        ? `<a class="catalog-play" href="karaoke.html?song=remote_${encodeURIComponent(song.song_id)}">Tocar agora</a>`
         : checkout
           ? `<a class="catalog-buy" href="${escapeHtml(checkout)}" target="_blank" rel="noopener">Conhecer acesso ↗</a>`
           : '<p class="catalog-muted">Disponível em breve</p>';

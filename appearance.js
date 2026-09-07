@@ -54,9 +54,7 @@
   adminPricing.hidden = true;
 
   trigger.addEventListener('click', () => panel.showModal());
-  for (const id of ['closeSettings', 'doneSettings']) {
-    document.getElementById(id).addEventListener('click', () => panel.close());
-  }
+  document.getElementById('closeSettings').addEventListener('click', () => panel.close());
   panel.addEventListener('close', () => trigger.focus());
   panel.addEventListener('click', event => {
     const bounds = panel.getBoundingClientRect();

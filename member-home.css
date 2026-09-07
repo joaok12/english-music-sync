@@ -89,7 +89,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .playlist-copy strong { color: #f1f5fb; font-size: .82rem; font-weight: 800; }
 .playlist-copy small { margin-top: 4px; color: var(--member-muted); font-size: .68rem; }
 .playlist-duration { color: #7d8ca2; font-size: .68rem; }
-.playlist-action { flex: 0 0 auto; margin-right: 5px; border: 1px solid rgba(245, 197, 24, .42); border-radius: 7px; color: var(--member-gold); padding: 7px 10px; font-size: .65rem; font-weight: 800; text-decoration: none; transition: background .2s ease, color .2s ease; }
+.playlist-action { flex: 0 0 auto; margin-right: 18px; border: 1px solid rgba(245, 197, 24, .42); border-radius: 7px; color: var(--member-gold); padding: 7px 10px; font-size: .65rem; font-weight: 800; text-decoration: none; transition: background .2s ease, color .2s ease; }
 .playlist-action:hover { background: var(--member-gold); color: #241c06; }
 .playlist-aside { position: sticky; top: 20px; border: 1px solid rgba(148, 163, 184, .14); border-radius: 14px; background: rgba(13, 27, 49, .72); padding: 23px 20px; }
 .aside-label { color: var(--member-red); font-size: .61rem; font-weight: 800; letter-spacing: .13em; }
@@ -161,6 +161,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .playlist-copy { padding: 0 10px; }
   .playlist-copy strong { font-size: .75rem; }
   .playlist-copy small { font-size: .63rem; }
-  .playlist-action { margin-right: 0; padding: 7px 8px; font-size: .6rem; }
+  .playlist-action { margin-right: 12px; padding: 7px 8px; font-size: .6rem; }
   .catalog-rail { grid-auto-columns: minmax(158px, 46vw); }
 }

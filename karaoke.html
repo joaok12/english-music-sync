@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5.1">
-  <link rel="stylesheet" href="themes.css?v=4">
+  <link rel="stylesheet" href="themes.css?v=5">
   <script src="port-redirect.js"></script>
 </head>
 <body>
@@ -123,18 +123,16 @@
 
   <dialog id="appearanceSettings" class="appearance-settings" aria-labelledby="settingsTitle">
     <div class="settings-heading"><h2 id="settingsTitle">Configurações</h2><button id="closeSettings" type="button" aria-label="Fechar configurações">✕</button></div>
-    <fieldset class="theme-picker"><legend>Tema do karaokê</legend>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-claro"><span class="theme-swatch" style="--swatch-bg:#ffffff;--swatch-highlight:#c1121f">Aa</span><span>USA Claro<small>Branco, preto e vermelho</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-blur"><span class="theme-swatch" style="--swatch-bg:#0b1220;--swatch-highlight:#ffffff">Aa</span><span>USA Blur<small>Branco com cantos escuros</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="original" checked><span class="theme-swatch" style="--swatch-bg:#0c1224;--swatch-highlight:#ef4444">Aa</span><span>Original<small>Azul-marinho e vermelho</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="aurora"><span class="theme-swatch" style="--swatch-bg:#15102b;--swatch-highlight:#e5a1ff">Aa</span><span>Aurora<small>Roxo e lilás</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="oceano"><span class="theme-swatch" style="--swatch-bg:#062532;--swatch-highlight:#67e8f9">Aa</span><span>Oceano<small>Azul-petróleo e ciano</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="floresta"><span class="theme-swatch" style="--swatch-bg:#10251b;--swatch-highlight:#bef264">Aa</span><span>Floresta<small>Verde-escuro e lima</small></span></label>
-      <label class="theme-option"><input type="radio" name="karaokeTheme" value="ambar"><span class="theme-swatch" style="--swatch-bg:#2d1913;--swatch-highlight:#fcd58d">Aa</span><span>Âmbar<small>Marrom e dourado</small></span></label>
+    <fieldset class="theme-picker"><legend class="sr-only">Tema do karaokê</legend>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-claro"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#ffffff;--swatch-highlight:#c1121f"></span><span>USA Claro</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="usa-blur"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#0b1220;--swatch-highlight:#ffffff"></span><span>USA Blur</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="original" checked><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#0c1224;--swatch-highlight:#ef4444"></span><span>Original</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="aurora"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#15102b;--swatch-highlight:#e5a1ff"></span><span>Aurora</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="oceano"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#062532;--swatch-highlight:#67e8f9"></span><span>Oceano</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="floresta"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#10251b;--swatch-highlight:#bef264"></span><span>Floresta</span></label>
+      <label class="theme-option"><input type="radio" name="karaokeTheme" value="ambar"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#2d1913;--swatch-highlight:#fcd58d"></span><span>Âmbar</span></label>
     </fieldset>
-    <fieldset id="adminPricingSettings" class="header-picker" hidden><legend>Oferta no topo</legend><label><input type="checkbox" id="showPromo"> Mostrar Inglês Cantando e preço</label><p>Essa opção aparece somente para o administrador.</p></fieldset>
-    <p class="settings-note">As escolhas ficam salvas neste navegador e valem para todas as músicas. Atalho: C abre ou fecha as configurações.</p>
-    <button id="doneSettings" type="button" class="settings-done">Pronto</button>
+    <fieldset id="adminPricingSettings" class="header-picker" hidden><legend class="sr-only">Oferta no topo</legend><label><input type="checkbox" id="showPromo"> Mostrar preço no topo</label></fieldset>
   </dialog>
 
   <audio id="audioTrack" preload="auto">
@@ -148,6 +146,6 @@
   <script src="supabase-config.js?v=1"></script>
   <script src="remote-song.js?v=1"></script>
   <script src="script.js?v=5.2"></script>
-  <script src="appearance.js?v=2"></script>
+  <script src="appearance.js?v=3"></script>
 </body>
 </html>
