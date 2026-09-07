@@ -135,7 +135,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .member-login-grid { display: block; min-height: auto; padding: 54px 0 65px; }
   .login-copy { max-width: 560px; }
   .login-copy h1 { font-size: clamp(3.6rem, 15vw, 6rem); }
-  .login-panel { max-width: 440px; margin: 38px 0 0 auto; }
+  .member-login-lead { width: 100%; }
+  .login-proof { max-width: 100%; line-height: 1.35; }
+  .login-panel { width: 100%; max-width: 440px; margin: 38px 0 0; }
   .login-art { right: -46px; bottom: 28px; opacity: .18; transform: scale(.8); transform-origin: bottom right; }
   .member-nav-center { display: none; }
   .member-hero { min-height: 430px; }
@@ -143,12 +145,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 @media (max-width: 560px) {
   .member-topbar { min-height: 39px; font-size: .66rem; }
-  .member-login-shell, .member-nav, .member-library-view main, .member-footer { width: min(100% - 30px, 1320px); }
+  .member-login-shell, .member-nav, .member-library-view main, .member-footer { width: calc(100% - 30px); max-width: 1320px; }
   .member-brand { font-size: .82rem; letter-spacing: .03em; }
   .brand-mark { width: 30px; height: 30px; font-size: 1.15rem; }
   .header-note { display: none; }
   .member-login-grid { padding-top: 43px; }
+  .member-login-grid, .login-copy, .member-login-lead, .login-panel { width: 100%; min-width: 0; max-width: 100%; }
   .member-login-lead { font-size: .84rem; }
+  .login-proof { overflow: hidden; }
   .login-panel { margin-top: 30px; padding: 24px 20px; }
   .member-nav { min-height: 68px; }
   .member-greeting { display: none; }

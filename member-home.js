@@ -14,6 +14,7 @@
   const offersRail = document.getElementById('memberOffersRail');
   const greeting = document.getElementById('memberGreeting');
   const logout = document.getElementById('memberLogout');
+  let viewRequest = 0;
 
   const fallbackCatalog = [
     {id: 'viagens', title: 'Frases de Viagem', subtitle: 'Aeroporto, hotel, táxi e restaurante', icon: '✈️', cover: 'assets/covers/viagens.webp'},
@@ -135,6 +136,7 @@
   }
 
   async function showMemberArea(session) {
+    const requestId = ++viewRequest;
     if (!session) {
       loginView.hidden = false;
       libraryView.hidden = true;
@@ -153,6 +155,7 @@
       if (libraryResult.error) throw libraryResult.error;
       if (catalogResult.error) throw catalogResult.error;
       if (offersResult.error) throw offersResult.error;
+      if (requestId !== viewRequest) return;
       const librarySongs = uniqueSongs(libraryResult.data || []);
       await renderLibrary(librarySongs);
       await renderCatalog(catalogResult.data || [], new Set(librarySongs.map(song => song.song_id)));
