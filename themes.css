@@ -34,6 +34,7 @@
 .song-only-header h1 { font-size:1.25rem; font-weight:800; line-height:1.35; overflow-wrap:anywhere; padding:2px 0; text-align:center; }
 .song-header-back { position:absolute; left:18px; top:50%; transform:translateY(-50%); display:grid; place-items:center; width:28px; height:28px; border:1px solid var(--bg-card-border); border-radius:8px; color:var(--text-pure); font-size:1.65rem; font-weight:500; line-height:1; }
 .settings-trigger { position:absolute; right:15px; top:30px; width:34px; height:34px; display:grid; place-items:center; cursor:pointer; background:transparent; color:var(--theme-muted); border:1px solid transparent; border-radius:50%; z-index:25; }
+.settings-icon { display:block; width:22px; height:22px; }
 .settings-trigger:hover { color:var(--text-pure); background:var(--bg-card); }
 .appearance-settings { position:fixed; inset:0; margin:auto; width:min(420px,calc(100vw - 28px)); max-height:calc(100dvh - 36px); overflow:auto; padding:22px; border-radius:18px; background:var(--bg-surface); color:var(--text-pure); border:1px solid var(--bg-card-border); font-family:var(--font-family); box-shadow:0 20px 80px #0009; color-scheme:dark; }
 .appearance-settings::backdrop { background:#0009; }
