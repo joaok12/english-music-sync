@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const syncJsonFile = document.getElementById("syncJsonFile");
   const btnApply = document.getElementById("btnApply");
   const editCurrent = document.getElementById("editCurrent");
+  const syncSongTitle = document.getElementById("syncSongTitle");
+  const syncToast = document.getElementById("syncToast");
 
   // Barra de Progresso
   const audioTrackBar = document.getElementById("audioTrackBar");
@@ -62,17 +64,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Lista plana de palavras: [{ blockIdx, lineName, wordIdx, text, start, end }]
   let flatWords = [];
   let currentActiveWordIdx = -1; // -1 significa esperando a primeira palavra começar
+  let completedSaveSignature = '';
+  let completedSavePromise = null;
+  let completionVersion = 0;
+  let toastTimer = null;
+
+  function showSyncNotice(message, tone = 'success') {
+    const saveStatus = document.getElementById('syncSaveStatus');
+    if (saveStatus) saveStatus.textContent = message;
+    if (!syncToast) return;
+    syncToast.textContent = message;
+    syncToast.className = `sync-toast is-visible ${tone}`;
+    if (typeof window.clearTimeout === 'function') window.clearTimeout(toastTimer);
+    if (typeof window.setTimeout === 'function') toastTimer = window.setTimeout(() => syncToast.classList.remove('is-visible'), 3600);
+  }
+
+  function invalidateCompletedSave() {
+    completionVersion += 1;
+    completedSaveSignature = '';
+    completedSavePromise = null;
+  }
 
   // Trocar de Música
   function setSong(songId) {
     if (!catalog[songId]) return;
     currentSongId = songId;
     currentSong = {...catalog[currentSongId], lyrics: window.SyncStore.read(currentSongId, catalog[currentSongId].lyrics)};
+    invalidateCompletedSave();
 
     // Atualiza estado salvo e URL sem recarregar
     localStorage.setItem('KARAOKE_ACTIVE_SONG', currentSongId);
     history.replaceState(null, '', `?song=${currentSongId}`);
     if (editCurrent) editCurrent.href = `editar.html?song=${encodeURIComponent(currentSongId)}`;
+    if (syncSongTitle) syncSongTitle.textContent = currentSong.title || 'Música';
 
     // Atualiza abas visuais
     document.querySelectorAll('#syncSongTabs .song-tab-btn').forEach(btn => {
@@ -95,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentActiveWordIdx = -1;
     document.getElementById('syncSaveStatus').textContent = '';
+    if (syncToast) syncToast.className = 'sync-toast';
 
     // Inicializa palavras da música selecionada
     initWordList();
@@ -180,9 +205,37 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (currentActiveWordIdx === flatWords.length && flatWords.length) {
         const compiled = window.SyncStore.compile(currentSong.lyrics, flatWords);
         localStorage.setItem('KARAOKE_SYNC_' + currentSongId, JSON.stringify(compiled));
-        document.getElementById('syncSaveStatus').textContent = '✓ Sincronização salva no karaokê';
+        if (currentSongId.startsWith('remote_')) {
+          queueCompletedSave(compiled);
+        } else {
+          showSyncNotice('✓ Sincronização salva no karaokê');
+        }
       }
-    } catch (error) { alert('Não foi possível salvar o rascunho. Verifique o espaço disponível no navegador.'); }
+    } catch (error) { showSyncNotice('Não foi possível salvar o rascunho neste navegador.', 'error'); }
+  }
+
+  function queueCompletedSave(compiled) {
+    const signature = JSON.stringify(compiled);
+    if (completedSaveSignature === signature) return;
+    if (completedSavePromise?.signature === signature) return;
+    const version = completionVersion;
+    showSyncNotice('⏳ Salvando sincronização no banco…', 'saving');
+    const promise = (async () => {
+      try {
+        await saveRemoteLyrics(compiled);
+        if (version !== completionVersion) return;
+        completedSaveSignature = signature;
+        showSyncNotice('✓ Sincronização salva no banco de dados');
+      } catch (error) {
+        if (version !== completionVersion) return;
+        showSyncNotice('Não foi possível salvar no banco. Tente novamente.', 'error');
+        console.error('Sincronização concluída, mas o banco não foi atualizado.', error);
+      } finally {
+        if (completedSavePromise?.signature === signature) completedSavePromise = null;
+      }
+    })();
+    promise.signature = signature;
+    completedSavePromise = promise;
   }
 
   // 2. Renderizar estrutura na tela
@@ -294,6 +347,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Desfazer última palavra
   function handleUndo() {
+    const wasComplete = currentActiveWordIdx >= flatWords.length;
+    if (wasComplete) invalidateCompletedSave();
     if (currentActiveWordIdx > 0) {
       if (currentActiveWordIdx < flatWords.length) {
         flatWords[currentActiveWordIdx].start = null;
@@ -557,6 +612,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Reset
   btnReset.addEventListener("click", () => {
     if (confirm(`Deseja recomeçar a sincronização de "${currentSong.title}" do zero?`)) {
+      invalidateCompletedSave();
       audio.currentTime = 0;
       audio.pause();
       currentActiveWordIdx = -1;

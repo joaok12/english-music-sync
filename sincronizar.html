@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sincronizar Karaokê • Gravador de Precisão</title>
+  <title>Sincronizar música • Inglês Cantando</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="sincronizar.css?v=3.1">
+  <link rel="stylesheet" href="sincronizar.css?v=4">
   <script src="port-redirect.js"></script>
 </head>
 <body hidden>
@@ -21,24 +21,25 @@
           </a>
           <div class="rec-badge" id="recBadge">
             <span class="rec-dot"></span>
-            <span>GRAVADOR</span>
+            <span>SYNC</span>
           </div>
+          <div class="sync-title"><span>SINCRONIZAR</span><strong id="syncSongTitle">Música</strong></div>
         </div>
 
         <div class="action-buttons">
-          <a href="adicionar.html" class="btn-action btn-download" style="text-decoration:none">＋ Adicionar música</a>
-          <a id="editCurrent" href="editar.html" class="btn-action btn-download" style="text-decoration:none">✎ Editar letra</a>
+          <a href="adicionar.html" class="btn-action btn-quiet" style="text-decoration:none">＋ Adicionar música</a>
+          <a id="editCurrent" href="editar.html" class="btn-action btn-quiet" style="text-decoration:none">✎ Editar letra</a>
           <button class="btn-action btn-reset" id="btnReset" title="Recomeçar do zero">
-            🔄 Recomeçar
+            ↺ Recomeçar
           </button>
           <button class="btn-action btn-download" id="btnDownload" title="Baixar arquivo JSON">
-            💾 Baixar JSON
+            ↓ JSON
           </button>
           <button class="btn-action btn-download" id="btnImportJson" title="Importar arquivo JSON já sincronizado">
-            📥 Importar JSON
+            ↑ Importar
           </button>
           <button class="btn-action btn-apply" id="btnApply" title="Salvar e abrir no karaokê agora mesmo">
-            🚀 Salvar no Karaokê
+            ✓ Abrir karaokê
           </button>
         </div>
       </div>
@@ -62,13 +63,14 @@
       <!-- Barra de Instruções -->
       <div class="instructions-box">
         <div class="instructions-text">
-          Ao ouvir cada palavra começar, aperte <kbd>ESPAÇO</kbd> ou toque no botão vermelho. O tempo que você ficar na palavra será a duração exata dela!
+          Aperte <kbd>ESPAÇO</kbd> quando cada palavra começar. A sincronização salva sozinha ao terminar.
         </div>
         <div class="progress-info">
           Palavra <strong id="lblWordIndex">0</strong> de <span id="lblWordTotal">0</span>
           <div id="syncSaveStatus" role="status" aria-live="polite"></div>
         </div>
       </div>
+      <div id="syncToast" class="sync-toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
       <!-- Barra do Áudio -->
       <div class="audio-track-bar" id="audioTrackBar">
@@ -130,6 +132,6 @@
   <script src="sync-store.js"></script>
   <script src="custom-songs.js?v=6.1"></script>
   <script src="remote-song.js?v=1"></script>
-  <script src="sincronizar.js?v=5.2"></script>
+  <script src="sincronizar.js?v=6"></script>
 </body>
 </html>
