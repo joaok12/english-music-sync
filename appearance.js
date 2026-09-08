@@ -78,6 +78,7 @@
     const settings = updateCreativeControls(values);
     const root = document.documentElement;
     root.style.setProperty('--karaoke-glow-size', formatPixels(settings.glowSize));
+    root.style.setProperty('--karaoke-pointer-glow-size', formatPixels(Math.max(3, Math.round(settings.glowSize / 3))));
     root.style.setProperty('--karaoke-bg-blur', formatPixels(settings.backgroundBlur));
     root.style.setProperty('--karaoke-bg-height', formatPixels(settings.backgroundHeight));
     root.style.setProperty('--karaoke-header-offset', formatPixels(settings.headerOffset, true));
@@ -95,6 +96,7 @@
   function clearCreativeSettings() {
     const root = document.documentElement;
     root.style.removeProperty('--karaoke-glow-size');
+    root.style.removeProperty('--karaoke-pointer-glow-size');
     root.style.removeProperty('--karaoke-bg-blur');
     root.style.removeProperty('--karaoke-bg-height');
     root.style.removeProperty('--karaoke-header-offset');
