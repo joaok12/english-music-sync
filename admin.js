@@ -40,6 +40,8 @@
   const clearPlaylist = document.getElementById('adminClearPlaylist');
   const playlistStatus = document.getElementById('adminPlaylistStatus');
   const playlistList = document.getElementById('adminPlaylistList');
+  const playlistEditor = document.getElementById('adminPlaylistEditor');
+  const playlistSummary = document.getElementById('adminPlaylistSummary');
   const productList = document.getElementById('adminProductList');
   const productRuleForm = document.getElementById('adminProductRuleForm');
   const productRuleId = document.getElementById('adminProductRuleId');
@@ -54,6 +56,8 @@
   const clearProductRule = document.getElementById('adminClearProductRule');
   const productRuleStatus = document.getElementById('adminProductRuleStatus');
   const productRuleList = document.getElementById('adminProductRuleList');
+  const productRuleEditor = document.getElementById('adminProductRuleEditor');
+  const productRuleSummary = document.getElementById('adminProductRuleSummary');
 
   if (!hasConfig || !window.supabase?.createClient) {
     loginStatus.className = 'admin-status error';
@@ -71,8 +75,7 @@
   const viewMeta = {
     dashboard: ['INGLÊS CANTANDO', 'Visão geral', 'Uma visão rápida do seu catálogo e das próximas liberações.'],
     songs: ['CATÁLOGO', 'Músicas', 'Adicione letras e áudio, depois sincronize cada faixa no seu tempo.'],
-    playlists: ['ORGANIZAÇÃO', 'Playlists', 'Monte coleções, capas e a ordem das músicas para seus alunos.'],
-    products: ['ACESSOS', 'Produtos e order bumps', 'Defina quais produtos da Hubla liberam cada música.']
+    products: ['CATÁLOGO E ACESSOS', 'Produtos', 'Cada produto libera uma playlist. Organize conteúdo, acesso e order bumps.']
   };
 
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -229,7 +232,9 @@
     productRuleForm.reset();
     productRuleId.value = '';
     productRuleActive.checked = true;
-    document.getElementById('productRuleFormTitle').textContent = 'Nova regra de produto';
+    const ruleTitle = document.getElementById('productRuleFormTitle');
+    if (ruleTitle) ruleTitle.textContent = 'Nova regra de produto';
+    if (productRuleSummary) productRuleSummary.textContent = 'Nova regra automática';
     saveProductRule.textContent = 'Salvar regra';
     renderProductRulePlaylistChoices();
     setStatus(productRuleStatus, '');
@@ -244,9 +249,12 @@
     productRuleOrderBump.checked = Boolean(rule.is_order_bump);
     productRuleActive.checked = rule.is_active !== false;
     renderProductRulePlaylistChoices(rule.playlist_id || '');
-    document.getElementById('productRuleFormTitle').textContent = 'Editar regra de produto';
+    const ruleTitle = document.getElementById('productRuleFormTitle');
+    if (ruleTitle) ruleTitle.textContent = 'Editar regra de produto';
+    if (productRuleSummary) productRuleSummary.textContent = 'Editar regra automática';
     saveProductRule.textContent = 'Salvar alterações';
     openView('products');
+    if (productRuleEditor) productRuleEditor.open = true;
     productRuleHublaId.focus({preventScroll: true});
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
@@ -323,6 +331,7 @@
     playlistReleaseAt.value = '';
     playlistForm.dataset.coverPath = '';
     document.getElementById('playlistFormTitle').textContent = 'Nova playlist';
+    if (playlistSummary) playlistSummary.textContent = 'Nova playlist';
     savePlaylist.textContent = 'Salvar playlist';
     renderPlaylistSongChoices();
     setStatus(playlistStatus, '');
@@ -337,9 +346,11 @@
     playlistPublished.checked = Boolean(playlist.is_published);
     playlistForm.dataset.coverPath = playlist.cover_path || '';
     document.getElementById('playlistFormTitle').textContent = `Editar: ${playlist.title}`;
+    if (playlistSummary) playlistSummary.textContent = `Editar: ${playlist.title}`;
     savePlaylist.textContent = 'Salvar alterações';
     renderPlaylistSongChoices(playlist.song_ids || []);
-    openView('playlists');
+    openView('products');
+    if (playlistEditor) playlistEditor.open = true;
     playlistTitle.focus({preventScroll: true});
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
@@ -411,13 +422,13 @@
       return;
     }
     products.forEach(product => {
-      const item = document.createElement('div');
+      const item = document.createElement('details');
       item.className = 'admin-product-row';
       const options = songs.map(song => `<option value="${escapeHtml(song.id)}"${(product.song_ids || []).includes(song.id) ? ' selected' : ''}>${escapeHtml(song.icon || '🎵')} ${escapeHtml(song.title)}</option>`).join('');
       const playlistOptions = playlists.map(item => `<option value="${escapeHtml(item.id)}"${item.id === product.playlist_id ? ' selected' : ''}>${escapeHtml(item.title)}</option>`).join('');
       const activeTag = product.is_active === false ? '<span class="admin-tag draft">Desativado</span>' : '<span class="admin-tag">Ativo</span>';
       const typeTag = product.is_order_bump ? '<span class="admin-tag soon">Order bump</span>' : '<span class="admin-tag">Principal</span>';
-      item.innerHTML = `<div class="admin-product-heading"><div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span></div><div class="admin-item-tags">${activeTag}${typeTag}</div></div><div class="admin-product-config"><label class="admin-meta">Playlist<select class="admin-product-playlist" aria-label="Playlist liberada para ${escapeHtml(product.name)}"><option value="">Sem playlist</option>${playlistOptions}</select></label><label class="admin-meta">Valor (R$)<input class="admin-product-price" type="number" min="0" step="0.01" placeholder="29,90" value="${escapeHtml(product.price ?? '')}"></label><label class="admin-meta admin-product-check"><input class="admin-product-order-bump" type="checkbox"${product.is_order_bump ? ' checked' : ''}> Order bump</label><label class="admin-meta admin-product-checkout">Checkout<input class="admin-checkout-input" type="url" placeholder="https://pay.hub.la/..." value="${escapeHtml(product.checkout_url || '')}"></label></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button type="button">Salvar configuração</button></div>`;
+      item.innerHTML = `<summary class="admin-product-summary"><div class="admin-product-heading"><div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span></div><div class="admin-item-tags">${activeTag}${typeTag}</div></div><b class="admin-product-chevron" aria-hidden="true">＋</b></summary><div class="admin-product-body"><div class="admin-product-config"><label class="admin-meta">Playlist<select class="admin-product-playlist" aria-label="Playlist liberada para ${escapeHtml(product.name)}"><option value="">Sem playlist</option>${playlistOptions}</select></label><label class="admin-meta">Valor (R$)<input class="admin-product-price" type="number" min="0" step="0.01" placeholder="29,90" value="${escapeHtml(product.price ?? '')}"></label><label class="admin-meta admin-product-check"><input class="admin-product-order-bump" type="checkbox"${product.is_order_bump ? ' checked' : ''}> Order bump</label><label class="admin-meta admin-product-checkout">Checkout<input class="admin-checkout-input" type="url" placeholder="https://pay.hub.la/..." value="${escapeHtml(product.checkout_url || '')}"></label></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button type="button">Salvar configuração</button></div></div>`;
       const select = item.querySelector('.admin-product-link select');
       const playlistSelect = item.querySelector('.admin-product-playlist');
       const priceInput = item.querySelector('.admin-product-price');
@@ -461,7 +472,6 @@
 
   function updateCounters() {
     document.getElementById('navSongCount').textContent = songs.length;
-    document.getElementById('navPlaylistCount').textContent = playlists.length;
     document.getElementById('navProductCount').textContent = products.length;
   }
 
@@ -475,7 +485,9 @@
     if (songResult.error) throw songResult.error;
     if (productResult.error) throw productResult.error;
     songs = songResult.data || [];
-    products = productResult.data || [];
+    // Produtos marcados como desativados são mantidos no banco para auditoria,
+    // mas ficam fora da lista operacional para o painel não mostrar ofertas antigas.
+    products = (productResult.data || []).filter(product => product.is_active !== false);
     playlists = playlistResult.error ? [] : (playlistResult.data || []);
     productRules = productRuleResult.error && !isMissingRpc(productRuleResult.error) ? [] : (productRuleResult.data || []);
     updateCounters();
@@ -538,7 +550,8 @@
     if (!action) return;
     const type = action.dataset.adminAction;
     if (type === 'new-song') { openView('songs'); resetSongForm(); songTitle.focus({preventScroll: true}); }
-    if (type === 'new-playlist') { openView('playlists'); resetPlaylistForm(); playlistTitle.focus({preventScroll: true}); }
+    if (type === 'new-playlist') { openView('products'); resetPlaylistForm(); if (playlistEditor) playlistEditor.open = true; playlistTitle.focus({preventScroll: true}); }
+    if (type === 'new-product-rule') { openView('products'); resetProductRuleForm(); if (productRuleEditor) productRuleEditor.open = true; productRuleHublaId.focus({preventScroll: true}); }
     if (type === 'go-songs') openView('songs');
   });
 

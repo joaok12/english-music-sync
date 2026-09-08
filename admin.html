@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css?v=2">
+  <link rel="stylesheet" href="admin.css?v=3">
 </head>
 <body class="admin-page">
   <main class="admin-shell">
@@ -33,7 +33,6 @@
         <nav id="adminNav" class="admin-nav" aria-label="Seções administrativas">
           <button class="is-active" type="button" data-admin-view="dashboard"><span class="nav-icon">⌂</span><span>Visão geral</span></button>
           <button type="button" data-admin-view="songs"><span class="nav-icon">♫</span><span>Músicas</span><em id="navSongCount">0</em></button>
-          <button type="button" data-admin-view="playlists"><span class="nav-icon">▦</span><span>Playlists</span><em id="navPlaylistCount">0</em></button>
           <button type="button" data-admin-view="products"><span class="nav-icon">◈</span><span>Produtos</span><em id="navProductCount">0</em></button>
         </nav>
         <div class="admin-sidebar-footer"><span class="admin-role"><i></i> Administrador</span><button id="adminLogout" class="admin-logout" type="button"><span>↪</span> Sair</button></div>
@@ -56,34 +55,42 @@
             </article><article class="admin-panel admin-list-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">SEU CATÁLOGO</p><h2>Faixas cadastradas</h2></div><span id="adminSongListCount" class="admin-count-pill">0</span></div><div id="adminSongList" class="admin-card-list"></div></article></div>
           </section>
 
-          <section id="adminViewPlaylists" class="admin-view" data-view-panel="playlists" hidden aria-labelledby="playlistFormTitle">
-            <div class="admin-section-toolbar"><div><p class="admin-kicker">ORGANIZAÇÃO</p><h2>Playlists</h2></div><button class="admin-primary-button" type="button" data-admin-action="new-playlist">＋ Nova playlist</button></div>
-            <div class="admin-two-column"><article class="admin-panel admin-form-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">EDITOR</p><h2 id="playlistFormTitle">Nova playlist</h2></div><span class="admin-form-step gold">02</span></div><p class="admin-panel-intro">Monte a coleção, escolha uma capa e organize as músicas na ordem que quiser.</p>
-              <form id="adminPlaylistForm" novalidate><input id="adminPlaylistId" type="hidden"><div class="admin-field-grid"><div class="admin-field admin-field-wide"><label for="adminPlaylistTitle">Nome da playlist</label><input id="adminPlaylistTitle" required maxlength="120" placeholder="Ex.: Inglês Cantando"></div><div class="admin-field"><label for="adminPlaylistSortOrder">Ordem</label><input id="adminPlaylistSortOrder" type="number" min="0" step="1" value="0"></div></div><div class="admin-field"><label for="adminPlaylistSubtitle">Descrição curta <small>opcional</small></label><input id="adminPlaylistSubtitle" maxlength="180" placeholder="Ex.: Pratique cantando, uma música por vez."></div><div class="admin-field"><label for="adminPlaylistCover">Capa da playlist <small>opcional</small></label><input id="adminPlaylistCover" class="admin-file" type="file" accept="image/*"></div><div class="admin-field"><label for="adminPlaylistReleaseAt">Liberar playlist em <small>vazio = disponível</small></label><input id="adminPlaylistReleaseAt" type="datetime-local"></div><div class="admin-field"><span class="admin-field-label">Músicas da playlist</span><div id="adminPlaylistSongChoices" class="admin-choice-grid admin-choice-grid-tall"><p class="admin-empty">Cadastre uma música para selecionar aqui.</p></div></div><label class="admin-switch"><input id="adminPlaylistPublished" type="checkbox" checked><span></span><b>Mostrar na área de membros</b></label><div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSavePlaylist">Salvar playlist</button><button class="admin-secondary-button" type="button" id="adminClearPlaylist">Limpar</button></div></form><p id="adminPlaylistStatus" class="admin-status" role="status" aria-live="polite"></p>
-            </article><article class="admin-panel admin-list-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">COLEÇÕES</p><h2>Playlists cadastradas</h2></div><span id="adminPlaylistListCount" class="admin-count-pill">0</span></div><div id="adminPlaylistList" class="admin-card-list"></div></article></div>
-          </section>
-
-          <section id="adminViewProducts" class="admin-view" data-view-panel="products" hidden aria-labelledby="productListTitle">
-            <div class="admin-section-toolbar"><div><p class="admin-kicker">ACESSOS</p><h2>Produtos e order bumps</h2></div></div>
-            <div class="admin-products-grid">
-              <article class="admin-panel admin-form-panel">
-                <div class="admin-panel-heading"><div><p class="admin-kicker">AUTOMAÇÃO</p><h2 id="productRuleFormTitle">Nova regra de produto</h2></div><span class="admin-form-step">03</span></div>
-                <p class="admin-panel-intro">Configure o ID exato ou uma palavra do nome. Quando a Hubla enviar um produto novo, ele será ligado automaticamente à playlist escolhida.</p>
-                <form id="adminProductRuleForm" novalidate>
-                  <input id="adminProductRuleId" type="hidden">
-                  <div class="admin-field"><label for="adminProductRuleHublaId">ID exato da Hubla <small>opcional</small></label><input id="adminProductRuleHublaId" maxlength="120" placeholder="Ex.: c90yIvXcukcQuuG3HidD"></div>
-                  <div class="admin-field"><label for="adminProductRuleName">Nome contém <small>opcional</small></label><input id="adminProductRuleName" maxlength="120" placeholder="Ex.: 50 Gírias"></div>
-                  <div class="admin-field"><label for="adminProductRulePlaylist">Playlist liberada</label><select id="adminProductRulePlaylist" required></select></div>
-                  <div class="admin-field-grid"><div class="admin-field"><label for="adminProductRulePrice">Valor <small>R$</small></label><input id="adminProductRulePrice" type="number" min="0" step="0.01" placeholder="29,90"></div><div class="admin-field"><label for="adminProductRuleCheckout">Checkout <small>opcional</small></label><input id="adminProductRuleCheckout" type="url" placeholder="https://pay.hub.la/..."></div></div>
-                  <label class="admin-switch"><input id="adminProductRuleOrderBump" type="checkbox"><span></span><b>É order bump</b></label>
-                  <label class="admin-switch"><input id="adminProductRuleActive" type="checkbox" checked><span></span><b>Aplicar automaticamente</b></label>
-                  <div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSaveProductRule">Salvar regra</button><button class="admin-secondary-button" type="button" id="adminClearProductRule">Limpar</button></div>
-                </form>
-                <p id="adminProductRuleStatus" class="admin-status" role="status" aria-live="polite"></p>
-                <div class="admin-subsection-heading"><h3>Regras salvas</h3><span id="adminProductRuleCount" class="admin-count-pill">0</span></div>
+          <section id="adminViewProducts" class="admin-view" data-view-panel="products" hidden aria-labelledby="adminPageTitle">
+            <div class="admin-section-toolbar admin-products-toolbar"><div class="admin-toolbar-actions"><button class="admin-secondary-button" type="button" data-admin-action="new-playlist">＋ Nova playlist</button><button class="admin-primary-button" type="button" data-admin-action="new-product-rule">＋ Nova regra</button></div></div>
+            <p class="admin-page-note">Cada produto da Hubla libera uma playlist. Primeiro organize o conteúdo; depois conecte o produto, o valor e o order bump.</p>
+            <div class="admin-products-unified">
+              <article class="admin-panel admin-unified-panel admin-playlists-panel">
+                <div class="admin-panel-heading"><div><p class="admin-kicker">CONTEÚDO</p><h2>Playlists</h2></div><span id="adminPlaylistListCount" class="admin-count-pill">0</span></div>
+                <details id="adminPlaylistEditor" class="admin-fold">
+                  <summary><span id="adminPlaylistSummary">Nova playlist</span><b aria-hidden="true">＋</b></summary>
+                  <div class="admin-fold-content">
+                    <div class="admin-panel-heading"><div><p class="admin-kicker">EDITOR</p><h3 id="playlistFormTitle">Nova playlist</h3></div><span class="admin-form-step gold">01</span></div>
+                    <p class="admin-panel-intro">Capa, timer e músicas que serão liberadas para quem comprar o produto.</p>
+                    <form id="adminPlaylistForm" novalidate><input id="adminPlaylistId" type="hidden"><div class="admin-field-grid"><div class="admin-field admin-field-wide"><label for="adminPlaylistTitle">Nome da playlist</label><input id="adminPlaylistTitle" required maxlength="120" placeholder="Ex.: Inglês Cantando"></div><div class="admin-field"><label for="adminPlaylistSortOrder">Ordem</label><input id="adminPlaylistSortOrder" type="number" min="0" step="1" value="0"></div></div><div class="admin-field"><label for="adminPlaylistSubtitle">Descrição curta <small>opcional</small></label><input id="adminPlaylistSubtitle" maxlength="180" placeholder="Ex.: Pratique cantando, uma música por vez."></div><div class="admin-field"><label for="adminPlaylistCover">Capa da playlist <small>opcional</small></label><input id="adminPlaylistCover" class="admin-file" type="file" accept="image/*"></div><div class="admin-field"><label for="adminPlaylistReleaseAt">Liberar playlist em <small>vazio = disponível</small></label><input id="adminPlaylistReleaseAt" type="datetime-local"></div><div class="admin-field"><span class="admin-field-label">Músicas da playlist</span><div id="adminPlaylistSongChoices" class="admin-choice-grid admin-choice-grid-tall"><p class="admin-empty">Cadastre uma música para selecionar aqui.</p></div></div><label class="admin-switch"><input id="adminPlaylistPublished" type="checkbox" checked><span></span><b>Mostrar na área de membros</b></label><div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSavePlaylist">Salvar playlist</button><button class="admin-secondary-button" type="button" id="adminClearPlaylist">Limpar</button></div></form><p id="adminPlaylistStatus" class="admin-status" role="status" aria-live="polite"></p>
+                  </div>
+                </details>
+                <div id="adminPlaylistList" class="admin-card-list"></div>
+              </article>
+              <article class="admin-panel admin-unified-panel admin-products-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">HUBLA</p><h2>Produtos conectados</h2></div><span id="adminProductListCount" class="admin-count-pill">0</span></div><p class="admin-panel-intro">O webhook traz os produtos. Ajuste aqui a playlist, o valor, o checkout e o order bump.</p><div id="adminProductList" class="admin-product-list"></div></article>
+              <article class="admin-panel admin-unified-panel admin-rules-panel">
+                <div class="admin-panel-heading"><div><p class="admin-kicker">AUTOMAÇÃO</p><h2>Regras para novos produtos</h2></div><span id="adminProductRuleCount" class="admin-count-pill">0</span></div>
+                <details id="adminProductRuleEditor" class="admin-fold">
+                  <summary><span id="adminProductRuleSummary">Nova regra automática</span><b aria-hidden="true">＋</b></summary>
+                  <div class="admin-fold-content">
+                    <p class="admin-panel-intro">Use o ID da Hubla ou uma palavra do nome para ligar produtos novos à playlist certa.</p>
+                    <form id="adminProductRuleForm" novalidate>
+                      <input id="adminProductRuleId" type="hidden">
+                      <div class="admin-field-grid admin-rule-match-grid"><div class="admin-field"><label for="adminProductRuleHublaId">ID exato <small>opcional</small></label><input id="adminProductRuleHublaId" maxlength="120" placeholder="Ex.: c90yIvXcukcQuuG3HidD"></div><div class="admin-field"><label for="adminProductRuleName">Nome contém <small>opcional</small></label><input id="adminProductRuleName" maxlength="120" placeholder="Ex.: 50 Gírias"></div></div>
+                      <div class="admin-field-grid"><div class="admin-field"><label for="adminProductRulePlaylist">Playlist liberada</label><select id="adminProductRulePlaylist" required></select></div><div class="admin-field"><label for="adminProductRulePrice">Valor <small>R$</small></label><input id="adminProductRulePrice" type="number" min="0" step="0.01" placeholder="29,90"></div></div>
+                      <div class="admin-field"><label for="adminProductRuleCheckout">Checkout <small>opcional</small></label><input id="adminProductRuleCheckout" type="url" placeholder="https://pay.hub.la/..."></div>
+                      <div class="admin-rule-switches"><label class="admin-switch"><input id="adminProductRuleOrderBump" type="checkbox"><span></span><b>Order bump</b></label><label class="admin-switch"><input id="adminProductRuleActive" type="checkbox" checked><span></span><b>Aplicar automaticamente</b></label></div>
+                      <div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSaveProductRule">Salvar regra</button><button class="admin-secondary-button" type="button" id="adminClearProductRule">Limpar</button></div>
+                    </form>
+                    <p id="adminProductRuleStatus" class="admin-status" role="status" aria-live="polite"></p>
+                  </div>
+                </details>
                 <div id="adminProductRuleList" class="admin-rule-list"></div>
               </article>
-              <article class="admin-panel admin-list-panel admin-products-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">HUBLA</p><h2>Ofertas conectadas</h2></div><span id="adminProductListCount" class="admin-count-pill">0</span></div><p class="admin-panel-intro">Revise o produto que chegou pelo webhook e ajuste playlist, order bump, valor e checkout.</p><div id="adminProductList" class="admin-product-list"></div></article>
             </div>
           </section>
         </div>
@@ -93,6 +100,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
   <script src="song-import.js?v=2"></script>
-  <script src="admin.js?v=4"></script>
+  <script src="admin.js?v=5"></script>
 </body>
 </html>
