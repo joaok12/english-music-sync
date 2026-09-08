@@ -20,15 +20,13 @@
   const greeting = document.getElementById('memberGreeting');
   const logout = document.getElementById('memberLogout');
   let viewRequest = 0;
-  let releaseTimer = null;
   let memberSongsCache = [];
   let activePlaylist = null;
   const coverCache = new Map();
 
-  const legacyReleaseAt = '2026-09-11T00:00:00-03:00';
   const fallbackPlaylists = [
-    {playlist_id: 'fallback-ingles-cantando', title: 'Inglês Cantando', slug: 'ingles-cantando', subtitle: 'Pratique cantando, uma música por vez.', cover_path: '', song_count: 20, release_at: null, is_available: true, is_accessible: true},
-    {playlist_id: 'fallback-50-girias', title: '50 Gírias', slug: '50-girias', subtitle: 'Expressões naturais para conversar melhor.', cover_path: '', song_count: 1, release_at: null, is_available: true, is_accessible: true}
+    {playlist_id: 'fallback-ingles-cantando', title: 'Inglês Cantando', slug: 'ingles-cantando', subtitle: 'Pratique cantando, uma música por vez.', cover_path: '', song_count: 26, release_at: null, is_available: true, is_accessible: true},
+    {playlist_id: 'fallback-50-girias', title: '50 Gírias', slug: '50-girias', subtitle: 'Expressões naturais para conversar melhor.', cover_path: '', song_count: 6, release_at: null, is_available: true, is_accessible: true}
   ];
 
   function setStatus(element, text, error = false) {
@@ -69,42 +67,12 @@
     return digits;
   }
 
-  function formatCountdown(milliseconds) {
-    const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
-  }
-
-  function updateReleaseCountdowns() {
-    const countdowns = [...document.querySelectorAll('[data-release-countdown]')];
-    let hasActiveCountdown = false;
-    countdowns.forEach(element => {
-      const releaseAt = new Date(element.dataset.releaseAt || '').getTime();
-      if (!Number.isFinite(releaseAt)) return;
-      const remaining = releaseAt - Date.now();
-      const row = element.closest('.playlist-row');
-      if (remaining <= 0) {
-        element.textContent = 'Disponível';
-        element.closest('.playlist-tile, .playlist-release')?.classList.remove('is-locked');
-        row?.classList.remove('is-locked');
-      } else {
-        hasActiveCountdown = true;
-        element.textContent = formatCountdown(remaining);
-      }
-    });
-    if (!hasActiveCountdown && releaseTimer) {
-      clearInterval(releaseTimer);
-      releaseTimer = null;
-    }
-  }
-
-  function startReleaseCountdowns() {
-    if (releaseTimer) clearInterval(releaseTimer);
-    updateReleaseCountdowns();
-    if (document.querySelector('[data-release-countdown][data-release-at]')) releaseTimer = setInterval(updateReleaseCountdowns, 1000);
+  function formatReleaseDate(value) {
+    const date = new Date(value || '');
+    if (!Number.isFinite(date.getTime())) return 'Disponível em breve.';
+    const day = new Intl.DateTimeFormat('pt-BR', {day: 'numeric', timeZone: 'America/Sao_Paulo'}).format(date);
+    const month = new Intl.DateTimeFormat('pt-BR', {month: 'long', timeZone: 'America/Sao_Paulo'}).format(date);
+    return `Disponível no dia ${day} de ${month}.`;
   }
 
   if (!config.anonKey || config.anonKey.startsWith('COLE_AQUI') || !window.supabase?.createClient) {
@@ -128,6 +96,12 @@
     return Number.isFinite(releaseAt) && releaseAt > Date.now();
   }
 
+  function releaseOrderNumber(song) {
+    const text = `${song?.slug || ''} ${song?.title || ''}`;
+    const match = text.match(/(?:em-breve-|m[úu]sica\s*)(\d{1,2})/i);
+    return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+  }
+
   function orderAvailableFirst(rows) {
     return uniqueSongs(rows)
       .map(normalizeLegacySong)
@@ -135,45 +109,11 @@
       .sort((left, right) => {
         const leftUpcoming = isComingSoon(left.song) ? 1 : 0;
         const rightUpcoming = isComingSoon(right.song) ? 1 : 0;
-        return leftUpcoming - rightUpcoming || left.index - right.index;
+        if (leftUpcoming !== rightUpcoming) return leftUpcoming - rightUpcoming;
+        if (leftUpcoming) return releaseOrderNumber(left.song) - releaseOrderNumber(right.song) || left.index - right.index;
+        return left.index - right.index;
       })
       .map(({song}) => song);
-  }
-
-  function legacyUpcomingSongs() {
-    return Array.from({length: 20}, (_, index) => ({
-      song_id: `legacy-ingles-cantando-${String(index + 1).padStart(2, '0')}`,
-      title: `Inglês Cantando • Música ${String(index + 1).padStart(2, '0')}`,
-      subtitle: 'Nova aula em breve.',
-      icon: '🎤',
-      cover_path: '',
-      audio_path: '',
-      duration_seconds: null,
-      lyrics: [],
-      playlist_id: 'fallback-ingles-cantando',
-      release_at: legacyReleaseAt,
-      is_available: false
-    }));
-  }
-
-  function isEnglishSingingPlaylist(playlistItem) {
-    return String(playlistItem?.slug || '').toLocaleLowerCase() === 'ingles-cantando';
-  }
-
-  function upcomingNumber(song) {
-    const slugMatch = String(song?.slug || '').match(/ingles-cantando-em-breve-(\d{1,2})$/i);
-    if (slugMatch) return Number(slugMatch[1]);
-    const idMatch = String(song?.song_id || '').match(/legacy-ingles-cantando-(\d{1,2})$/i);
-    if (idMatch) return Number(idMatch[1]);
-    const titleMatch = String(song?.title || '').match(/m[úu]sica\s*(\d{1,2})/i);
-    return titleMatch ? Number(titleMatch[1]) : null;
-  }
-
-  function mergeLegacyUpcomingSongs(rows, playlistItem) {
-    const current = Array.isArray(rows) ? [...rows] : [];
-    if (!isEnglishSingingPlaylist(playlistItem)) return current;
-    const present = new Set(current.map(upcomingNumber).filter(Number.isInteger));
-    return [...current, ...legacyUpcomingSongs().filter((song, index) => !present.has(index + 1))];
   }
 
   function playlistKeyForSong(song) {
@@ -314,7 +254,7 @@
       const locked = !future && !accessible;
       const count = Number(playlistItem.song_count || 0);
       const release = future && playlistItem.release_at
-        ? `<div class="playlist-release is-locked"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(playlistItem.release_at)}">--d --h --m --s</strong></div>`
+        ? `<div class="playlist-release is-locked"><strong>${escapeHtml(formatReleaseDate(playlistItem.release_at))}</strong></div>`
         : locked
           ? `<div class="playlist-release is-locked"><span>${playlistItem.is_order_bump ? 'ORDER BUMP' : 'ACESSO'}</span><strong class="playlist-buy">${escapeHtml(formatPrice(playlistItem.price))}</strong></div>`
           : `<div class="playlist-release"><span>${count || 'Sua'} ${count === 1 ? 'música' : 'músicas'} na coleção</span><strong class="playlist-available">Abrir playlist</strong></div>`;
@@ -338,7 +278,6 @@
     }));
     playlistCollectionsRail.append(...cards);
     animateElement(playlistCollections);
-    startReleaseCountdowns();
   }
 
   function renderLibrary(rows) {
@@ -355,13 +294,12 @@
       const available = !future;
       row.className = `playlist-row${available ? '' : ' is-locked'}`;
       row.style.setProperty('--row-index', index);
-      const releaseMeta = future ? `<span class="playlist-song-release"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(song.release_at)}">--d --h --m --s</strong></span>` : '';
+      const releaseMeta = future ? `<span class="playlist-song-release"><strong>${escapeHtml(formatReleaseDate(song.release_at))}</strong></span>` : '';
       const cover = song.__cover || '';
       row.innerHTML = `<div class="playlist-select"><span class="playlist-index">${String(index + 1).padStart(2, '0')}</span><span class="playlist-thumb">${cover ? `<img src="${escapeHtml(cover)}" alt="" loading="lazy" decoding="async">` : escapeHtml(song.icon || '🎵')}</span><span class="playlist-copy"><strong>${escapeHtml(song.title)}</strong><small>${escapeHtml(song.subtitle || 'Sua música')}</small>${releaseMeta}</span><span class="playlist-duration">${formatDuration(song.duration_seconds)}</span></div>${available ? `<a class="playlist-action" href="${songHref(song)}">Tocar</a>` : '<span class="playlist-action is-locked" aria-label="Música ainda não liberada">Em breve</span>'}`;
       playlist.append(row);
     });
     animateElement(playlist);
-    startReleaseCountdowns();
   }
 
   async function renderLibraryWithCovers(rows) {
@@ -382,10 +320,10 @@
 
   async function loadPlaylistSongs(playlistItem) {
     const result = await client.rpc('get_my_playlist_songs', {p_playlist_id: playlistItem.playlist_id});
-    if (!result.error) return mergeLegacyUpcomingSongs(result.data || [], playlistItem);
+    if (!result.error) return result.data || [];
     if (!isMissingRpc(result.error)) throw result.error;
     const fallback = memberSongsCache.filter(song => playlistKeyForSong(song) === playlistItem.playlist_id);
-    return mergeLegacyUpcomingSongs(fallback, playlistItem);
+    return fallback;
   }
 
   async function openPlaylist(playlistItem) {
@@ -443,10 +381,9 @@
       memberSongsCache = libraryResult.error ? [] : uniqueSongs(libraryResult.data || []);
       let playlistRows;
       if (playlistsResult.error) {
-        memberSongsCache = [...memberSongsCache, ...legacyUpcomingSongs()];
-        const counts = new Map();
-        memberSongsCache.forEach(song => counts.set(playlistKeyForSong(song), (counts.get(playlistKeyForSong(song)) || 0) + 1));
-        playlistRows = fallbackPlaylists.map(item => ({...item, song_count: counts.get(item.playlist_id) || item.song_count}));
+        // The fallback contains only the two persistent collections. Never
+        // manufacture upcoming songs in the browser when the RPC is missing.
+        playlistRows = fallbackPlaylists;
       } else {
         playlistRows = playlistsResult.data || [];
       }
