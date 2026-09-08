@@ -172,7 +172,7 @@
     root.style.setProperty('--karaoke-bg-height', formatPixels(settings.backgroundHeight));
     root.style.setProperty('--karaoke-bg-extent', `${settings.backgroundExtent}%`);
     root.style.setProperty('--karaoke-top-scale', String(settings.topScale / 100));
-    root.style.setProperty('--karaoke-header-offset', formatPixels(settings.headerOffset, true));
+    root.style.setProperty('--karaoke-header-offset', formatPixels(settings.headerOffset));
     return settings;
   }
 
