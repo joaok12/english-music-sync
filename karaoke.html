@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5.1">
-  <link rel="stylesheet" href="themes.css?v=6">
+  <link rel="stylesheet" href="themes.css?v=7">
   <script src="port-redirect.js"></script>
 </head>
 <body>
@@ -140,8 +140,12 @@
         <input id="glowSize" type="range" min="0" max="60" step="1" value="20">
       </label>
       <label class="range-control" for="backgroundBlur">
-        <span><span>Blur do fundo</span><output id="backgroundBlurValue" for="backgroundBlur">0px</output></span>
-        <input id="backgroundBlur" type="range" min="0" max="60" step="1" value="0">
+        <span><span>Blur do fundo preto</span><output id="backgroundBlurValue" for="backgroundBlur">32px</output></span>
+        <input id="backgroundBlur" type="range" min="0" max="60" step="1" value="32">
+      </label>
+      <label class="range-control" for="backgroundHeight">
+        <span><span>Altura do fundo preto</span><output id="backgroundHeightValue" for="backgroundHeight">130px</output></span>
+        <input id="backgroundHeight" type="range" min="40" max="260" step="1" value="130">
       </label>
       <label class="range-control" for="headerOffset">
         <span><span>Altura do título + preço</span><output id="headerOffsetValue" for="headerOffset">0px</output></span>
@@ -162,6 +166,6 @@
   <script src="supabase-config.js?v=1"></script>
   <script src="remote-song.js?v=1"></script>
   <script src="script.js?v=5.3"></script>
-  <script src="appearance.js?v=4"></script>
+  <script src="appearance.js?v=5"></script>
 </body>
 </html>

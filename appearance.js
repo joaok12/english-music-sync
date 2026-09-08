@@ -11,6 +11,8 @@
   const glowSizeValue = document.getElementById('glowSizeValue');
   const backgroundBlur = document.getElementById('backgroundBlur');
   const backgroundBlurValue = document.getElementById('backgroundBlurValue');
+  const backgroundHeight = document.getElementById('backgroundHeight');
+  const backgroundHeightValue = document.getElementById('backgroundHeightValue');
   const headerOffset = document.getElementById('headerOffset');
   const headerOffsetValue = document.getElementById('headerOffsetValue');
   const resetCreativeSettings = document.getElementById('resetCreativeSettings');
@@ -19,7 +21,7 @@
   const themeKey = 'KARAOKE_APPEARANCE_THEME';
   const promoKey = 'KARAOKE_SHOW_PROMO';
   const creativeKey = 'KARAOKE_ADMIN_CREATIVE_CONTROLS';
-  const creativeDefaults = Object.freeze({glowSize: 20, backgroundBlur: 32, headerOffset: 0});
+  const creativeDefaults = Object.freeze({glowSize: 20, backgroundBlur: 32, backgroundHeight: 130, headerOffset: 0});
   let isAdmin = false;
   let creativeSaveTimer = null;
 
@@ -40,6 +42,7 @@
     return {
       glowSize: clamp(value.glowSize, 0, 60, creativeDefaults.glowSize),
       backgroundBlur: clamp(value.backgroundBlur, 0, 60, creativeDefaults.backgroundBlur),
+      backgroundHeight: clamp(value.backgroundHeight, 40, 260, creativeDefaults.backgroundHeight),
       headerOffset: clamp(value.headerOffset, -24, 96, creativeDefaults.headerOffset)
     };
   }
@@ -62,9 +65,11 @@
     const settings = normaliseCreativeSettings(values);
     glowSize.value = String(settings.glowSize);
     backgroundBlur.value = String(settings.backgroundBlur);
+    backgroundHeight.value = String(settings.backgroundHeight);
     headerOffset.value = String(settings.headerOffset);
     glowSizeValue.textContent = formatPixels(settings.glowSize);
     backgroundBlurValue.textContent = formatPixels(settings.backgroundBlur);
+    backgroundHeightValue.textContent = formatPixels(settings.backgroundHeight);
     headerOffsetValue.textContent = formatPixels(settings.headerOffset, true);
     return settings;
   }
@@ -74,6 +79,7 @@
     const root = document.documentElement;
     root.style.setProperty('--karaoke-glow-size', formatPixels(settings.glowSize));
     root.style.setProperty('--karaoke-bg-blur', formatPixels(settings.backgroundBlur));
+    root.style.setProperty('--karaoke-bg-height', formatPixels(settings.backgroundHeight));
     root.style.setProperty('--karaoke-header-offset', formatPixels(settings.headerOffset, true));
     return settings;
   }
@@ -90,6 +96,7 @@
     const root = document.documentElement;
     root.style.removeProperty('--karaoke-glow-size');
     root.style.removeProperty('--karaoke-bg-blur');
+    root.style.removeProperty('--karaoke-bg-height');
     root.style.removeProperty('--karaoke-header-offset');
     updateCreativeControls(creativeDefaults);
     creativeSaveStatus.textContent = '';
@@ -155,12 +162,13 @@
     setPromoVisible(event.target.checked);
   });
 
-  [glowSize, backgroundBlur, headerOffset].forEach(input => {
+  [glowSize, backgroundBlur, backgroundHeight, headerOffset].forEach(input => {
     input.addEventListener('input', () => {
       if (!isAdmin) return;
       saveCreativeSettings({
         glowSize: glowSize.value,
         backgroundBlur: backgroundBlur.value,
+        backgroundHeight: backgroundHeight.value,
         headerOffset: headerOffset.value
       });
     });
