@@ -6,10 +6,22 @@
   const title = document.getElementById('songOnlyHeader');
   const adminPricing = document.getElementById('adminPricingSettings');
   const showPromo = document.getElementById('showPromo');
+  const adminCreative = document.getElementById('adminCreativeSettings');
+  const glowSize = document.getElementById('glowSize');
+  const glowSizeValue = document.getElementById('glowSizeValue');
+  const backgroundBlur = document.getElementById('backgroundBlur');
+  const backgroundBlurValue = document.getElementById('backgroundBlurValue');
+  const headerOffset = document.getElementById('headerOffset');
+  const headerOffsetValue = document.getElementById('headerOffsetValue');
+  const resetCreativeSettings = document.getElementById('resetCreativeSettings');
+  const creativeSaveStatus = document.getElementById('creativeSaveStatus');
   const themes = new Set(['original', 'usa-claro', 'usa-blur', 'aurora', 'oceano', 'floresta', 'ambar']);
   const themeKey = 'KARAOKE_APPEARANCE_THEME';
   const promoKey = 'KARAOKE_SHOW_PROMO';
+  const creativeKey = 'KARAOKE_ADMIN_CREATIVE_CONTROLS';
+  const creativeDefaults = Object.freeze({glowSize: 20, backgroundBlur: 32, headerOffset: 0});
   let isAdmin = false;
+  let creativeSaveTimer = null;
 
   function readPreference(key, fallback = '') {
     try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
@@ -17,6 +29,70 @@
 
   function savePreference(key, value) {
     try { localStorage.setItem(key, value); } catch { /* armazenamento indisponível */ }
+  }
+
+  function clamp(value, min, max, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+  }
+
+  function normaliseCreativeSettings(value = {}) {
+    return {
+      glowSize: clamp(value.glowSize, 0, 60, creativeDefaults.glowSize),
+      backgroundBlur: clamp(value.backgroundBlur, 0, 60, creativeDefaults.backgroundBlur),
+      headerOffset: clamp(value.headerOffset, -24, 96, creativeDefaults.headerOffset)
+    };
+  }
+
+  function readCreativeSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(creativeKey) || '{}');
+      return normaliseCreativeSettings({...creativeDefaults, ...saved});
+    } catch {
+      return normaliseCreativeSettings(creativeDefaults);
+    }
+  }
+
+  function formatPixels(value, signed = false) {
+    const rounded = Math.round(value);
+    return `${signed && rounded > 0 ? '+' : ''}${rounded}px`;
+  }
+
+  function updateCreativeControls(values) {
+    const settings = normaliseCreativeSettings(values);
+    glowSize.value = String(settings.glowSize);
+    backgroundBlur.value = String(settings.backgroundBlur);
+    headerOffset.value = String(settings.headerOffset);
+    glowSizeValue.textContent = formatPixels(settings.glowSize);
+    backgroundBlurValue.textContent = formatPixels(settings.backgroundBlur);
+    headerOffsetValue.textContent = formatPixels(settings.headerOffset, true);
+    return settings;
+  }
+
+  function applyCreativeSettings(values) {
+    const settings = updateCreativeControls(values);
+    const root = document.documentElement;
+    root.style.setProperty('--karaoke-glow-size', formatPixels(settings.glowSize));
+    root.style.setProperty('--karaoke-bg-blur', formatPixels(settings.backgroundBlur));
+    root.style.setProperty('--karaoke-header-offset', formatPixels(settings.headerOffset, true));
+    return settings;
+  }
+
+  function saveCreativeSettings(values) {
+    const settings = applyCreativeSettings(values);
+    savePreference(creativeKey, JSON.stringify(settings));
+    creativeSaveStatus.textContent = 'Salvo neste dispositivo';
+    clearTimeout(creativeSaveTimer);
+    creativeSaveTimer = setTimeout(() => { creativeSaveStatus.textContent = ''; }, 1800);
+  }
+
+  function clearCreativeSettings() {
+    const root = document.documentElement;
+    root.style.removeProperty('--karaoke-glow-size');
+    root.style.removeProperty('--karaoke-bg-blur');
+    root.style.removeProperty('--karaoke-header-offset');
+    updateCreativeControls(creativeDefaults);
+    creativeSaveStatus.textContent = '';
   }
 
   function setTheme(value) {
@@ -52,6 +128,7 @@
   // Usuários comuns sempre começam com o cabeçalho limpo: título + voltar.
   setPromoVisible(false);
   adminPricing.hidden = true;
+  adminCreative.hidden = true;
 
   trigger.addEventListener('click', () => panel.showModal());
   document.getElementById('closeSettings').addEventListener('click', () => panel.close());
@@ -78,12 +155,31 @@
     setPromoVisible(event.target.checked);
   });
 
+  [glowSize, backgroundBlur, headerOffset].forEach(input => {
+    input.addEventListener('input', () => {
+      if (!isAdmin) return;
+      saveCreativeSettings({
+        glowSize: glowSize.value,
+        backgroundBlur: backgroundBlur.value,
+        headerOffset: headerOffset.value
+      });
+    });
+  });
+
+  resetCreativeSettings.addEventListener('click', () => {
+    if (!isAdmin) return;
+    saveCreativeSettings(creativeDefaults);
+  });
+
   resolveAdmin().then(admin => {
     isAdmin = admin;
     adminPricing.hidden = !admin;
+    adminCreative.hidden = !admin;
     if (admin) {
+      applyCreativeSettings(readCreativeSettings());
       setPromoVisible(readPreference(promoKey, 'false') === 'true');
     } else {
+      clearCreativeSettings();
       setPromoVisible(false);
     }
   });

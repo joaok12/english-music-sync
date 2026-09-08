@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5.1">
-  <link rel="stylesheet" href="themes.css?v=5">
+  <link rel="stylesheet" href="themes.css?v=6">
   <script src="port-redirect.js"></script>
 </head>
 <body>
@@ -133,6 +133,22 @@
       <label class="theme-option"><input type="radio" name="karaokeTheme" value="ambar"><span class="theme-swatch" aria-hidden="true" style="--swatch-bg:#2d1913;--swatch-highlight:#fcd58d"></span><span>Âmbar</span></label>
     </fieldset>
     <fieldset id="adminPricingSettings" class="header-picker" hidden><legend class="sr-only">Oferta no topo</legend><label><input type="checkbox" id="showPromo"> Mostrar preço no topo</label></fieldset>
+    <fieldset id="adminCreativeSettings" class="creative-picker" hidden>
+      <legend>Controles do criativo</legend>
+      <label class="range-control" for="glowSize">
+        <span><span>Glow do destaque</span><output id="glowSizeValue" for="glowSize">20px</output></span>
+        <input id="glowSize" type="range" min="0" max="60" step="1" value="20">
+      </label>
+      <label class="range-control" for="backgroundBlur">
+        <span><span>Blur do fundo</span><output id="backgroundBlurValue" for="backgroundBlur">0px</output></span>
+        <input id="backgroundBlur" type="range" min="0" max="60" step="1" value="0">
+      </label>
+      <label class="range-control" for="headerOffset">
+        <span><span>Altura do título + preço</span><output id="headerOffsetValue" for="headerOffset">0px</output></span>
+        <input id="headerOffset" type="range" min="-24" max="96" step="1" value="0">
+      </label>
+      <div class="creative-actions"><button id="resetCreativeSettings" type="button">Restaurar</button><span id="creativeSaveStatus" role="status" aria-live="polite"></span></div>
+    </fieldset>
   </dialog>
 
   <audio id="audioTrack" preload="auto">
@@ -146,6 +162,6 @@
   <script src="supabase-config.js?v=1"></script>
   <script src="remote-song.js?v=1"></script>
   <script src="script.js?v=5.3"></script>
-  <script src="appearance.js?v=3"></script>
+  <script src="appearance.js?v=4"></script>
 </body>
 </html>
