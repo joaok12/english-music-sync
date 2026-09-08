@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5.1">
-  <link rel="stylesheet" href="themes.css?v=10">
+  <link rel="stylesheet" href="themes.css?v=11">
   <script src="port-redirect.js"></script>
 </head>
 <body>
@@ -152,9 +152,18 @@
         <span><span>Blur do fundo preto</span><output id="backgroundBlurValue" for="backgroundBlur">32px</output></span>
         <input id="backgroundBlur" type="range" min="0" max="60" step="1" value="32">
       </label>
+      <label class="color-control" for="backgroundColor"><span><span>Cor do fundo preto</span><output id="backgroundColorValue">#060812</output></span><input id="backgroundColor" type="color" value="#060812"></label>
       <label class="range-control" for="backgroundHeight">
         <span><span>Altura do fundo preto</span><output id="backgroundHeightValue" for="backgroundHeight">130px</output></span>
         <input id="backgroundHeight" type="range" min="40" max="260" step="1" value="130">
+      </label>
+      <label class="range-control" for="backgroundExtent">
+        <span><span>Alcance lateral do fundo</span><output id="backgroundExtentValue" for="backgroundExtent">74%</output></span>
+        <input id="backgroundExtent" type="range" min="45" max="160" step="1" value="74">
+      </label>
+      <label class="range-control" for="topScale">
+        <span><span>Tamanho do título + preço</span><output id="topScaleValue" for="topScale">100%</output></span>
+        <input id="topScale" type="range" min="70" max="150" step="1" value="100">
       </label>
       <label class="range-control" for="headerOffset">
         <span><span>Altura do título + preço</span><output id="headerOffsetValue" for="headerOffset">0px</output></span>
@@ -175,6 +184,6 @@
   <script src="supabase-config.js?v=1"></script>
   <script src="remote-song.js?v=1"></script>
   <script src="script.js?v=5.3"></script>
-  <script src="appearance.js?v=8"></script>
+  <script src="appearance.js?v=9"></script>
 </body>
 </html>
