@@ -27,8 +27,8 @@
 
   const legacyReleaseAt = '2026-09-11T00:00:00-03:00';
   const fallbackPlaylists = [
-    {playlist_id: 'fallback-ingles-cantando', title: 'Inglês Cantando', slug: 'ingles-cantando', subtitle: 'Pratique cantando, uma música por vez.', cover_path: '', song_count: 20, release_at: null, is_available: true},
-    {playlist_id: 'fallback-50-girias', title: '50 Gírias', slug: '50-girias', subtitle: 'Expressões naturais para conversar melhor.', cover_path: '', song_count: 1, release_at: null, is_available: true}
+    {playlist_id: 'fallback-ingles-cantando', title: 'Inglês Cantando', slug: 'ingles-cantando', subtitle: 'Pratique cantando, uma música por vez.', cover_path: '', song_count: 20, release_at: null, is_available: true, is_accessible: true},
+    {playlist_id: 'fallback-50-girias', title: '50 Gírias', slug: '50-girias', subtitle: 'Expressões naturais para conversar melhor.', cover_path: '', song_count: 1, release_at: null, is_available: true, is_accessible: true}
   ];
 
   function setStatus(element, text, error = false) {
@@ -203,6 +203,12 @@
     return `${minutes}:${remaining}`;
   }
 
+  function formatPrice(value) {
+    const amount = Number(value);
+    if (!Number.isFinite(amount) || amount <= 0) return 'Ver valor';
+    return new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(amount);
+  }
+
   function songHref(song) {
     const id = song.song_id || song.id;
     return `karaoke.html?song=remote_${encodeURIComponent(id)}`;
@@ -304,19 +310,30 @@
     const cards = await Promise.all(rows.map(async (playlistItem, index) => {
       const cover = await playlistCoverUrl(playlistItem);
       const future = playlistItem.is_available === false || (playlistItem.release_at && new Date(playlistItem.release_at).getTime() > Date.now());
+      const accessible = playlistItem.is_accessible !== false;
+      const locked = !future && !accessible;
       const count = Number(playlistItem.song_count || 0);
       const release = future && playlistItem.release_at
         ? `<div class="playlist-release is-locked"><span>Libera em</span><strong data-release-countdown data-release-at="${escapeHtml(playlistItem.release_at)}">--d --h --m --s</strong></div>`
-        : `<div class="playlist-release"><span>${count || 'Sua'} ${count === 1 ? 'música' : 'músicas'} na coleção</span><strong class="playlist-available">Abrir playlist</strong></div>`;
+        : locked
+          ? `<div class="playlist-release is-locked"><span>${playlistItem.is_order_bump ? 'ORDER BUMP' : 'ACESSO'}</span><strong class="playlist-buy">${escapeHtml(formatPrice(playlistItem.price))}</strong></div>`
+          : `<div class="playlist-release"><span>${count || 'Sua'} ${count === 1 ? 'música' : 'músicas'} na coleção</span><strong class="playlist-available">Abrir playlist</strong></div>`;
       const card = document.createElement('button');
       card.type = 'button';
-      card.className = `playlist-tile${future ? ' is-coming-soon' : ''}`;
+      card.className = `playlist-tile${future ? ' is-coming-soon' : ''}${locked ? ' is-locked' : ''}`;
       card.style.setProperty('--tile-index', index);
       card.disabled = future;
       const imageLoading = index < 2 ? 'eager' : 'lazy';
       const imagePriority = index === 0 ? 'high' : 'auto';
-      card.innerHTML = `<div class="playlist-tile-cover"><img src="${escapeHtml(cover)}" alt="Capa da playlist ${escapeHtml(playlistItem.title)}" loading="${imageLoading}" fetchpriority="${imagePriority}" decoding="async">${future ? '<span class="playlist-tile-badge">EM BREVE</span><span class="playlist-tile-lock" aria-hidden="true">🔒</span>' : '<span class="playlist-tile-badge available">PLAYLIST</span>'}</div><div class="playlist-tile-info"><h3>${escapeHtml(playlistItem.title)}</h3><p>${escapeHtml(playlistItem.subtitle || 'Escolha uma playlist para ver suas músicas.')}</p>${release}</div>`;
-      card.addEventListener('click', () => openPlaylist(playlistItem));
+      const badge = future ? '<span class="playlist-tile-badge">EM BREVE</span>' : locked ? '<span class="playlist-tile-badge locked">BLOQUEADA</span>' : '<span class="playlist-tile-badge available">PLAYLIST</span>';
+      const lock = future || locked ? '<span class="playlist-tile-lock" aria-hidden="true">🔒</span>' : '';
+      card.innerHTML = `<div class="playlist-tile-cover"><img src="${escapeHtml(cover)}" alt="Capa da playlist ${escapeHtml(playlistItem.title)}" loading="${imageLoading}" fetchpriority="${imagePriority}" decoding="async">${badge}${lock}</div><div class="playlist-tile-info"><h3>${escapeHtml(playlistItem.title)}</h3><p>${escapeHtml(playlistItem.subtitle || 'Escolha uma playlist para ver suas músicas.')}</p>${release}</div>`;
+      card.setAttribute('aria-label', accessible ? `Abrir playlist ${playlistItem.title}` : `Comprar acesso à playlist ${playlistItem.title}`);
+      card.addEventListener('click', () => {
+        if (future) return;
+        if (accessible) return openPlaylist(playlistItem);
+        if (playlistItem.checkout_url) window.open(playlistItem.checkout_url, '_blank', 'noopener');
+      });
       return card;
     }));
     playlistCollectionsRail.append(...cards);
@@ -372,6 +389,10 @@
   }
 
   async function openPlaylist(playlistItem) {
+    if (playlistItem.is_accessible === false) {
+      if (playlistItem.checkout_url) window.open(playlistItem.checkout_url, '_blank', 'noopener');
+      return;
+    }
     activePlaylist = playlistItem;
     playlistCollections.hidden = true;
     playlistDetail.hidden = false;
@@ -394,14 +415,10 @@
 
   function renderOffers(offers) {
     offersRail.replaceChildren();
-    const available = (offers || []).filter(offer => offer.checkout_url);
-    offersSection.classList.toggle('has-offers', available.length > 0);
-    available.forEach(offer => {
-      const card = document.createElement('article');
-      card.className = 'offer-card';
-      card.innerHTML = `<h3>${escapeHtml(offer.name)}</h3><p>Adicione outra playlist à sua biblioteca.</p><a href="${escapeHtml(offer.checkout_url)}" target="_blank" rel="noopener">Conhecer acesso ↗</a>`;
-      offersRail.append(card);
-    });
+    // As ofertas agora aparecem na própria grade de playlists, como cards
+    // bloqueados com preço e checkout. Mantemos a seção antiga oculta para
+    // compatibilidade com caches de versões anteriores.
+    offersSection.classList.remove('has-offers');
   }
 
   async function showMemberArea(session) {

@@ -89,9 +89,12 @@ function nestedProduct(value: JsonObject): JsonObject {
 }
 
 function allProducts(value: JsonObject): JsonObject[] {
-  const products = Array.isArray(value.products) ? value.products.map(object) : [];
   const direct = object(value.product);
-  if (string(direct.id) && !products.some((product) => product.id === direct.id)) products.unshift(direct);
+  // Nos eventos v2 da Hubla, event.product é o produto canônico. O array
+  // event.products de faturas pode conter IDs de oferta/linha diferentes do
+  // produto, então ele só é usado quando não existe o produto direto.
+  if (string(direct.id)) return [direct];
+  const products = Array.isArray(value.products) ? value.products.map(object) : [];
   return products.filter((product) => string(product.id));
 }
 
@@ -130,6 +133,24 @@ async function upsertProduct(product: JsonObject) {
     updated_at: new Date().toISOString(),
   };
   if (checkoutUrl) values.checkout_url = checkoutUrl;
+  const { data: rules, error: rulesError } = await admin.from("product_access_rules")
+    .select("hubla_product_id, name_contains, playlist_id, is_order_bump, price, checkout_url, is_active")
+    .eq("is_active", true);
+  if (rulesError) throw rulesError;
+  const normalizedName = name.toLocaleLowerCase();
+  const rule = (rules ?? []).find((item) =>
+    string(item.hubla_product_id) === hublaId
+  ) ?? (rules ?? []).find((item) => {
+    const term = string(item.name_contains).toLocaleLowerCase();
+    return term && normalizedName.includes(term);
+  });
+  if (rule) {
+    values.playlist_id = rule.playlist_id;
+    values.is_order_bump = Boolean(rule.is_order_bump);
+    values.price = rule.price ?? null;
+    values.checkout_url = string(rule.checkout_url) || checkoutUrl || null;
+    values.is_active = rule.is_active !== false;
+  }
   const { data, error } = await admin.from("products").upsert(values, { onConflict: "hubla_product_id" })
     .select("id, hubla_product_id, name").single();
   if (error) throw error;

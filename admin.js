@@ -41,6 +41,19 @@
   const playlistStatus = document.getElementById('adminPlaylistStatus');
   const playlistList = document.getElementById('adminPlaylistList');
   const productList = document.getElementById('adminProductList');
+  const productRuleForm = document.getElementById('adminProductRuleForm');
+  const productRuleId = document.getElementById('adminProductRuleId');
+  const productRuleHublaId = document.getElementById('adminProductRuleHublaId');
+  const productRuleName = document.getElementById('adminProductRuleName');
+  const productRulePlaylist = document.getElementById('adminProductRulePlaylist');
+  const productRulePrice = document.getElementById('adminProductRulePrice');
+  const productRuleCheckout = document.getElementById('adminProductRuleCheckout');
+  const productRuleOrderBump = document.getElementById('adminProductRuleOrderBump');
+  const productRuleActive = document.getElementById('adminProductRuleActive');
+  const saveProductRule = document.getElementById('adminSaveProductRule');
+  const clearProductRule = document.getElementById('adminClearProductRule');
+  const productRuleStatus = document.getElementById('adminProductRuleStatus');
+  const productRuleList = document.getElementById('adminProductRuleList');
 
   if (!hasConfig || !window.supabase?.createClient) {
     loginStatus.className = 'admin-status error';
@@ -52,6 +65,7 @@
   let songs = [];
   let playlists = [];
   let products = [];
+  let productRules = [];
   let currentView = 'dashboard';
 
   const viewMeta = {
@@ -190,6 +204,85 @@
     });
   }
 
+  function renderProductRulePlaylistChoices(selected = '') {
+    productRulePlaylist.replaceChildren();
+    if (!playlists.length) {
+      productRulePlaylist.innerHTML = '<option value="">Crie uma playlist primeiro</option>';
+      return;
+    }
+    playlists.forEach(playlistItem => {
+      const option = document.createElement('option');
+      option.value = playlistItem.id;
+      option.textContent = playlistItem.title;
+      option.selected = playlistItem.id === selected;
+      productRulePlaylist.append(option);
+    });
+  }
+
+  function moneyLabel(value) {
+    const amount = Number(value);
+    if (!Number.isFinite(amount) || amount <= 0) return 'Valor não configurado';
+    return new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(amount);
+  }
+
+  function resetProductRuleForm() {
+    productRuleForm.reset();
+    productRuleId.value = '';
+    productRuleActive.checked = true;
+    document.getElementById('productRuleFormTitle').textContent = 'Nova regra de produto';
+    saveProductRule.textContent = 'Salvar regra';
+    renderProductRulePlaylistChoices();
+    setStatus(productRuleStatus, '');
+  }
+
+  function editProductRule(rule) {
+    productRuleId.value = rule.id || '';
+    productRuleHublaId.value = rule.hubla_product_id || '';
+    productRuleName.value = rule.name_contains || '';
+    productRulePrice.value = rule.price ?? '';
+    productRuleCheckout.value = rule.checkout_url || '';
+    productRuleOrderBump.checked = Boolean(rule.is_order_bump);
+    productRuleActive.checked = rule.is_active !== false;
+    renderProductRulePlaylistChoices(rule.playlist_id || '');
+    document.getElementById('productRuleFormTitle').textContent = 'Editar regra de produto';
+    saveProductRule.textContent = 'Salvar alterações';
+    openView('products');
+    productRuleHublaId.focus({preventScroll: true});
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function renderProductRules() {
+    productRuleList.replaceChildren();
+    document.getElementById('adminProductRuleCount').textContent = productRules.length;
+    if (!productRules.length) {
+      productRuleList.innerHTML = '<p class="admin-empty">Nenhuma regra criada. Use um ID ou palavra do nome para automatizar o próximo produto.</p>';
+      return;
+    }
+    productRules.forEach(rule => {
+      const item = document.createElement('article');
+      item.className = 'admin-rule-row';
+      const matcher = rule.hubla_product_id
+        ? `ID: ${escapeHtml(rule.hubla_product_id)}`
+        : `Nome contém: “${escapeHtml(rule.name_contains)}”`;
+      const tags = [
+        rule.is_order_bump ? '<span class="admin-tag soon">Order bump</span>' : '<span class="admin-tag">Produto principal</span>',
+        rule.is_active ? '<span class="admin-tag">Ativa</span>' : '<span class="admin-tag draft">Pausada</span>'
+      ];
+      item.innerHTML = `<div><strong>${escapeHtml(rule.playlist_title)}</strong><small>${matcher}</small><div class="admin-item-tags">${tags.join('')}<span class="admin-meta">${escapeHtml(moneyLabel(rule.price))}</span></div></div><div class="admin-card-actions"><button type="button" data-edit-product-rule="${escapeHtml(rule.id)}">Editar</button><button type="button" data-delete-product-rule="${escapeHtml(rule.id)}">Excluir</button></div>`;
+      item.querySelector('[data-edit-product-rule]').addEventListener('click', () => editProductRule(rule));
+      item.querySelector('[data-delete-product-rule]').addEventListener('click', async () => {
+        if (!window.confirm('Excluir esta regra automática?')) return;
+        try {
+          const {error} = await client.rpc('admin_delete_product_rule', {p_id: rule.id});
+          if (error) throw error;
+          setStatus(productRuleStatus, 'Regra excluída.');
+          await refresh();
+        } catch (error) { setStatus(productRuleStatus, error.message || 'Não foi possível excluir a regra.', true); }
+      });
+      productRuleList.append(item);
+    });
+  }
+
   function resetSongForm() {
     songForm.reset();
     songId.value = '';
@@ -321,14 +414,30 @@
       const item = document.createElement('div');
       item.className = 'admin-product-row';
       const options = songs.map(song => `<option value="${escapeHtml(song.id)}"${(product.song_ids || []).includes(song.id) ? ' selected' : ''}>${escapeHtml(song.icon || '🎵')} ${escapeHtml(song.title)}</option>`).join('');
-      item.innerHTML = `<div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span><label class="admin-meta" for="checkout-${escapeHtml(product.id)}">Link de checkout (opcional)</label><input id="checkout-${escapeHtml(product.id)}" class="admin-checkout-input" type="url" placeholder="https://pay.hub.la/..." value="${escapeHtml(product.checkout_url || '')}"></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button type="button">Salvar oferta e vínculos</button></div>`;
-      const select = item.querySelector('select');
+      const playlistOptions = playlists.map(item => `<option value="${escapeHtml(item.id)}"${item.id === product.playlist_id ? ' selected' : ''}>${escapeHtml(item.title)}</option>`).join('');
+      const activeTag = product.is_active === false ? '<span class="admin-tag draft">Desativado</span>' : '<span class="admin-tag">Ativo</span>';
+      const typeTag = product.is_order_bump ? '<span class="admin-tag soon">Order bump</span>' : '<span class="admin-tag">Principal</span>';
+      item.innerHTML = `<div class="admin-product-heading"><div><strong>${escapeHtml(product.name)}</strong><span class="admin-meta">Hubla: ${escapeHtml(product.hubla_product_id)}</span></div><div class="admin-item-tags">${activeTag}${typeTag}</div></div><div class="admin-product-config"><label class="admin-meta">Playlist<select class="admin-product-playlist" aria-label="Playlist liberada para ${escapeHtml(product.name)}"><option value="">Sem playlist</option>${playlistOptions}</select></label><label class="admin-meta">Valor (R$)<input class="admin-product-price" type="number" min="0" step="0.01" placeholder="29,90" value="${escapeHtml(product.price ?? '')}"></label><label class="admin-meta admin-product-check"><input class="admin-product-order-bump" type="checkbox"${product.is_order_bump ? ' checked' : ''}> Order bump</label><label class="admin-meta admin-product-checkout">Checkout<input class="admin-checkout-input" type="url" placeholder="https://pay.hub.la/..." value="${escapeHtml(product.checkout_url || '')}"></label></div><div class="admin-product-link"><select multiple size="${Math.min(Math.max(songs.length, 2), 6)}" aria-label="Músicas liberadas para ${escapeHtml(product.name)}">${options}</select><button type="button">Salvar configuração</button></div>`;
+      const select = item.querySelector('.admin-product-link select');
+      const playlistSelect = item.querySelector('.admin-product-playlist');
+      const priceInput = item.querySelector('.admin-product-price');
+      const orderBumpInput = item.querySelector('.admin-product-order-bump');
       const checkoutInput = item.querySelector('.admin-checkout-input');
       item.querySelector('button').addEventListener('click', async () => {
         const selected = new Set([...select.selectedOptions].map(option => option.value));
         const previous = new Set(product.song_ids || []);
         try {
           const checkout = checkoutInput.value.trim();
+          const price = priceInput.value.trim() ? Number(priceInput.value) : null;
+          if (price != null && (!Number.isFinite(price) || price < 0)) throw new Error('Informe um valor válido.');
+          const accessResult = await client.rpc('admin_update_product_access', {
+            p_hubla_product_id: product.hubla_product_id,
+            p_playlist_id: playlistSelect.value || null,
+            p_is_order_bump: orderBumpInput.checked,
+            p_price: price,
+            p_checkout_url: checkout || null
+          });
+          if (accessResult.error) throw accessResult.error;
           const checkoutResult = await client.rpc('admin_update_product_checkout', {p_hubla_product_id: product.hubla_product_id, p_checkout_url: checkout || null});
           if (checkoutResult.error) throw checkoutResult.error;
           for (const id of songs.map(song => song.id)) {
@@ -338,11 +447,16 @@
           }
           product.song_ids = [...selected];
           product.checkout_url = checkout || null;
-          setStatus(status, `Oferta e vínculos de “${product.name}” salvos.`);
+          product.playlist_id = playlistSelect.value || null;
+          product.is_order_bump = orderBumpInput.checked;
+          product.price = price;
+          setStatus(status, `Configuração de “${product.name}” salva.`);
+          await refresh();
         } catch (error) { setStatus(status, error.message || 'Não foi possível salvar os vínculos.', true); }
       });
       productList.append(item);
     });
+    renderProductRules();
   }
 
   function updateCounters() {
@@ -352,22 +466,26 @@
   }
 
   async function refresh() {
-    const [songResult, playlistResult, productResult] = await Promise.all([
+    const [songResult, playlistResult, productResult, productRuleResult] = await Promise.all([
       client.rpc('admin_list_songs'),
       client.rpc('admin_list_playlists'),
-      client.rpc('admin_list_products')
+      client.rpc('admin_list_products'),
+      client.rpc('admin_list_product_rules')
     ]);
     if (songResult.error) throw songResult.error;
     if (productResult.error) throw productResult.error;
     songs = songResult.data || [];
     products = productResult.data || [];
     playlists = playlistResult.error ? [] : (playlistResult.data || []);
+    productRules = productRuleResult.error && !isMissingRpc(productRuleResult.error) ? [] : (productRuleResult.data || []);
     updateCounters();
     renderSongPlaylistChoices();
     renderPlaylistSongChoices();
+    renderProductRulePlaylistChoices(productRuleId.value || '');
     renderSongs();
     await renderPlaylists();
     renderProducts();
+    renderProductRules();
     renderDashboard();
     if (playlistResult.error) {
       setStatus(status, 'Músicas carregadas. A migração de playlists ainda precisa ser aplicada no Supabase.', true);
@@ -448,6 +566,36 @@
   logout.addEventListener('click', async () => { await client.auth.signOut(); window.location.replace('admin.html'); });
   clearSong.addEventListener('click', resetSongForm);
   clearPlaylist.addEventListener('click', resetPlaylistForm);
+  clearProductRule.addEventListener('click', resetProductRuleForm);
+
+  productRuleForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const hublaId = productRuleHublaId.value.trim() || null;
+    const nameContains = productRuleName.value.trim() || null;
+    if (!hublaId && !nameContains) return setStatus(productRuleStatus, 'Informe o ID ou uma palavra do nome.', true);
+    if (!productRulePlaylist.value) return setStatus(productRuleStatus, 'Escolha a playlist liberada.', true);
+    const price = productRulePrice.value.trim() ? Number(productRulePrice.value) : null;
+    if (price != null && (!Number.isFinite(price) || price < 0)) return setStatus(productRuleStatus, 'Informe um valor válido.', true);
+    saveProductRule.disabled = true;
+    saveProductRule.textContent = 'Salvando…';
+    try {
+      const {error} = await client.rpc('admin_upsert_product_rule', {
+        p_id: productRuleId.value || null,
+        p_hubla_product_id: hublaId,
+        p_name_contains: nameContains,
+        p_playlist_id: productRulePlaylist.value,
+        p_is_order_bump: productRuleOrderBump.checked,
+        p_price: price,
+        p_checkout_url: productRuleCheckout.value.trim() || null,
+        p_is_active: productRuleActive.checked
+      });
+      if (error) throw error;
+      resetProductRuleForm();
+      setStatus(productRuleStatus, 'Regra salva. Produtos existentes e próximos eventos serão atualizados automaticamente.');
+      await refresh();
+    } catch (error) { setStatus(productRuleStatus, error.message || 'Não foi possível salvar a regra.', true); }
+    finally { saveProductRule.disabled = false; saveProductRule.textContent = productRuleId.value ? 'Salvar alterações' : 'Salvar regra'; }
+  });
 
   songForm.addEventListener('submit', async event => {
     event.preventDefault();

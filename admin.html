@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css?v=1">
+  <link rel="stylesheet" href="admin.css?v=2">
 </head>
 <body class="admin-page">
   <main class="admin-shell">
@@ -63,7 +63,29 @@
             </article><article class="admin-panel admin-list-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">COLEÇÕES</p><h2>Playlists cadastradas</h2></div><span id="adminPlaylistListCount" class="admin-count-pill">0</span></div><div id="adminPlaylistList" class="admin-card-list"></div></article></div>
           </section>
 
-          <section id="adminViewProducts" class="admin-view" data-view-panel="products" hidden aria-labelledby="productListTitle"><div class="admin-section-toolbar"><div><p class="admin-kicker">ACESSOS</p><h2>Produtos e order bumps</h2></div></div><article class="admin-panel admin-list-panel admin-products-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">HUBLA</p><h2>Ofertas conectadas</h2></div><span id="adminProductListCount" class="admin-count-pill">0</span></div><p class="admin-panel-intro">Vincule cada produto às músicas que ele libera e configure o checkout para aparecer em “Mais músicas”.</p><div id="adminProductList" class="admin-product-list"></div></article></section>
+          <section id="adminViewProducts" class="admin-view" data-view-panel="products" hidden aria-labelledby="productListTitle">
+            <div class="admin-section-toolbar"><div><p class="admin-kicker">ACESSOS</p><h2>Produtos e order bumps</h2></div></div>
+            <div class="admin-products-grid">
+              <article class="admin-panel admin-form-panel">
+                <div class="admin-panel-heading"><div><p class="admin-kicker">AUTOMAÇÃO</p><h2 id="productRuleFormTitle">Nova regra de produto</h2></div><span class="admin-form-step">03</span></div>
+                <p class="admin-panel-intro">Configure o ID exato ou uma palavra do nome. Quando a Hubla enviar um produto novo, ele será ligado automaticamente à playlist escolhida.</p>
+                <form id="adminProductRuleForm" novalidate>
+                  <input id="adminProductRuleId" type="hidden">
+                  <div class="admin-field"><label for="adminProductRuleHublaId">ID exato da Hubla <small>opcional</small></label><input id="adminProductRuleHublaId" maxlength="120" placeholder="Ex.: c90yIvXcukcQuuG3HidD"></div>
+                  <div class="admin-field"><label for="adminProductRuleName">Nome contém <small>opcional</small></label><input id="adminProductRuleName" maxlength="120" placeholder="Ex.: 50 Gírias"></div>
+                  <div class="admin-field"><label for="adminProductRulePlaylist">Playlist liberada</label><select id="adminProductRulePlaylist" required></select></div>
+                  <div class="admin-field-grid"><div class="admin-field"><label for="adminProductRulePrice">Valor <small>R$</small></label><input id="adminProductRulePrice" type="number" min="0" step="0.01" placeholder="29,90"></div><div class="admin-field"><label for="adminProductRuleCheckout">Checkout <small>opcional</small></label><input id="adminProductRuleCheckout" type="url" placeholder="https://pay.hub.la/..."></div></div>
+                  <label class="admin-switch"><input id="adminProductRuleOrderBump" type="checkbox"><span></span><b>É order bump</b></label>
+                  <label class="admin-switch"><input id="adminProductRuleActive" type="checkbox" checked><span></span><b>Aplicar automaticamente</b></label>
+                  <div class="admin-form-actions"><button class="admin-primary-button" type="submit" id="adminSaveProductRule">Salvar regra</button><button class="admin-secondary-button" type="button" id="adminClearProductRule">Limpar</button></div>
+                </form>
+                <p id="adminProductRuleStatus" class="admin-status" role="status" aria-live="polite"></p>
+                <div class="admin-subsection-heading"><h3>Regras salvas</h3><span id="adminProductRuleCount" class="admin-count-pill">0</span></div>
+                <div id="adminProductRuleList" class="admin-rule-list"></div>
+              </article>
+              <article class="admin-panel admin-list-panel admin-products-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">HUBLA</p><h2>Ofertas conectadas</h2></div><span id="adminProductListCount" class="admin-count-pill">0</span></div><p class="admin-panel-intro">Revise o produto que chegou pelo webhook e ajuste playlist, order bump, valor e checkout.</p><div id="adminProductList" class="admin-product-list"></div></article>
+            </div>
+          </section>
         </div>
       </div>
     </section>
@@ -71,6 +93,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
   <script src="song-import.js?v=2"></script>
-  <script src="admin.js?v=3"></script>
+  <script src="admin.js?v=4"></script>
 </body>
 </html>
