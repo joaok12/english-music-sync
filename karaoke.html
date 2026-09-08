@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5.1">
-  <link rel="stylesheet" href="themes.css?v=9">
+  <link rel="stylesheet" href="themes.css?v=10">
   <script src="port-redirect.js"></script>
 </head>
 <body>
@@ -20,7 +20,7 @@
       <div class="header-content" id="promoHeader">
         <!-- Título com Bandeira dos EUA (clicável para voltar se desejar) -->
         <a href="index.html" class="header-brand" style="text-decoration:none; color:inherit;" title="Voltar para a escolha de músicas">
-          <div class="brand-flag-wrap">
+          <div class="brand-flag-wrap" id="headerTitleIconWrap">
             <svg class="header-flag" viewBox="0 0 32 22" width="24" height="16">
               <defs>
                 <clipPath id="header-usa-clip"><rect width="32" height="22" rx="3"/></clipPath>
@@ -48,7 +48,10 @@
               </g>
             </svg>
           </div>
-          <h1 class="header-main-title">Aprenda Inglês Cantando</h1>
+          <div class="header-copy">
+            <h1 class="header-main-title">Aprenda Inglês Cantando</h1>
+            <p id="headerSubtitle" class="header-subtitle" hidden></p>
+          </div>
         </a>
 
         <!-- Ancoragem de Preço e Oferta de Venda -->
@@ -135,6 +138,12 @@
     <fieldset id="adminPricingSettings" class="header-picker" hidden><legend class="sr-only">Oferta no topo</legend><label><input type="checkbox" id="showPromo"> Mostrar preço no topo</label></fieldset>
     <fieldset id="adminCreativeSettings" class="creative-picker" hidden>
       <legend>Controles do criativo</legend>
+      <div class="header-copy-editor">
+        <p class="creative-section-label">Texto do topo</p>
+        <label class="text-control" for="headerTitleIcon"><span>Ícone</span><input id="headerTitleIcon" type="text" value="🇺🇸" maxlength="8" inputmode="text" autocomplete="off"></label>
+        <label class="text-control" for="headerTitleText"><span>Título</span><input id="headerTitleText" type="text" value="Aprenda Inglês Cantando" maxlength="100" autocomplete="off"></label>
+        <label class="text-control" for="headerSubtitleText"><span>Legenda</span><textarea id="headerSubtitleText" rows="2" maxlength="180" placeholder="Ex.: Aprenda as frases que você realmente vai usar."></textarea></label>
+      </div>
       <label class="range-control" for="glowSize">
         <span><span>Glow do destaque</span><output id="glowSizeValue" for="glowSize">20px</output></span>
         <input id="glowSize" type="range" min="0" max="60" step="1" value="20">
@@ -166,6 +175,6 @@
   <script src="supabase-config.js?v=1"></script>
   <script src="remote-song.js?v=1"></script>
   <script src="script.js?v=5.3"></script>
-  <script src="appearance.js?v=7"></script>
+  <script src="appearance.js?v=8"></script>
 </body>
 </html>
