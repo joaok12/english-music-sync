@@ -58,6 +58,9 @@
   const productRuleList = document.getElementById('adminProductRuleList');
   const productRuleEditor = document.getElementById('adminProductRuleEditor');
   const productRuleSummary = document.getElementById('adminProductRuleSummary');
+  const userList = document.getElementById('adminUserList');
+  const userListCount = document.getElementById('adminUserListCount');
+  const userStatus = document.getElementById('adminUserStatus');
 
   if (!hasConfig || !window.supabase?.createClient) {
     loginStatus.className = 'admin-status error';
@@ -70,12 +73,14 @@
   let playlists = [];
   let products = [];
   let productRules = [];
+  let users = [];
   let currentView = 'dashboard';
 
   const viewMeta = {
     dashboard: ['INGLÊS CANTANDO', 'Visão geral', 'Uma visão rápida do seu catálogo e das próximas liberações.'],
     songs: ['CATÁLOGO', 'Músicas', 'Adicione letras e áudio, depois sincronize cada faixa no seu tempo.'],
-    products: ['CATÁLOGO E ACESSOS', 'Produtos', 'Cada produto libera uma playlist. Organize conteúdo, acesso e order bumps.']
+    products: ['CATÁLOGO E ACESSOS', 'Produtos', 'Cada produto libera uma playlist. Organize conteúdo, acesso e order bumps.'],
+    users: ['ACOMPANHAMENTO', 'Usuários', 'Acompanhe o progresso de escuta de cada pessoa da sua área de membros.']
   };
 
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -291,6 +296,53 @@
     });
   }
 
+  function userName(user) {
+    const fullName = String(user?.full_name || '').trim();
+    if (fullName) return fullName;
+    const email = String(user?.email || '').trim();
+    return email ? email.split('@')[0] : 'Usuário';
+  }
+
+  function userInitials(user) {
+    const parts = userName(user).split(/\s+/).filter(Boolean);
+    return (parts.slice(0, 2).map(part => part[0]).join('') || 'U').toLocaleUpperCase('pt-BR');
+  }
+
+  function secondsLabel(value) {
+    const seconds = Number(value);
+    if (!Number.isFinite(seconds) || seconds <= 0) return '—';
+    if (seconds < 60) return `${Math.round(seconds)}s`;
+    return `${Math.floor(seconds / 60)}min`;
+  }
+
+  function renderUsers() {
+    if (!userList || !userListCount) return;
+    userList.replaceChildren();
+    userListCount.textContent = users.length;
+    if (!users.length) {
+      userList.innerHTML = '<p class="admin-empty">Nenhuma atividade de usuário registrada ainda.</p>';
+      return;
+    }
+
+    users.forEach((user, index) => {
+      const totalSongs = Math.max(0, Number(user.total_songs) || 0);
+      const listenedSongs = Math.min(totalSongs, Math.max(0, Number(user.listened_songs) || 0));
+      const percent = Math.min(100, Math.max(0, Number(user.listened_percent) || 0));
+      const songs = Array.isArray(user.songs_listened) ? user.songs_listened : [];
+      const productsOwned = Array.isArray(user.product_names) ? user.product_names.filter(Boolean) : [];
+      const listenedMarkup = songs.length
+        ? `<ul>${songs.map(song => `<li><span>${escapeHtml(song?.title || 'Música')}</span><small>${Number(song?.play_count) || 0} reprodução(ões) · ${escapeHtml(secondsLabel(song?.seconds_listened))}${song?.completed ? ' · concluída' : ''}</small></li>`).join('')}</ul>`
+        : '<p class="admin-empty">Ainda não iniciou nenhuma música.</p>';
+      const lastActivity = user.last_listened_at ? dateLabel(user.last_listened_at) : 'Nenhuma escuta registrada';
+      const productsLabel = productsOwned.length ? productsOwned.join(' · ') : 'Nenhum produto ativo';
+      const item = document.createElement('article');
+      item.className = 'admin-user-card';
+      item.style.setProperty('--user-index', index);
+      item.innerHTML = `<div class="admin-user-heading"><div class="admin-user-avatar" aria-hidden="true">${escapeHtml(userInitials(user))}</div><div class="admin-user-identity"><strong>${escapeHtml(userName(user))}</strong><small>${escapeHtml(user.email || 'E-mail não informado')}</small></div><div class="admin-user-percent"><strong>${escapeHtml(new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 1}).format(percent))}%</strong><span>da biblioteca</span></div></div><div class="admin-user-progress"><div><span>${listenedSongs} de ${totalSongs} músicas escutadas</span><b>${Math.round(percent)}%</b></div><div class="admin-user-progress-rail"><i style="width:${percent.toFixed(1)}%"></i></div></div><div class="admin-user-meta"><span>Última atividade: ${escapeHtml(lastActivity)}</span><span>Produtos: ${escapeHtml(productsLabel)}</span></div><details class="admin-user-songs"><summary>Músicas escutadas <b>${songs.length}</b></summary>${listenedMarkup}</details>`;
+      userList.append(item);
+    });
+  }
+
   function resetSongForm() {
     songForm.reset();
     songId.value = '';
@@ -473,23 +525,27 @@
   function updateCounters() {
     document.getElementById('navSongCount').textContent = songs.length;
     document.getElementById('navProductCount').textContent = products.length;
+    document.getElementById('navUserCount').textContent = users.length;
   }
 
   async function refresh() {
-    const [songResult, playlistResult, productResult, productRuleResult] = await Promise.all([
+    const [songResult, playlistResult, productResult, productRuleResult, userResult] = await Promise.all([
       client.rpc('admin_list_songs'),
       client.rpc('admin_list_playlists'),
       client.rpc('admin_list_products'),
-      client.rpc('admin_list_product_rules')
+      client.rpc('admin_list_product_rules'),
+      client.rpc('admin_list_member_activity')
     ]);
     if (songResult.error) throw songResult.error;
     if (productResult.error) throw productResult.error;
+    if (userResult.error && !isMissingRpc(userResult.error)) throw userResult.error;
     songs = songResult.data || [];
     // Produtos marcados como desativados são mantidos no banco para auditoria,
     // mas ficam fora da lista operacional para o painel não mostrar ofertas antigas.
     products = (productResult.data || []).filter(product => product.is_active !== false);
     playlists = playlistResult.error ? [] : (playlistResult.data || []);
     productRules = productRuleResult.error && !isMissingRpc(productRuleResult.error) ? [] : (productRuleResult.data || []);
+    users = userResult.error ? [] : (userResult.data || []);
     updateCounters();
     renderSongPlaylistChoices();
     renderPlaylistSongChoices();
@@ -498,6 +554,12 @@
     await renderPlaylists();
     renderProducts();
     renderProductRules();
+    renderUsers();
+    if (userResult.error) {
+      setStatus(userStatus, 'A aba de usuários precisa da migração de atividade no Supabase.', true);
+    } else {
+      setStatus(userStatus, users.length ? `${users.length} usuário(s) encontrado(s).` : 'Nenhuma escuta registrada ainda.');
+    }
     renderDashboard();
     if (playlistResult.error) {
       setStatus(status, 'Músicas carregadas. A migração de playlists ainda precisa ser aplicada no Supabase.', true);
@@ -553,6 +615,10 @@
     if (type === 'new-playlist') { openView('products'); resetPlaylistForm(); if (playlistEditor) playlistEditor.open = true; playlistTitle.focus({preventScroll: true}); }
     if (type === 'new-product-rule') { openView('products'); resetProductRuleForm(); if (productRuleEditor) productRuleEditor.open = true; productRuleHublaId.focus({preventScroll: true}); }
     if (type === 'go-songs') openView('songs');
+    if (type === 'refresh-users') {
+      setStatus(userStatus, 'Atualizando atividade…');
+      refresh().catch(error => setStatus(userStatus, error.message || 'Não foi possível atualizar os usuários.', true));
+    }
   });
 
   loginForm.addEventListener('submit', async event => {

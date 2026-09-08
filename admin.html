@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css?v=3">
+  <link rel="stylesheet" href="admin.css?v=4">
 </head>
 <body class="admin-page">
   <main class="admin-shell">
@@ -34,6 +34,7 @@
           <button class="is-active" type="button" data-admin-view="dashboard"><span class="nav-icon">⌂</span><span>Visão geral</span></button>
           <button type="button" data-admin-view="songs"><span class="nav-icon">♫</span><span>Músicas</span><em id="navSongCount">0</em></button>
           <button type="button" data-admin-view="products"><span class="nav-icon">◈</span><span>Produtos</span><em id="navProductCount">0</em></button>
+          <button type="button" data-admin-view="users"><span class="nav-icon">◎</span><span>Usuários</span><em id="navUserCount">0</em></button>
         </nav>
         <div class="admin-sidebar-footer"><span class="admin-role"><i></i> Administrador</span><button id="adminLogout" class="admin-logout" type="button"><span>↪</span> Sair</button></div>
       </aside>
@@ -93,6 +94,12 @@
               </article>
             </div>
           </section>
+
+          <section id="adminViewUsers" class="admin-view" data-view-panel="users" hidden aria-labelledby="adminPageTitle">
+            <div class="admin-section-toolbar"><div><p class="admin-kicker">ACOMPANHAMENTO</p><h2>Usuários</h2></div><button class="admin-secondary-button" type="button" data-admin-action="refresh-users">↻ Atualizar</button></div>
+            <p class="admin-page-note">Veja quais músicas cada pessoa já iniciou, o percentual da biblioteca percorrido e a última atividade registrada.</p>
+            <article class="admin-panel admin-users-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">ENGAJAMENTO</p><h2>Atividade por usuário</h2></div><span id="adminUserListCount" class="admin-count-pill">0</span></div><p id="adminUserStatus" class="admin-status" role="status" aria-live="polite"></p><div id="adminUserList" class="admin-user-list"></div></article>
+          </section>
         </div>
       </div>
     </section>
@@ -100,6 +107,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js?v=1"></script>
   <script src="song-import.js?v=2"></script>
-  <script src="admin.js?v=5"></script>
+  <script src="admin.js?v=6"></script>
 </body>
 </html>

@@ -235,6 +235,41 @@ button { cursor: pointer; }
 .admin-product-link button { border: 1px solid rgba(84, 215, 160, .4); border-radius: 6px; background: rgba(84, 215, 160, .1); color: var(--admin-green); padding: 8px; font-size: .59rem; font-weight: 800; }
 .admin-product-link button:hover { background: var(--admin-green); color: #06140e; }
 
+/* User listening analytics */
+.admin-users-panel { min-width: 0; }
+.admin-user-list { display: grid; gap: 10px; margin-top: 17px; }
+.admin-user-card { border: 1px solid rgba(155, 178, 211, .13); border-radius: 11px; background: rgba(7, 17, 31, .32); padding: 15px; animation: admin-user-in .35s ease both; animation-delay: calc(var(--user-index, 0) * 45ms); }
+.admin-user-card:hover { border-color: rgba(112, 169, 255, .35); }
+.admin-user-heading { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.admin-user-avatar { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: linear-gradient(145deg, rgba(237, 57, 70, .85), rgba(112, 169, 255, .6)); color: #fff; font-size: .67rem; font-weight: 800; letter-spacing: .04em; }
+.admin-user-identity { min-width: 0; }
+.admin-user-identity strong, .admin-user-identity small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-user-identity strong { color: #f2f6fc; font-size: .73rem; }
+.admin-user-identity small { margin-top: 3px; color: var(--admin-muted); font-size: .61rem; }
+.admin-user-percent { display: grid; justify-items: end; gap: 2px; }
+.admin-user-percent strong { color: var(--admin-green); font-size: 1.1rem; letter-spacing: -.05em; line-height: 1; }
+.admin-user-percent span { color: var(--admin-subtle); font-size: .56rem; }
+.admin-user-progress { margin-top: 14px; }
+.admin-user-progress > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--admin-muted); font-size: .61rem; }
+.admin-user-progress > div:first-child b { color: #dce8f8; font-size: .6rem; }
+.admin-user-progress-rail { height: 6px; overflow: hidden; margin-top: 7px; border-radius: 99px; background: rgba(143, 162, 189, .14); }
+.admin-user-progress-rail i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--admin-green), #70a9ff); transition: width .5s ease; }
+.admin-user-meta { display: flex; flex-wrap: wrap; gap: 5px 18px; margin-top: 11px; color: var(--admin-subtle); font-size: .58rem; }
+.admin-user-songs { margin-top: 12px; border-top: 1px solid rgba(155, 178, 211, .1); padding-top: 10px; }
+.admin-user-songs > summary { display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; color: #c9d9ec; font-size: .63rem; font-weight: 800; }
+.admin-user-songs > summary::-webkit-details-marker { display: none; }
+.admin-user-songs > summary::marker { display: none; }
+.admin-user-songs > summary b { min-width: 21px; border-radius: 999px; background: rgba(112, 169, 255, .12); color: var(--admin-blue); padding: 2px 6px; font-size: .57rem; text-align: center; }
+.admin-user-songs ul { display: grid; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.admin-user-songs li { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 6px; background: rgba(15, 31, 52, .46); padding: 7px 8px; }
+.admin-user-songs li span { overflow: hidden; color: #d8e5f5; font-size: .6rem; text-overflow: ellipsis; white-space: nowrap; }
+.admin-user-songs li small { flex: 0 0 auto; color: var(--admin-subtle); font-size: .55rem; text-align: right; }
+
+@keyframes admin-user-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 980px) {
   .admin-app { grid-template-columns: 198px minmax(0, 1fr); }
   .admin-main { padding-right: 25px; padding-left: 25px; }
@@ -267,4 +302,8 @@ button { cursor: pointer; }
   .admin-product-checkout { grid-column: 1 / -1; }
   .admin-product-link { grid-template-columns: 1fr; }
   .admin-rule-row { align-items: flex-start; flex-direction: column; }
+  .admin-user-heading { grid-template-columns: auto minmax(0, 1fr); }
+  .admin-user-percent { grid-column: 2; justify-items: start; margin-top: -4px; }
+  .admin-user-songs li { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .admin-user-songs li small { text-align: left; }
 }

@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const timelineFill = document.getElementById("timelineFill");
   const labelCurrent = document.getElementById("labelCurrent");
   const labelRemaining = document.getElementById("labelRemaining");
+  const supabaseConfig = window.SUPABASE_CONFIG || {};
+  const activityClient = supabaseConfig.anonKey && !supabaseConfig.anonKey.startsWith('COLE_AQUI') && window.supabase?.createClient
+    ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
+    : null;
 
   let activeBlockIndex = -1;
   let userScrolling = false;
@@ -35,6 +39,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentLyrics = [];
   let currentSong = null;
   let currentSongId = 'viagens';
+  let activeTrackedSongId = null;
+  let listenSessionStarted = false;
 
   // Catálogo central
   const catalog = window.SONGS_CATALOG || {
@@ -101,11 +107,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     return `${m}:${s.toString().padStart(2, '0')}`;
   }
 
+  function trackedSongId(songId = currentSongId) {
+    const raw = String(songId || '');
+    const id = raw.startsWith('remote_') ? raw.slice('remote_'.length) : '';
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ? id : null;
+  }
+
+  function recordSongActivity({isStart = false, completed = false} = {}) {
+    if (!activityClient || !activeTrackedSongId) return;
+    if (isStart && listenSessionStarted) return;
+    if (!isStart && !listenSessionStarted) return;
+    if (isStart) listenSessionStarted = true;
+    const secondsListened = Number.isFinite(audio.currentTime) ? Math.max(0, audio.currentTime) : 0;
+    activityClient.rpc('record_song_listen', {
+      p_song_id: activeTrackedSongId,
+      p_is_start: isStart,
+      p_seconds_listened: secondsListened,
+      p_completed: completed
+    }).then(result => {
+      if (result.error) console.warn('Não foi possível registrar a escuta da música:', result.error.message || result.error);
+    }).catch(error => console.warn('Não foi possível registrar a escuta da música:', error));
+  }
+
   // Carregar Música no Karaokê
   function loadKaraokeSong(songId) {
     if (!catalog[songId]) songId = Object.keys(catalog)[0];
+    // Salva a posição da faixa anterior antes de trocar o catálogo ativo.
+    recordSongActivity();
+    audio.pause();
     currentSongId = songId;
     currentSong = catalog[currentSongId];
+    activeTrackedSongId = trackedSongId(currentSongId);
+    listenSessionStarted = false;
     if (songHeaderTitle) songHeaderTitle.textContent = currentSong.title;
 
     localStorage.setItem('KARAOKE_ACTIVE_SONG', currentSongId);
@@ -120,7 +153,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Carrega áudio
-    audio.pause();
     updatePlayPauseState(false);
     audio.src = currentSong.audioFile;
     audio.currentTime = 0;
@@ -493,11 +525,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  audio.addEventListener("play", () => updatePlayPauseState(true));
-  audio.addEventListener("pause", () => updatePlayPauseState(false));
+  audio.addEventListener("play", () => {
+    updatePlayPauseState(true);
+    recordSongActivity({isStart: true});
+  });
+  audio.addEventListener("pause", () => {
+    updatePlayPauseState(false);
+    recordSongActivity();
+  });
   audio.addEventListener("ended", () => {
     updatePlayPauseState(false);
     karaokePointer.classList.remove("pointer-visible");
+    recordSongActivity({completed: true});
+    listenSessionStarted = false;
   });
 
   btnBack.addEventListener("click", () => {
