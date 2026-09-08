@@ -27,6 +27,20 @@ function string(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function asError(value: unknown): Error {
+  if (value instanceof Error) return value;
+  const details = object(value);
+  const message = string(details.message) || "Erro desconhecido";
+  const code = string(details.code);
+  return new Error(code ? `${message} (${code})` : message);
+}
+
+function isUniqueViolation(value: unknown): boolean {
+  const error = asError(value);
+  const details = object(value);
+  return string(details.code) === "23505" || /duplicate key|unique constraint/i.test(error.message);
+}
+
 function sanitizedPayload(payload: JsonObject): JsonObject {
   const copy = JSON.parse(JSON.stringify(payload)) as JsonObject;
   const event = object(copy.event);
@@ -128,10 +142,20 @@ async function findOrCreateMember(user: JsonObject, subscription: JsonObject) {
   const cpf = digits(user.document);
   if (!hublaUserId && !email) throw new Error("Evento sem identificador do comprador");
 
-  let query = admin.from("members").select("id, auth_user_id, email, cpf_hash").limit(1);
-  query = hublaUserId ? query.eq("hubla_user_id", hublaUserId) : query.eq("email", email);
-  const { data: existing, error: findError } = await query.maybeSingle();
-  if (findError) throw findError;
+  async function findMember(column: "hubla_user_id" | "email", value: string) {
+    if (!value) return null;
+    const { data, error } = await admin.from("members")
+      .select("id, auth_user_id, email, cpf_hash")
+      .eq(column, value)
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  }
+
+  // O sandbox e a produção podem entregar vários eventos do mesmo comprador
+  // ao mesmo tempo. Procuramos pelo ID e, como fallback, pelo e-mail para
+  // evitar criar duas linhas para a mesma pessoa.
+  const existing = await findMember("hubla_user_id", hublaUserId) ?? await findMember("email", email);
 
   const payload: JsonObject = {
     hubla_user_id: hublaUserId || null,
@@ -152,10 +176,23 @@ async function findOrCreateMember(user: JsonObject, subscription: JsonObject) {
     if (error) throw error;
     return data;
   }
+
   const { data, error } = await admin.from("members").insert(payload)
     .select("id, auth_user_id, email").single();
-  if (error) throw error;
-  return data;
+  if (!error) return data;
+
+  // Outra entrega pode ter inserido o membro entre a busca e o INSERT.
+  // Nesse caso, recuperamos a linha criada e atualizamos os dados recebidos.
+  if (!isUniqueViolation(error)) throw error;
+  const concurrent = await findMember("hubla_user_id", hublaUserId) ?? await findMember("email", email);
+  if (!concurrent) throw error;
+  const { data: updated, error: updateError } = await admin.from("members")
+    .update(payload)
+    .eq("id", concurrent.id)
+    .select("id, auth_user_id, email")
+    .single();
+  if (updateError) throw updateError;
+  return updated;
 }
 
 async function processEvent(payload: JsonObject, type: string) {
@@ -236,7 +273,7 @@ Deno.serve(async (request) => {
     await admin.from("hubla_webhook_events").update({ processing_status: eventDecision(type) === "ignored" ? "ignored" : "processed", processed_at: new Date().toISOString() }).eq("idempotency_key", idempotency);
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: corsHeaders });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Erro desconhecido";
+    const message = asError(error).message;
     await admin.from("hubla_webhook_events").update({ processing_status: "failed", processing_error: message }).eq("idempotency_key", idempotency);
     return new Response(JSON.stringify({ error: "Evento recebido, mas não processado" }), { status: 500, headers: corsHeaders });
   }
